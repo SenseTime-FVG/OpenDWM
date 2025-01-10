@@ -1,0 +1,137 @@
+{
+    "dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.opendv.MotionDataset",
+            "fs": {
+                "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                "fs": {
+                    "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                    "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/opendv"
+                },
+                "paths": [
+                    "opendv-youtube-10hz-720_0.zip",
+                    "opendv-youtube-10hz-720_1.zip",
+                    "opendv-youtube-10hz-720_2.zip",
+                    "opendv-youtube-10hz-720_3.zip"
+                ]
+            },
+            "meta_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/nijingcheng/datasets/OpenDV-YouTube.json",
+            "sequence_length": 1,
+            "fps_stride_tuples": [
+                [
+                    10,
+                    20
+                ]
+            ],
+            "split": "Train",
+            "mini_batch": 6,
+            "ignore_list": [
+                "izhGt1GnGFk"
+            ],
+            "enable_fake_camera_transforms": true,
+            "enable_fake_3dbox_images": true,
+            "enable_fake_hdmap_images": true,
+            "fake_condition_image_color": [
+                32,
+                32,
+                32
+            ],
+            "image_description_settings": {
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_caption.json",
+                "candidates_times_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_candidates_times.json",
+                "seed": 5,
+                "reorder_keys": true,
+                "drop_rates": {
+                    "environment": 0.04,
+                    "objects": 0.08,
+                    "image_description": 0.16
+                }
+            },
+            "stub_key_data_dict": {
+                "crossview_mask": [
+                    "content",
+                    {
+                        "_class_name": "torch.eye",
+                        "n": 6,
+                        "dtype": {
+                            "_class_name": "get_class",
+                            "class_name": "torch.bool"
+                        }
+                    }
+                ]
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    }
+}

@@ -1,0 +1,694 @@
+{
+    "device": "cuda",
+    "ddp_backend": "nccl",
+    "train_epochs": 82,
+    "generator_seed": 0,
+    "data_shuffle": true,
+    "fix_training_data_order": true,
+    "global_state": {
+        "nuscenes_fs": {
+            "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+            "fs": {
+                "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                "fs": {
+                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                }
+            },
+            "paths": [
+                "workspaces/worldmodels/data/v1.0-trainval_12hz_meta.zip",
+                "data/nuscenes/v1.0-trainval01_blobs.zip",
+                "data/nuscenes/v1.0-trainval02_blobs.zip",
+                "data/nuscenes/v1.0-trainval03_blobs.zip",
+                "data/nuscenes/v1.0-trainval04_blobs.zip",
+                "data/nuscenes/v1.0-trainval05_blobs.zip",
+                "data/nuscenes/v1.0-trainval06_blobs.zip",
+                "data/nuscenes/v1.0-trainval07_blobs.zip",
+                "data/nuscenes/v1.0-trainval08_blobs.zip",
+                "data/nuscenes/v1.0-trainval09_blobs.zip",
+                "data/nuscenes/v1.0-trainval10_blobs.zip",
+                "data/nuscenes/nuScenes-map-expansion-v1.3.zip"
+            ],
+            "enable_cached_info": true
+        },
+        "device_mesh": {
+            "_class_name": "torch.distributed.device_mesh.init_device_mesh",
+            "device_type": "cuda",
+            "mesh_shape": [
+                4,
+                8
+            ]
+        }
+    },
+    "optimizer": {
+        "_class_name": "torch.optim.AdamW",
+        "lr": 8e-5
+    },
+    "pipeline": {
+        "_class_name": "dwm.pipelines.ctsd.CrossviewTemporalSD",
+        "common_config": {
+            "frame_prediction_style": "ctsd",
+            "reference_frame_count": 3,
+            "cat_condition": true,
+            "cond_with_action": false,
+            "condition_on_all_frames": true,
+            "explicit_view_modeling": true,
+            "distribution_framework": "fsdp",
+            "ddp_wrapper_settings": {
+                "sharding_strategy": {
+                    "_class_name": "torch.distributed.fsdp.ShardingStrategy",
+                    "value": 4
+                },
+                "device_mesh": {
+                    "_class_name": "dwm.common.get_state",
+                    "key": "device_mesh"
+                },
+                "auto_wrap_policy": {
+                    "_class_name": "torch.distributed.fsdp.wrap.ModuleWrapPolicy",
+                    "module_classes": [
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "diffusers.models.attention.JointTransformerBlock"
+                        },
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.crossview_temporal.VTSelfAttentionBlock"
+                        }
+                    ]
+                },
+                "mixed_precision": {
+                    "_class_name": "torch.distributed.fsdp.MixedPrecision",
+                    "param_dtype": {
+                        "_class_name": "get_class",
+                        "class_name": "torch.float16"
+                    }
+                },
+                "use_orig_params": true
+            },
+            "t5_fsdp_wrapper_settings": {
+                "auto_wrap_policy": {
+                    "_class_name": "torch.distributed.fsdp.wrap.ModuleWrapPolicy",
+                    "module_classes": [
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "transformers.models.t5.modeling_t5.T5Block"
+                        }
+                    ]
+                }
+            },
+            "text_encoder_load_args": {
+                "torch_dtype": {
+                    "_class_name": "get_class",
+                    "class_name": "torch.float16"
+                }
+            },
+            "memory_efficient_batch": 12
+        },
+        "training_config": {
+            "text_prompt_condition_ratio": 0.8,
+            "3dbox_condition_ratio": 0.8,
+            "hdmap_condition_ratio": 0.8,
+            "reference_frame_count": 3,
+            "generation_task_ratio": 0.2,
+            "image_generation_ratio": 0.5,
+            "all_reference_visible_ratio": 0.8,
+            "reference_visible_rate": 0.5,
+            "enable_grad_scaler": true,
+            "freezing_pattern": "^(transformer_blocks|time_text_embed|context_embedder|pos_embed|norm_out|proj_out)"
+        },
+        "inference_config": {
+            "guidance_scale": 3,
+            "inference_steps": 50,
+            "preview_image_size": [
+                448,
+                256
+            ],
+            "sequence_length_per_iteration": 6,
+            "reference_frame_count": 3,
+            "autoregression_data_exception_for_take_sequence": [
+                "crossview_mask"
+            ],
+            "evaluation_item_count": 160
+        },
+        "model": {
+            "_class_name": "dwm.models.crossview_temporal_dit.DiTCrossviewTemporalConditionModel",
+            "attention_head_dim": 64,
+            "caption_projection_dim": 1536,
+            "in_channels": 16,
+            "joint_attention_dim": 4096,
+            "num_attention_heads": 24,
+            "num_layers": 24,
+            "out_channels": 16,
+            "patch_size": 2,
+            "pooled_projection_dim": 2048,
+            "pos_embed_max_size": 192,
+            "sample_size": 128,
+
+            "perspective_modeling_type": "explicit",
+            "enable_crossview": true,
+            "crossview_attention_type": "rowwise",
+            "crossview_block_layers": [
+                1,
+                5,
+                9,
+                13,
+                17,
+                21
+            ],
+            "crossview_gradient_checkpointing": true,
+            "enable_temporal": true,
+            "temporal_attention_type": "full",
+            "temporal_block_layers": [
+                1,
+                5,
+                9,
+                13,
+                17,
+                21
+            ],
+            "temporal_gradient_checkpointing": true,
+            "mixer_type": "AlphaBlender",
+            "merge_factor": 2,
+            "condition_image_adapter_config": {
+                "in_channels": 6,
+                "channels": [
+                    1536,
+                    1536,
+                    1536,
+                    1536,
+                    1536,
+                    1536
+                ],
+                "is_downblocks": [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "num_res_blocks": 2,
+                "downscale_factor": 8,
+                "use_zero_convs": true
+            }
+        },
+        "pretrained_model_name_or_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/models/stable-diffusion-3-medium-diffusers",
+        "model_checkpoint_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/models/stable-diffusion-3-medium-diffusers/transformer/diffusion_pytorch_model.safetensors",
+        "model_load_state_args": {
+            "strict": false
+        },
+        "metrics": {
+            "fid": {
+                "_class_name": "torchmetrics.image.fid.FrechetInceptionDistance",
+                "normalize": true
+            },
+            "fvd": {
+                "_class_name": "dwm.metrics.fvd.FrechetVideoDistance",
+                "inception_3d_checkpoint_path": "/mnt/storage/user/wuzehuan/Downloads/models/inception_3d/i3d_pretrained_400.pt",
+                "sequence_count": 16
+            }
+        }
+    },
+    "training_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+            "fs": {
+                "_class_name": "dwm.common.get_state",
+                "key": "nuscenes_fs"
+            },
+            "dataset_name": "v1.0-trainval_12hz",
+            "split": "train",
+            "sequence_length": 6,
+            "fps_stride_tuples": [
+                [
+                    10,
+                    0.6
+                ]
+            ],
+            "sensor_channels": [
+                "CAM_FRONT_LEFT",
+                "CAM_FRONT",
+                "CAM_FRONT_RIGHT",
+                "CAM_BACK_RIGHT",
+                "CAM_BACK",
+                "CAM_BACK_LEFT"
+            ],
+            "keyframe_only": true,
+            "enable_camera_transforms": true,
+            "enable_ego_transforms": true,
+            "_3dbox_image_settings": {
+                "pen_width": 8,
+                "color_table": {
+                    "vehicle.car": [
+                        0,
+                        0,
+                        255
+                    ],
+                    "vehicle.bus": [
+                        128,
+                        0,
+                        255
+                    ],
+                    "vehicle.truck": [
+                        255,
+                        255,
+                        0
+                    ],
+                    "vehicle.construction": [
+                        128,
+                        128,
+                        255
+                    ],
+                    "vehicle.emergency": [
+                        255,
+                        128,
+                        128
+                    ],
+                    "vehicle.trailer": [
+                        255,
+                        255,
+                        255
+                    ],
+                    "vehicle.bicycle": [
+                        128,
+                        255,
+                        0
+                    ],
+                    "vehicle.motorcycle": [
+                        0,
+                        255,
+                        128
+                    ],
+                    "human.pedestrian": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "movable_object.barrier": [
+                        64,
+                        64,
+                        64
+                    ],
+                    "movable_object.trafficcone": [
+                        128,
+                        128,
+                        0
+                    ]
+                },
+                "edge_indices": {
+                    "_class_name": "json.loads",
+                    "s": "[[0,1],[0,2],[1,3],[2,3],[0,4],[1,5],[2,6],[3,7],[4,5],[4,6],[5,7],[6,7],[6,3],[6,5]]"
+                }
+            },
+            "hdmap_image_settings": {},
+            "image_description_settings": {
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_train.json",
+                "time_list_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_times_train.json",
+                "align_keys": [
+                    "time",
+                    "weather"
+                ],
+                "reorder_keys": true,
+                "drop_rates": {
+                    "environment": 0.04,
+                    "objects": 0.08,
+                    "image_description": 0.16
+                }
+            },
+            "stub_key_data_dict": {
+                "crossview_mask": [
+                    "content",
+                    {
+                        "_class_name": "torch.tensor",
+                        "data": {
+                            "_class_name": "json.loads",
+                            "s": "[[1,1,0,0,0,1],[1,1,1,0,0,0],[0,1,1,1,0,0],[0,0,1,1,1,0],[0,0,0,1,1,1],[1,0,0,0,1,1]]"
+                        },
+                        "dtype": {
+                            "_class_name": "get_class",
+                            "class_name": "torch.bool"
+                        }
+                    }
+                ],
+                "is_uncalibrated": [
+                    "content",
+                    {
+                        "_class_name": "torch.tensor",
+                        "data": false
+                    }
+                ]
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "validation_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+            "fs": {
+                "_class_name": "dwm.common.get_state",
+                "key": "nuscenes_fs"
+            },
+            "dataset_name": "v1.0-trainval_12hz",
+            "split": "val",
+            "sequence_length": 18,
+            "fps_stride_tuples": [
+                [
+                    10,
+                    200
+                ]
+            ],
+            "sensor_channels": [
+                "CAM_FRONT_LEFT",
+                "CAM_FRONT",
+                "CAM_FRONT_RIGHT",
+                "CAM_BACK_RIGHT",
+                "CAM_BACK",
+                "CAM_BACK_LEFT"
+            ],
+            "keyframe_only": true,
+            "enable_camera_transforms": true,
+            "enable_ego_transforms": true,
+            "_3dbox_image_settings": {
+                "pen_width": 8,
+                "color_table": {
+                    "vehicle.car": [
+                        0,
+                        0,
+                        255
+                    ],
+                    "vehicle.bus": [
+                        128,
+                        0,
+                        255
+                    ],
+                    "vehicle.truck": [
+                        255,
+                        255,
+                        0
+                    ],
+                    "vehicle.construction": [
+                        128,
+                        128,
+                        255
+                    ],
+                    "vehicle.emergency": [
+                        255,
+                        128,
+                        128
+                    ],
+                    "vehicle.trailer": [
+                        255,
+                        255,
+                        255
+                    ],
+                    "vehicle.bicycle": [
+                        128,
+                        255,
+                        0
+                    ],
+                    "vehicle.motorcycle": [
+                        0,
+                        255,
+                        128
+                    ],
+                    "human.pedestrian": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "movable_object.barrier": [
+                        64,
+                        64,
+                        64
+                    ],
+                    "movable_object.trafficcone": [
+                        128,
+                        128,
+                        0
+                    ]
+                },
+                "edge_indices": {
+                    "_class_name": "json.loads",
+                    "s": "[[0,1],[0,2],[1,3],[2,3],[0,4],[1,5],[2,6],[3,7],[4,5],[4,6],[5,7],[6,7],[6,3],[6,5]]"
+                }
+            },
+            "hdmap_image_settings": {},
+            "image_description_settings": {
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_val.json",
+                "time_list_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_times_val.json",
+                "align_keys": [
+                    "time",
+                    "weather"
+                ]
+            },
+            "stub_key_data_dict": {
+                "crossview_mask": [
+                    "content",
+                    {
+                        "_class_name": "torch.tensor",
+                        "data": {
+                            "_class_name": "json.loads",
+                            "s": "[[1,1,0,0,0,1],[1,1,1,0,0,0],[0,1,1,1,0,0],[0,0,1,1,1,0],[0,0,0,1,1,1],[1,0,0,0,1,1]]"
+                        },
+                        "dtype": {
+                            "_class_name": "get_class",
+                            "class_name": "torch.bool"
+                        }
+                    }
+                ],
+                "is_uncalibrated": [
+                    "content",
+                    {
+                        "_class_name": "torch.tensor",
+                        "data": false
+                    }
+                ]
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images_denorm",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images_denorm",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "training_dataloader": {
+        "batch_size": 1,
+        "num_workers": 3,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "validation_dataloader": {
+        "batch_size": 1,
+        "num_workers": 3,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "preview_dataloader": {
+        "batch_size": 1,
+        "num_workers": 1,
+        "prefetch_factor": 1,
+        "shuffle": true,
+        "drop_last": true,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "informations": {
+        "fid": -1,
+        "fvd": -1,
+        "total_batch_sizes": 32,
+        "steps": 40000
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "indices_file": "/mnt/afs/user/nijingcheng/workspace/codes/sup_codes/DWM/work_dirs/shell_logs/visual_gac/cache/gac2_all.pkl",
+    "fs": {
+        "_class_name": "dwm.fs.s3fs.ForkableS3FileSystem",
+        "endpoint_url": "http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn",
+        "aws_access_key_id": "AE939C3A07AE4E6D93908AA603B9F3A9",
+        "aws_secret_access_key": "",
+        "config": {
+            "_class_name": "botocore.config.Config",
+            "retries": {
+                "max_attempts": 32
+            }
+        }
+    },
+    "sensor_channels": [
+        "center_camera_fov120",
+        "center_camera_fov30",
+        "left_front_camera",
+        "left_rear_camera",
+        "rear_camera",
+        "right_front_camera",
+        "right_rear_camera"
+    ],
+    "prompts": [
+        {
+            "question": "Describe the time, weather, environment, objects in JSON, and each value should be single string and less than 20 words. Here are examples: `{\"time\": \"daytime\", \"weather\": \"overcast, wet road\", \"environment\": \"urban parking lot\", \"objects\": \"cars, pedestrians, traffic signs, trees, brick buildings\"}`, `{\"time\": \"night\", \"weather\": \"clear sky\", \"environment\": \"suburban street\", \"objects\": \"cars, cyclist, tram trucks, trees\"}`, `{\"time\": \"dusk\", \"weather\": \"cloudy\", \"environment\": \"street intersection\", \"objects\": \"pedestrian crossing, traffic lights, road signs, tall buildings, bushes\"}`",
+            "key": null
+        },
+        {
+            "question": "Describe objects this image within about 30 words.",
+            "key": "image_description"
+        }
+    ],
+    "dump_options": {
+        "indent": 2
+    }
+}

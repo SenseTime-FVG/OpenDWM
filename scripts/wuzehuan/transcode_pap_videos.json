@@ -1,0 +1,34 @@
+{
+    "fs": {
+        "_class_name": "dwm.fs.s3fs.ForkableS3FileSystem",
+        "endpoint_url": "http://auto-internal.st-sh-01.sensecoreapi-oss.cn",
+        "aws_access_key_id": "O5B34FE51MMZRZGEY1Z5",
+        "aws_secret_access_key": ""
+    },
+    "index_file": "/mnt/storage/user/wuzehuan/Downloads/data/pap/pap_100k_b2_indices.json",
+    "ignored_scene_list": [],
+    "camera_list": [
+        "left_front_camera",
+        "center_camera_fov30",
+        "right_front_camera",
+        "right_rear_camera",
+        "rear_camera",
+        "left_rear_camera",
+        "center_camera_fov120",
+        "left_camera_fov195",
+        "front_camera_fov195",
+        "right_camera_fov195",
+        "rear_camera_fov195"
+    ],
+    "target_frame_size": [
+        1280,
+        -1
+    ],
+    "encoding_options": {
+        "crf": "12",
+        "x265-params": "pools=8:log-level=1"
+    },
+    "dump_options": {
+        "indent": 2
+    }
+}

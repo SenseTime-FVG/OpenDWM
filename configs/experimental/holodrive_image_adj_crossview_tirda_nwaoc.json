@@ -1,0 +1,1277 @@
+{
+    "device": "cuda",
+    "ddp_backend": "nccl",
+    "train_epochs": 2,
+    "generator_seed": 0,
+    "data_shuffle": true,
+    "fix_training_data_order": true,
+    "global_state": {
+        "nuscenes_fs": {
+            "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+            "fs": {
+                "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                "fs": {
+                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                }
+            },
+            "paths": [
+                "data/nuscenes/v1.0-trainval_meta.zip",
+                "data/nuscenes/v1.0-trainval01_blobs.zip",
+                "data/nuscenes/v1.0-trainval02_blobs.zip",
+                "data/nuscenes/v1.0-trainval03_blobs.zip",
+                "data/nuscenes/v1.0-trainval04_blobs.zip",
+                "data/nuscenes/v1.0-trainval05_blobs.zip",
+                "data/nuscenes/v1.0-trainval06_blobs.zip",
+                "data/nuscenes/v1.0-trainval07_blobs.zip",
+                "data/nuscenes/v1.0-trainval08_blobs.zip",
+                "data/nuscenes/v1.0-trainval09_blobs.zip",
+                "data/nuscenes/v1.0-trainval10_blobs.zip"
+            ],
+            "enable_cached_info": true
+        }
+    },
+    "optimizer": {
+        "_class_name": "torch.optim.AdamW",
+        "lr": 6e-5
+    },
+    "pipeline": {
+        "_class_name": "dwm.pipelines.holodrive.DWM",
+        "common_config": {
+            "disable_crossview": false,
+            "disable_temporal": true,
+            "cat_condition": true,
+            "cond_with_action": false,
+            "condition_on_all_frames": true,
+            "added_time_ids": "fps_camera_transforms",
+            "camera_intrinsic_embedding_indices": [
+                0,
+                4,
+                2,
+                5
+            ],
+            "camera_intrinsic_denom_embedding_indices": [
+                1,
+                1,
+                0,
+                1
+            ],
+            "camera_transform_embedding_indices": [
+                2,
+                6,
+                10,
+                3,
+                7,
+                11
+            ],
+            "distribution_framework": "fsdp",
+            "ddp_wrapper_settings": {
+                "auto_wrap_policy": {
+                    "_class_name": "torch.distributed.fsdp.wrap.ModuleWrapPolicy",
+                    "module_classes": [
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.crossview_temporal.TransformerModel"
+                        },
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.crossview_temporal.ResBlock"
+                        }
+                    ]
+                },
+                "mixed_precision": {
+                    "_class_name": "torch.distributed.fsdp.MixedPrecision",
+                    "param_dtype": {
+                        "_class_name": "get_class",
+                        "class_name": "torch.float16"
+                    }
+                }
+            }
+        },
+        "training_config": {
+            "latent_sample_method": "sample",
+            "text_prompt_condition_ratio": 0.9,
+            "enable_grad_scaler": true
+        },
+        "inference_config": {
+            "infer_feature_exchange": false,
+            "scheduler": "diffusers.DPMSolverMultistepScheduler",
+            "guidance_scale": 3,
+            "inference_steps": 50,
+            "preview_image_size": [
+                448,
+                252
+            ],
+            "evaluation_item_count": 1664
+        },
+        "unet_load_state_args": {
+            "strict": false
+        },
+        "bev_layout_encoder_config": null,
+        "vq_point_cloud": null,
+        "wm": {
+            "_class_name": "dwm.models.joint.JointModel",
+            "ctsd": {
+                "_class_name": "dwm.models.crossview_temporal_unet.UNetCrossviewTemporalConditionModel",
+                "addition_time_embed_dim": 256,
+                "block_out_channels": [
+                    320,
+                    640,
+                    1280,
+                    1280
+                ],
+                "cross_attention_dim": 1024,
+                "down_block_types": [
+                    "CrossAttnDownBlockCrossviewTemporal",
+                    "CrossAttnDownBlockCrossviewTemporal",
+                    "CrossAttnDownBlockCrossviewTemporal",
+                    "DownBlockCrossviewTemporal"
+                ],
+                "in_channels": 4,
+                "layers_per_block": 2,
+                "num_attention_heads": [
+                    5,
+                    10,
+                    20,
+                    20
+                ],
+                "out_channels": 4,
+                "projection_class_embeddings_input_dim": 2816,
+                "sample_size": 96,
+                "transformer_layers_per_block": 1,
+                "up_block_types": [
+                    "UpBlockCrossviewTemporal",
+                    "CrossAttnUpBlockCrossviewTemporal",
+                    "CrossAttnUpBlockCrossviewTemporal",
+                    "CrossAttnUpBlockCrossviewTemporal"
+                ],
+                "enable_crossview": true,
+                "enable_rowwise_crossview": true,
+                "enable_temporal": false,
+                "merge_factor": 2
+            },
+            "maskgit": null,
+            "bevformer": null,
+            "lss": null
+        },
+        "pretrained_model_name_or_path": "/mnt/storage/user/wuzehuan/Downloads/models/stable-diffusion-2-1",
+        "wm_ckpt_path": null,
+        "ctsd_ckpt_path": "/mnt/storage/user/wuzehuan/Downloads/models/stable-diffusion-2-1/unet/diffusion_pytorch_model.fp16.safetensors",
+        "maskgit_ckpt_path": null,
+        "bevformer_ckpt_path": null,
+        "vq_point_cloud_ckpt_path": null,
+        "vq_blank_code_path": null,
+        "metrics": {
+            "fid": {
+                "_class_name": "torchmetrics.image.fid.FrechetInceptionDistance",
+                "normalize": true
+            }
+        }
+    },
+    "training_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "torch.utils.data.ConcatDataset",
+            "datasets": [
+                {
+                    "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.common.get_state",
+                        "key": "nuscenes_fs"
+                    },
+                    "dataset_name": "v1.0-trainval",
+                    "split": "train",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "CAM_FRONT_LEFT",
+                        "CAM_FRONT",
+                        "CAM_FRONT_RIGHT",
+                        "CAM_BACK_RIGHT",
+                        "CAM_BACK",
+                        "CAM_BACK_LEFT"
+                    ],
+                    "keyframe_only": false,
+                    "enable_camera_transforms": true,
+                    "image_description_settings": {
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_train.json",
+                        "time_list_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_times_train.json",
+                        "align_keys": [
+                            "time",
+                            "weather"
+                        ],
+                        "reorder_keys": true,
+                        "drop_rates": {
+                            "environment": 0.04,
+                            "objects": 0.08,
+                            "image_description": 0.16
+                        }
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.waymo.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/training",
+                        "fs": {
+                            "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                        }
+                    },
+                    "info_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/waymo_info_dict_v1_4_3_training.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "CAM_SIDE_LEFT",
+                        "CAM_FRONT_LEFT",
+                        "CAM_FRONT",
+                        "CAM_FRONT_RIGHT",
+                        "CAM_SIDE_RIGHT",
+                        "CAM_FRONT"
+                    ],
+                    "enable_camera_transforms": true,
+                    "image_description_settings": {
+                        "fs": {
+                            "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                            "fs": {
+                                "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                                "fs": {
+                                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                                }
+                            },
+                            "paths": [
+                                "workspaces/worldmodels/data/waymo_caption_train.zip"
+                            ]
+                        },
+                        "align_keys": [
+                            "time",
+                            "weather"
+                        ],
+                        "reorder_keys": true,
+                        "drop_rates": {
+                            "environment": 0.04,
+                            "objects": 0.08,
+                            "image_description": 0.16
+                        }
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.argoverse.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                            "fs": {
+                                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                            }
+                        },
+                        "paths": [
+                            "data/argoverse/av2/sensor/train-000.zip",
+                            "data/argoverse/av2/sensor/train-001.zip",
+                            "data/argoverse/av2/sensor/train-002.zip",
+                            "data/argoverse/av2/sensor/train-003.zip",
+                            "data/argoverse/av2/sensor/train-004.zip",
+                            "data/argoverse/av2/sensor/train-005.zip",
+                            "data/argoverse/av2/sensor/train-006.zip",
+                            "data/argoverse/av2/sensor/train-007.zip",
+                            "data/argoverse/av2/sensor/train-008.zip",
+                            "data/argoverse/av2/sensor/train-009.zip",
+                            "data/argoverse/av2/sensor/train-010.zip",
+                            "data/argoverse/av2/sensor/train-011.zip",
+                            "data/argoverse/av2/sensor/train-012.zip",
+                            "data/argoverse/av2/sensor/train-013.zip",
+                            "workspaces/worldmodels/data/av2_sensor_caption_train.zip"
+                        ],
+                        "enable_cached_info": true
+                    },
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "cameras/ring_front_left",
+                        "cameras/ring_front_right",
+                        "cameras/ring_side_right",
+                        "cameras/ring_rear_right",
+                        "cameras/ring_rear_left",
+                        "cameras/ring_side_left"
+                    ],
+                    "enable_camera_transforms": true,
+                    "image_description_settings": {
+                        "align_keys": [
+                            "time",
+                            "weather"
+                        ],
+                        "reorder_keys": true,
+                        "drop_rates": {
+                            "environment": 0.04,
+                            "objects": 0.08,
+                            "image_description": 0.16
+                        }
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.opendv.MotionDataset",
+                    "fs": {
+                        "_class_name": "fsspec.implementations.dirfs.DirFileSystem",
+                        "path": "/mnt/storage/user/wuzehuan/Documents/DWM2/output/opendv-youtube-10hz-720-v2",
+                        "fs": {
+                            "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                        }
+                    },
+                    "meta_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/nijingcheng/datasets/OpenDV-YouTube.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            10,
+                            1.5
+                        ]
+                    ],
+                    "split": "Train",
+                    "mini_batch": 6,
+                    "ignore_list": [
+                        "izhGt1GnGFk"
+                    ],
+                    "enable_fake_camera_transforms": true,
+                    "image_description_settings": {
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_caption.json",
+                        "candidates_times_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_candidates_times.json",
+                        "seed": 5,
+                        "reorder_keys": true,
+                        "drop_rates": {
+                            "environment": 0.04,
+                            "objects": 0.08,
+                            "image_description": 0.16
+                        }
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.opendv.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                            "fs": {
+                                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                            }
+                        },
+                        "paths": [
+                            "data/car_crash_b0_v2.zip"
+                        ]
+                    },
+                    "meta_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/OpenDV-Youtube-CarCrash.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            10,
+                            0.1
+                        ]
+                    ],
+                    "split": "Train",
+                    "mini_batch": 6,
+                    "enable_fake_camera_transforms": true,
+                    "image_description_settings": {
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/car_crash_b0_caption.json",
+                        "candidates_times_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/car_crash_b0_caption_times.json",
+                        "seed": 6,
+                        "reorder_keys": true,
+                        "drop_rates": {
+                            "environment": 0.04,
+                            "objects": 0.08,
+                            "image_description": 0.16
+                        }
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "validation_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "torch.utils.data.ConcatDataset",
+            "datasets": [
+                {
+                    "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.common.get_state",
+                        "key": "nuscenes_fs"
+                    },
+                    "dataset_name": "v1.0-trainval",
+                    "split": "val",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            16
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "CAM_FRONT_LEFT",
+                        "CAM_FRONT",
+                        "CAM_FRONT_RIGHT",
+                        "CAM_BACK_RIGHT",
+                        "CAM_BACK",
+                        "CAM_BACK_LEFT"
+                    ],
+                    "keyframe_only": true,
+                    "enable_camera_transforms": true,
+                    "image_description_settings": {
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_val.json",
+                        "time_list_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_times_val.json",
+                        "align_keys": [
+                            "time",
+                            "weather"
+                        ]
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.waymo.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/validation",
+                        "fs": {
+                            "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                        }
+                    },
+                    "info_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/waymo_info_dict_v1_4_3_validation.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            100
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "CAM_SIDE_LEFT",
+                        "CAM_FRONT_LEFT",
+                        "CAM_FRONT",
+                        "CAM_FRONT_RIGHT",
+                        "CAM_SIDE_RIGHT",
+                        "CAM_FRONT"
+                    ],
+                    "enable_camera_transforms": true,
+                    "image_description_settings": {
+                        "fs": {
+                            "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                            "fs": {
+                                "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                                "fs": {
+                                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                                }
+                            },
+                            "paths": [
+                                "workspaces/worldmodels/data/waymo_caption_val.zip"
+                            ]
+                        },
+                        "align_keys": [
+                            "time",
+                            "weather"
+                        ]
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.argoverse.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                            "fs": {
+                                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                            }
+                        },
+                        "paths": [
+                            "data/argoverse/av2/sensor/val-000.zip",
+                            "data/argoverse/av2/sensor/val-001.zip",
+                            "data/argoverse/av2/sensor/val-002.zip",
+                            "workspaces/worldmodels/data/av2_sensor_caption_val.zip"
+                        ]
+                    },
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            65
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "cameras/ring_front_left",
+                        "cameras/ring_front_right",
+                        "cameras/ring_side_right",
+                        "cameras/ring_rear_right",
+                        "cameras/ring_rear_left",
+                        "cameras/ring_side_left"
+                    ],
+                    "enable_camera_transforms": true,
+                    "image_description_settings": {
+                        "align_keys": [
+                            "time",
+                            "weather"
+                        ]
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.opendv.MotionDataset",
+                    "fs": {
+                        "_class_name": "fsspec.implementations.dirfs.DirFileSystem",
+                        "path": "/mnt/storage/user/wuzehuan/Documents/DWM2/output/opendv-youtube-10hz-720-v2",
+                        "fs": {
+                            "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                        }
+                    },
+                    "meta_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/nijingcheng/datasets/OpenDV-YouTube.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            10,
+                            18
+                        ]
+                    ],
+                    "split": "Val",
+                    "mini_batch": 6,
+                    "enable_fake_camera_transforms": true,
+                    "image_description_settings": {
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_caption.json",
+                        "candidates_times_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_candidates_times.json"
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_class_name": "dwm.datasets.opendv.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                            "fs": {
+                                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                            }
+                        },
+                        "paths": [
+                            "data/car_crash_b0_v2.zip"
+                        ]
+                    },
+                    "meta_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/OpenDV-Youtube-CarCrash.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            10,
+                            0.7
+                        ]
+                    ],
+                    "split": "Val",
+                    "mini_batch": 6,
+                    "enable_fake_camera_transforms": true,
+                    "image_description_settings": {
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/car_crash_b0_caption.json",
+                        "candidates_times_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/car_crash_b0_caption_times.json"
+                    },
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "training_dataloader": {
+        "batch_size": 4,
+        "num_workers": 3,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "validation_dataloader": {
+        "batch_size": 2,
+        "num_workers": 2,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "preview_dataloader": {
+        "batch_size": 2,
+        "num_workers": 1,
+        "prefetch_factor": 1,
+        "shuffle": true,
+        "drop_last": true,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "informations": {
+        "fid": 9.12,
+        "total_batch_sizes": 64,
+        "steps": 30000
+    }
+}

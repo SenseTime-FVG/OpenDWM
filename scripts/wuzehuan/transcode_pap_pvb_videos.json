@@ -1,0 +1,38 @@
+{
+    "fs": {
+        "_class_name": "dwm.fs.dirfs.DirFileSystem",
+        "path": "uniad-infra/pap_pvb",
+        "fs": {
+            "_class_name": "dwm.fs.s3fs.ForkableS3FileSystem",
+            "endpoint_url": "http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn",
+            "aws_access_key_id": "A76476BB734A430F94C1D17E86D6CFD1",
+            "aws_secret_access_key": ""
+        }
+    },
+    "index_file": "/mnt/afs/user/wuzehuan/Downloads/data/pap_pvb/240824_pap_segment_infos.pkl",
+    "ignored_scene_list": [],
+    "camera_list": [
+        "left_front_camera",
+        "center_camera_fov30",
+        "right_front_camera",
+        "right_rear_camera",
+        "rear_camera",
+        "left_rear_camera",
+        "center_camera_fov120",
+        "left_camera_fov195",
+        "front_camera_fov195",
+        "right_camera_fov195",
+        "rear_camera_fov195"
+    ],
+    "target_frame_size": [
+        1280,
+        -1
+    ],
+    "encoding_options": {
+        "crf": "12",
+        "x265-params": "pools=8:log-level=1:keyint=20"
+    },
+    "dump_options": {
+        "indent": 2
+    }
+}

@@ -1,0 +1,299 @@
+{
+    "device": "cuda",
+    "ddp_backend": "nccl",
+    "train_epochs": 2,
+    "generator_seed": 0,
+    "data_shuffle": true,
+    "fix_training_data_order": true,
+    "optimizer": {
+        "_class_name": "torch.optim.AdamW",
+        "lr": 6e-5
+    },
+    "pipeline": {
+        "_class_name": "dwm.pipelines.holodrive.DWM",
+        "common_config": {
+            "disable_crossview": true,
+            "disable_temporal": true,
+            "cat_condition": true,
+            "cond_with_action": false,
+            "distribution_framework": "fsdp",
+            "ddp_wrapper_settings": {
+                "auto_wrap_policy": {
+                    "_class_name": "torch.distributed.fsdp.wrap.ModuleWrapPolicy",
+                    "module_classes": [
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.crossview_temporal.TransformerModel"
+                        },
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.crossview_temporal.ResBlock"
+                        }
+                    ]
+                },
+                "mixed_precision": {
+                    "_class_name": "torch.distributed.fsdp.MixedPrecision",
+                    "param_dtype": {
+                        "_class_name": "get_class",
+                        "class_name": "torch.float16"
+                    }
+                }
+            }
+        },
+        "training_config": {
+            "latent_sample_method": "sample",
+            "text_prompt_condition_ratio": 0.9,
+            "enable_grad_scaler": true
+        },
+        "inference_config": {
+            "infer_feature_exchange": false,
+            "scheduler": "diffusers.DPMSolverMultistepScheduler",
+            "guidance_scale": 3,
+            "inference_steps": 50,
+            "preview_image_size": [
+                448,
+                252
+            ],
+            "evaluation_item_count": 1664
+        },
+        "unet_load_state_args": {
+            "strict": false
+        },
+        "bev_layout_encoder_config": null,
+        "vq_point_cloud": null,
+        "wm": {
+            "_class_name": "dwm.models.joint.JointModel",
+            "ctsd": {
+                "_class_name": "dwm.models.crossview_temporal_unet.UNetCrossviewTemporalConditionModel",
+                "addition_time_embed_dim": 256,
+                "block_out_channels": [
+                    320,
+                    640,
+                    1280,
+                    1280
+                ],
+                "cross_attention_dim": 1024,
+                "down_block_types": [
+                    "CrossAttnDownBlockCrossviewTemporal",
+                    "CrossAttnDownBlockCrossviewTemporal",
+                    "CrossAttnDownBlockCrossviewTemporal",
+                    "DownBlockCrossviewTemporal"
+                ],
+                "in_channels": 4,
+                "layers_per_block": 2,
+                "num_attention_heads": [
+                    5,
+                    10,
+                    20,
+                    20
+                ],
+                "out_channels": 4,
+                "projection_class_embeddings_input_dim": null,
+                "sample_size": 96,
+                "transformer_layers_per_block": 1,
+                "up_block_types": [
+                    "UpBlockCrossviewTemporal",
+                    "CrossAttnUpBlockCrossviewTemporal",
+                    "CrossAttnUpBlockCrossviewTemporal",
+                    "CrossAttnUpBlockCrossviewTemporal"
+                ],
+                "enable_crossview": false,
+                "enable_temporal": false
+            },
+            "maskgit": null,
+            "bevformer": null,
+            "lss": null
+        },
+        "pretrained_model_name_or_path": "/mnt/storage/user/wuzehuan/Downloads/models/stable-diffusion-2-1",
+        "wm_ckpt_path": null,
+        "ctsd_ckpt_path": "/mnt/storage/user/wuzehuan/Downloads/models/stable-diffusion-2-1/unet/diffusion_pytorch_model.fp16.safetensors",
+        "maskgit_ckpt_path": null,
+        "bevformer_ckpt_path": null,
+        "vq_point_cloud_ckpt_path": null,
+        "vq_blank_code_path": null,
+        "metrics": {
+            "fid": {
+                "_class_name": "torchmetrics.image.fid.FrechetInceptionDistance",
+                "normalize": true
+            }
+        }
+    },
+    "training_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.opendv.MotionDataset",
+            "fs": {
+                "_class_name": "fsspec.implementations.dirfs.DirFileSystem",
+                "path": "/mnt/storage/user/wuzehuan/Documents/DWM2/output/opendv-youtube-10hz-720-v2",
+                "fs": {
+                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                }
+            },
+            "meta_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/nijingcheng/datasets/OpenDV-YouTube.json",
+            "sequence_length": 1,
+            "fps_stride_tuples": [
+                [
+                    10,
+                    0.3
+                ]
+            ],
+            "split": "Train",
+            "mini_batch": 6,
+            "ignore_list": [
+                "izhGt1GnGFk"
+            ],
+            "image_description_settings": {
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_caption.json",
+                "candidates_times_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_candidates_times.json",
+                "seed": 5,
+                "reorder_keys": true,
+                "drop_rates": {
+                    "environment": 0.04,
+                    "objects": 0.08,
+                    "image_description": 0.16
+                }
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ColorJitter",
+                            "brightness": 0.05,
+                            "contrast": 0.15,
+                            "saturation": 0.15
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "validation_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.opendv.MotionDataset",
+            "fs": {
+                "_class_name": "fsspec.implementations.dirfs.DirFileSystem",
+                "path": "/mnt/storage/user/wuzehuan/Documents/DWM2/output/opendv-youtube-10hz-720-v2",
+                "fs": {
+                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                }
+            },
+            "meta_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/nijingcheng/datasets/OpenDV-YouTube.json",
+            "sequence_length": 1,
+            "fps_stride_tuples": [
+                [
+                    10,
+                    6
+                ]
+            ],
+            "split": "Val",
+            "mini_batch": 6,
+            "image_description_settings": {
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_caption.json",
+                "candidates_times_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/opendv_candidates_times.json"
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "training_dataloader": {
+        "batch_size": 8,
+        "num_workers": 4,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "validation_dataloader": {
+        "batch_size": 4,
+        "num_workers": 1,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "preview_dataloader": {
+        "batch_size": 2,
+        "num_workers": 1,
+        "prefetch_factor": 1,
+        "drop_last": true,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    },
+    "informations": {
+        "fid": 16.02,
+        "total_batch_sizes": 128,
+        "steps": 20000
+    }
+}

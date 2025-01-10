@@ -1,0 +1,15 @@
+torch-scatter
+einops
+
+diffuser newer version (pip install -U diffuser)
+
+mmcv-full==1.7.2
+mmdet==2.26.0
+mmengine==0.10.4
+
+chamferdist: go to external/chamferdist; python setup.py install
+pytorch-fid
+open3d
+pyemd
+accelerate
+LazyFile

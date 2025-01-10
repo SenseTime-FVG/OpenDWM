@@ -1,0 +1,16 @@
+{
+    "_class_name": "fsspec.implementations.dirfs.DirFileSystem",
+    "path": "users/wuzehuan/data/waymo/waymo_open_dataset_v_2_0_0",
+    "fs": {
+        "_class_name": "dwm.fs.s3fs.ForkableS3FileSystem",
+        "endpoint_url": "http://aoss-internal.st-sh-01.sensecoreapi-oss.cn",
+        "aws_access_key_id": "4853705CDE93446E8D902F70291C2C92",
+        "aws_secret_access_key": "",
+        "config": {
+            "_class_name": "botocore.config.Config",
+            "retries": {
+                "max_attempts": 64
+            }
+        }
+    }
+}

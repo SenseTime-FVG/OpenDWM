@@ -84,6 +84,14 @@ PYTHONPATH=src python examples/ctsd_generation_example.py -c examples/ctsd_35_6v
 PYTHONPATH=src python src/dwm/preview.py -c examples/ctsd_35_6views_video_generation_with_layout.json -o output/ctsd_35_6views_video_generation_with_layout
 ```
 
+### T2V, I2V generation with UniMLVG pipeline
+
+Download base model (for VAE, text encoders, scheduler config) and driving generation model checkpoint. Prepare the data package, or download the sample data package ([carla_town04_package](http://103.237.29.236:10030/carla_town04_package.zip), [nuscenes_scene-0627_package.zip](http://103.237.29.236:10030/nuscenes_scene-0627_package.zip)). Then run follow command for generation.
+
+```
+PYTHONPATH=src python src/dwm/preview.py -c examples/unimlvg_stage2_tirda_nwa_preview.json -o output/unimlvg_stage2_tirda_nwa_preview
+```
+
 ## Train
 
 Preparation:

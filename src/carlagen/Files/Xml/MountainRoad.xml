@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+<routes>
+   <route id="0" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="-118.56233978271484" y="-212.1562957763672" yaw="399.0828857421875" z="6.182082653045654"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-118.56233978271484" y="-212.1562957763672" yaw="399.0828857421875" z="6.182082653045654"/>
+         <position x="-116.8927993774414" y="-210.8842010498047" yaw="395.52789306640625" z="6.356225967407227"/>
+      </waypoints>
+   </route>
+   <route id="1" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="62.413150787353516" y="-88.37174224853516" yaw="-80.03074645996094" z="6.491997718811035"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="62.413150787353516" y="-88.37174224853516" yaw="-80.03074645996094" z="6.491997718811035"/>
+         <position x="62.76222229003906" y="-90.33454132080078" yaw="-79.80155944824219" z="6.656188011169434"/>
+      </waypoints>
+   </route>
+   <route id="2" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="39.872337341308594" y="-197.7751007080078" yaw="83.9753189086914" z="4.307315349578857"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="39.872337341308594" y="-197.7751007080078" yaw="83.9753189086914" z="4.307315349578857"/>
+         <position x="40.07410430908203" y="-195.79664611816406" yaw="84.37894439697266" z="4.463945388793945"/>
+      </waypoints>
+   </route>
+   <route id="3" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="-133.2556610107422" y="-234.6897430419922" yaw="-138.6161346435547" z="3.8928332328796387"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-133.2556610107422" y="-234.6897430419922" yaw="-138.6161346435547" z="3.8928332328796387"/>
+         <position x="-134.84068298339844" y="-236.02413940429688" yaw="-141.19833374023438" z="3.7186899185180664"/>
+      </waypoints>
+   </route>
+   <route id="4" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="-31.431989669799805" y="-247.04888916015625" yaw="-170.28843688964844" z="1.4281463623046875"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-31.431989669799805" y="-247.04888916015625" yaw="-170.28843688964844" z="1.4281463623046875"/>
+         <position x="-33.508766174316406" y="-247.33958435058594" yaw="-173.7744903564453" z="1.5868293046951294"/>
+      </waypoints>
+   </route>
+   <route id="5" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="-178.68368530273438" y="-245.7880401611328" yaw="2.0826873779296875" z="-0.2222387194633484"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-178.68368530273438" y="-245.7880401611328" yaw="2.0826873779296875" z="-0.2222387194633484"/>
+         <position x="-176.86676025390625" y="-245.62237548828125" yaw="8.336395263671875" z="-0.048032958060503006"/>
+      </waypoints>
+   </route>
+   <route id="6" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="62.901248931884766" y="-108.03256225585938" yaw="101.0467300415039" z="8.086342811584473"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="62.901248931884766" y="-108.03256225585938" yaw="101.0467300415039" z="8.086342811584473"/>
+         <position x="62.51803207397461" y="-106.06961822509766" yaw="101.0467300415039" z="7.922152519226074"/>
+      </waypoints>
+   </route>
+   <route id="7" town="Town07">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="MountainRoad_0" type="MountainRoad">
+            <trigger_point x="73.76763153076172" y="-10.51838493347168" yaw="-62.64189529418945" z="0.1389961987733841"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="73.76763153076172" y="-10.51838493347168" yaw="-62.64189529418945" z="0.1389961987733841"/>
+         <position x="74.68672943115234" y="-12.29468822479248" yaw="-62.64189529418945" z="0.19963175058364868"/>
+      </waypoints>
+   </route>
+</routes>

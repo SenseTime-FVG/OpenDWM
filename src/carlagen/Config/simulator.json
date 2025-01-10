@@ -1,0 +1,22 @@
+{   
+    "num_frame": 100,
+    "world": {
+        "unload_map_layers": [
+            "ParkedVehicles"
+        ],
+        "delta_s": 0.1
+    },
+   "ego": {
+        "type": "vehicle.lincoln.mkz_2017",
+        "is_hero": true
+    },
+    "weather": {
+        "type": "ClearNoon",
+        "presets": {
+            "ClearNoon": 5.0,
+            "WetNoon": 1.0,
+            "WetNight": 0.0
+        }
+    }
+
+}

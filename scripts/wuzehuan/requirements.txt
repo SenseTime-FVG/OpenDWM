@@ -1,0 +1,5 @@
+diffusers
+peft
+tensorboard
+torchvision
+transformers

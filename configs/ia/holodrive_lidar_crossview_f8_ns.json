@@ -1,0 +1,919 @@
+{
+    "device": "cuda",
+    "ddp_backend": "nccl",
+    "train_epochs": 200,
+    "generator_seed": 0,
+    "data_shuffle": true,
+    "fix_training_data_order": true,
+    "optimizer": {
+        "_class_name": "torch.optim.AdamW",
+        "lr": 5e-5
+    },
+    "lr_scheduler": {
+        "_class_name": "torch.optim.lr_scheduler.ExponentialLR",
+        "gamma": 1.0
+    },
+    "pipeline": {
+        "_class_name": "dwm.pipelines.holodrive.DWM",
+        "common_config": {
+            "single_frame": true,
+            "cat_condition": true,
+            "cond_with_layout": false,
+            "cond_with_cxt": false,
+            "cond_with_action": false,
+            "ray_cast_center": [
+                1.0,
+                0.0,
+                2.0
+            ],
+            "distribution_framework": "fsdp",
+            "autocast": {
+                "device_type": "cuda"
+            },
+            "fsdp_ignored_module_pattern": "^maskgit$",
+            "ddp_wrapper_settings": {
+                "mixed_precision": {
+                    "_class_name": "torch.distributed.fsdp.MixedPrecision",
+                    "param_dtype": {
+                        "_class_name": "get_class",
+                        "class_name": "torch.bfloat16"
+                    }
+                }
+            },
+            "joint_forward_policy": "cascade",
+            "fsdp_with_ignored_modules": true,
+            "ctsd_act_type": "dwm_xyz",
+            "use_action": false,
+            "action_tying": false,
+            "unet_input_type": "svd",
+            "unet_input_cfg": {
+                "num_init_frames": 4
+            },
+            "transform_wm_to_ctsd": true
+        },
+        "training_config": {
+            "latent_sample_method": "sample",
+            "train_ctsd": false,
+            "train_maskgit": true,
+            "train_bevformer": false,
+            "train_lss": false,
+            "train_feature_exchange": false,
+            "max_norm_for_grad_clip": 10,
+            "enable_grad_scaler": true
+        },
+        "inference_config": {
+            "infer_feature_exchange": false,
+            "scheduler": "diffusers.DPMSolverMultistepScheduler",
+            "guidance_scale": 3,
+            "inference_steps": 50,
+            "ar_infer": true,
+            "single_step_frames": 8,
+            "cxt_transform": "vae",
+            "preview_image_size": [
+                384,
+                216
+            ],
+            "use_visualizer": true,
+            "visualizer_cfg": {
+                "grid_shape": [1, 2],
+                "with_ori": true,
+                "with_3dbox": true,
+                "with_hdmap": true,
+                "save_type": "mp4",
+                "visualizer_save_name": "vis_data"
+            },
+            "cop4d_visual_point_cloud": true,
+            "cop4d_eval_point_cloud": true,
+            "filter_out_roi": true,
+            "skip_l1_align": false,
+            "pc_range": [-70.0, -70.0, -4.5, 70.0, 70.0, 4.5],
+            "evaluation_timestep_upper_boundary": 100,
+            "fid_evaluation_maximum_sample_count": 10000,
+            "optional_metric_type": "COP4D"
+        },
+        "unet_load_state_args": {
+            "strict": false,
+            "ignore_mismatch": true
+        },
+        "load_state_args": {
+            "strict": false
+        },
+        "layout_encoder_config": null,
+        "vq_point_cloud": {
+            "_class_name": "dwm.models.vq_point_cloud.VQPointCloud",
+            "voxelizer": {
+                "_class_name": "dwm.models.voxelizer.Voxelizer",
+                "x_min": -50.0,
+                "x_max": 50.0,
+                "y_min": -50.0,
+                "y_max": 50.0,
+                "z_min": -3.0,
+                "z_max": 5.0,
+                "step": 0.15625,
+                "z_step": 0.125
+            },
+            "vector_quantizer": {
+                "_class_name": "dwm.models.vq_point_cloud.VectorQuantizer",
+                "n_e": 2048,
+                "e_dim": 1024,
+                "beta": 0.25,
+                "cosine_similarity": false
+            },
+            "lidar_encoder": {
+                "_class_name": "dwm.models.vq_point_cloud.VQEncoder",
+                "img_size": 640,
+                "codebook_dim": 1024,
+                "in_chans": 64,
+                "embed_dim": 512,
+                "num_heads": 8,
+                "use_checkpoint": true
+            },
+            "lidar_decoder": {
+                "_class_name": "dwm.models.vq_point_cloud.VQDecoder",
+                "img_size": [
+                    640,
+                    640
+                ],
+                "num_patches": 6400,
+                "in_chans": 64,
+                "embed_dim": 512,
+                "num_heads": 8,
+                "codebook_dim": 1024,
+                "bias_init": -5.0,
+                "upsample_style": "pixel_shuffle",
+                "use_checkpoint": true
+            },
+            "bias_init": -5.0
+        },
+        "wm": {
+            "_class_name": "dwm.models.joint_general.BlockWiseHoloDrive",
+            "ctsd": null,
+            "maskgit": {
+                "_class_name": "dwm.models.lidar.UnetTransformerAlignV2",
+                "n_e": 2048,
+                "e_dim": 1024,
+                "img_size": [
+                    80,
+                    40
+                ],
+                "block_out_channels": [
+                    256,
+                    384,
+                    512
+                ],
+                "mid_block_channels": 512,
+                "num_down_block": [
+                    2,
+                    2
+                ],
+                "num_up_block": [
+                    1,
+                    2
+                ],
+                "num_heads": 16,
+                "sequence_length": 8,
+                "window_size": 4,
+                "cross_attend": false,
+                "use_checkpoint": true,
+                "use_action": false,
+                "enable_temporal": false,
+                "act_type": "copliot4D_v2",
+                "dtype_t": "gpt2",
+                "initializer_type": "cop4d",
+                "cond_inject": "None",
+                "cond_in_channels": 512,
+                "cond_is_downblocks": [
+                    false,
+                    true,
+                    true
+                ],
+                "cond_num_res_blocks": 2,
+                "cond_downscale_factor": 1
+            },
+            "ia_modules": null,
+            "bevformer_id": null,
+            "forward_depth_recipe": null,
+            "forward_2d_3d_recipe": [
+                "3d_pre_none_none_none",
+                "3d_d_0_none_none",
+                "3d_none_none_none_none",
+                "3d_d_1_none_none",
+                "3d_none_none_none_none",
+                "3d_mid_none_none_none",
+                "3d_u_0_none_none",
+                "3d_u_1_none_none"
+            ]
+        },
+        "pretrained_model_name_or_path": "/mnt/afs/user/wuzehuan/Downloads/models/stable-diffusion-2-1",
+        "ctsd_ckpt_path": null,
+        "wm_ckpt_path": "/cache/aoss.cn-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/holodrive_lidar_nusc_18000.pth",
+        "maskgit_ckpt_path": null,
+        "bevformer_ckpt_path": null,
+        "vq_point_cloud_ckpt_path": "/cache/aoss.cn-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_codebook_nusc_waymo_argo_60000.pth",
+        "vq_blank_code_path": "/cache/aoss.cn-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_codebook_nusc_waymo_argo_60000_blank_code.pkl",
+        "bev_layout_encoder_config": null
+    },
+    "output_path": "/mnt/afs/user/nijingcheng/workspace/codes/sup_codes/DWM/work_dirs/temporal_merge3/holodrive_lidar_crossview_f8_ns",
+    "training_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.opendv.ConcatMotionDataset",
+            "datasets": [
+                {
+                    "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss.cn-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                            "fs": {
+                                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                            }
+                        },
+                        "paths": [
+                            "data/nuscenes/v1.0-trainval_meta.zip",
+                            "data/nuscenes/v1.0-trainval01_blobs.zip",
+                            "data/nuscenes/v1.0-trainval02_blobs.zip",
+                            "data/nuscenes/v1.0-trainval03_blobs.zip",
+                            "data/nuscenes/v1.0-trainval04_blobs.zip",
+                            "data/nuscenes/v1.0-trainval05_blobs.zip",
+                            "data/nuscenes/v1.0-trainval06_blobs.zip",
+                            "data/nuscenes/v1.0-trainval07_blobs.zip",
+                            "data/nuscenes/v1.0-trainval08_blobs.zip",
+                            "data/nuscenes/v1.0-trainval09_blobs.zip",
+                            "data/nuscenes/v1.0-trainval10_blobs.zip",
+                            "data/nuscenes/nuScenes-map-expansion-v1.3.zip",
+                            "workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_train.zip"
+                        ]
+                    },
+                    "dataset_name": "v1.0-trainval",
+                    "split": "train",
+                    "sequence_length": 8,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "LIDAR_TOP",
+                        "CAM_FRONT_LEFT",
+                        "CAM_FRONT",
+                        "CAM_FRONT_RIGHT",
+                        "CAM_BACK_RIGHT",
+                        "CAM_BACK",
+                        "CAM_BACK_LEFT"
+                    ],
+                    "keyframe_only": true,
+                    "is_multimodal": true,
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true,
+                    "_3dbox_image_settings": {
+                        "pen_width": 8,
+                "color_table": {
+                    "vehicle.car": [
+                        0,
+                        0,
+                        255
+                    ],
+                    "vehicle.bus": [
+                        128,
+                        0,
+                        255
+                    ],
+                    "vehicle.truck": [
+                        255,
+                        255,
+                        0
+                    ],
+                    "vehicle.construction": [
+                        128,
+                        128,
+                        255
+                    ],
+                    "vehicle.emergency": [
+                        255,
+                        128,
+                        128
+                    ],
+                    "vehicle.trailer": [
+                        255,
+                        255,
+                        255
+                    ],
+                    "vehicle.bicycle": [
+                        128,
+                        255,
+                        0
+                    ],
+                    "vehicle.motorcycle": [
+                        0,
+                        255,
+                        128
+                    ],
+                    "human.pedestrian": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "movable_object.barrier": [
+                        64,
+                        64,
+                        64
+                    ],
+                    "movable_object.trafficcone": [
+                        128,
+                        128,
+                        0
+                    ]
+                },
+                        "edge_indices": [
+                            [
+                                0,
+                                1
+                            ],
+                            [
+                                0,
+                                2
+                            ],
+                            [
+                                1,
+                                3
+                            ],
+                            [
+                                2,
+                                3
+                            ],
+                            [
+                                0,
+                                4
+                            ],
+                            [
+                                1,
+                                5
+                            ],
+                            [
+                                2,
+                                6
+                            ],
+                            [
+                                3,
+                                7
+                            ],
+                            [
+                                4,
+                                5
+                            ],
+                            [
+                                4,
+                                6
+                            ],
+                            [
+                                5,
+                                7
+                            ],
+                            [
+                                6,
+                                7
+                            ],
+                            [
+                                6,
+                                3
+                            ],
+                            [
+                                6,
+                                5
+                            ]
+                        ]
+                    },
+                    "hdmap_image_settings": {
+                        "path": "/mnt/afs/user/chenrui4/workspaces/worldmodels/data/nuScenes-map-expansion-v1.3_new.json"
+                    },
+                    "image_description_settings": {},
+                    "stub_key_data_dict": {
+                        "crossview_mask": [
+                            "content",
+                            {
+                                "_class_name": "torch.tensor",
+                                "data": [
+                                    [
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true,
+                                        false
+                                    ],
+                                    [
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true,
+                                        true
+                                    ],
+                                    [
+                                        true,
+                                        false,
+                                        false,
+                                        false,
+                                        true,
+                                        true
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ],
+            "ratios": [1.0]
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "lidar_points",
+                "new_key": "lidar_points",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.FilterPoints",
+                    "min_distance": 2.4,
+                    "max_distance": 72.0
+                },
+                "stack": false
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "validation_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+            "fs": {
+                "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                "fs": {
+                    "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                    "path": "/cache/aoss.cn-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                    "fs": {
+                        "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                    }
+                },
+                "paths": [
+                    "data/nuscenes/v1.0-trainval_meta.zip",
+                    "data/nuscenes/v1.0-trainval01_blobs.zip",
+                    "data/nuscenes/v1.0-trainval02_blobs.zip",
+                    "data/nuscenes/v1.0-trainval03_blobs.zip",
+                    "data/nuscenes/v1.0-trainval04_blobs.zip",
+                    "data/nuscenes/v1.0-trainval05_blobs.zip",
+                    "data/nuscenes/v1.0-trainval06_blobs.zip",
+                    "data/nuscenes/v1.0-trainval07_blobs.zip",
+                    "data/nuscenes/v1.0-trainval08_blobs.zip",
+                    "data/nuscenes/v1.0-trainval09_blobs.zip",
+                    "data/nuscenes/v1.0-trainval10_blobs.zip",
+                    "data/nuscenes/nuScenes-map-expansion-v1.3.zip",
+                    "workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_val.zip"
+                ]
+            },
+            "dataset_name": "v1.0-trainval",
+            "split": "val",
+            "sequence_length": 8,
+            "fps_stride_tuples": [
+                [
+                    0,
+                    3
+                ]
+            ],
+            "sensor_channels": [
+                "LIDAR_TOP",
+                "CAM_FRONT_LEFT",
+                "CAM_FRONT",
+                "CAM_FRONT_RIGHT",
+                "CAM_BACK_RIGHT",
+                "CAM_BACK",
+                "CAM_BACK_LEFT"
+            ],
+            "keyframe_only": true,
+            "is_multimodal": true,
+            "enable_camera_transforms": true,
+            "enable_ego_transforms": true,
+            "_3dbox_image_settings": {
+                "pen_width": 8,
+                "color_table": {
+                    "vehicle.car": [
+                        0,
+                        0,
+                        255
+                    ],
+                    "vehicle.bus": [
+                        128,
+                        0,
+                        255
+                    ],
+                    "vehicle.truck": [
+                        255,
+                        255,
+                        0
+                    ],
+                    "vehicle.construction": [
+                        128,
+                        128,
+                        255
+                    ],
+                    "vehicle.emergency": [
+                        255,
+                        128,
+                        128
+                    ],
+                    "vehicle.trailer": [
+                        255,
+                        255,
+                        255
+                    ],
+                    "vehicle.bicycle": [
+                        128,
+                        255,
+                        0
+                    ],
+                    "vehicle.motorcycle": [
+                        0,
+                        255,
+                        128
+                    ],
+                    "human.pedestrian": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "movable_object.barrier": [
+                        64,
+                        64,
+                        64
+                    ],
+                    "movable_object.trafficcone": [
+                        128,
+                        128,
+                        0
+                    ]
+                },
+                "edge_indices": [
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2
+                    ],
+                    [
+                        1,
+                        3
+                    ],
+                    [
+                        2,
+                        3
+                    ],
+                    [
+                        0,
+                        4
+                    ],
+                    [
+                        1,
+                        5
+                    ],
+                    [
+                        2,
+                        6
+                    ],
+                    [
+                        3,
+                        7
+                    ],
+                    [
+                        4,
+                        5
+                    ],
+                    [
+                        4,
+                        6
+                    ],
+                    [
+                        5,
+                        7
+                    ],
+                    [
+                        6,
+                        7
+                    ],
+                    [
+                        6,
+                        3
+                    ],
+                    [
+                        6,
+                        5
+                    ]
+                ]
+            },
+            "hdmap_image_settings": {
+                "path": "/mnt/afs/user/chenrui4/workspaces/worldmodels/data/nuScenes-map-expansion-v1.3_new.json"
+            },
+            "image_description_settings": {},
+            "stub_key_data_dict": {
+                "crossview_mask": [
+                    "content",
+                    {
+                        "_class_name": "torch.tensor",
+                        "data": [
+                            [
+                                true,
+                                true,
+                                false,
+                                false,
+                                false,
+                                true
+                            ],
+                            [
+                                true,
+                                true,
+                                true,
+                                false,
+                                false,
+                                false
+                            ],
+                            [
+                                false,
+                                true,
+                                true,
+                                true,
+                                false,
+                                false
+                            ],
+                            [
+                                false,
+                                false,
+                                true,
+                                true,
+                                true,
+                                false
+                            ],
+                            [
+                                false,
+                                false,
+                                false,
+                                true,
+                                true,
+                                true
+                            ],
+                            [
+                                true,
+                                false,
+                                false,
+                                false,
+                                true,
+                                true
+                            ]
+                        ]
+                    }
+                ]
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images_denorm",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images_denorm",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256, 448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "lidar_points",
+                "new_key": "lidar_points",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.FilterPoints",
+                    "min_distance": 2.4,
+                    "max_distance": 72.0
+                },
+                "stack": false
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "training_dataloader": {
+        "batch_size": 2,
+        "num_workers": 4,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "lidar_points",
+                "clip_text"
+            ]
+        }
+    },
+    "validation_dataloader": {
+        "batch_size": 1,
+        "num_workers": 0,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "lidar_points",
+                "clip_text"
+            ]
+        }
+    },
+    "preview_dataloader": {
+        "batch_size": 2,
+        "num_workers": 1,
+        "prefetch_factor": 1,
+        "shuffle": true,
+        "drop_last": true,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "lidar_points",
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    }
+}

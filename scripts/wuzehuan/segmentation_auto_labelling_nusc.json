@@ -1,0 +1,32 @@
+{
+    "fs": {
+        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+        "fs": {
+            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+            "fs": {
+                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+            }
+        },
+        "paths": [
+            "data/nuscenes/v1.0-trainval_meta.zip",
+            "data/nuscenes/v1.0-trainval01_blobs.zip",
+            "data/nuscenes/v1.0-trainval02_blobs.zip",
+            "data/nuscenes/v1.0-trainval03_blobs.zip",
+            "data/nuscenes/v1.0-trainval04_blobs.zip",
+            "data/nuscenes/v1.0-trainval05_blobs.zip",
+            "data/nuscenes/v1.0-trainval06_blobs.zip",
+            "data/nuscenes/v1.0-trainval07_blobs.zip",
+            "data/nuscenes/v1.0-trainval08_blobs.zip",
+            "data/nuscenes/v1.0-trainval09_blobs.zip",
+            "data/nuscenes/v1.0-trainval10_blobs.zip"
+        ],
+        "enable_cached_info": true
+    },
+    "format_list": [".jpg"],
+    "pretrained_model_name_or_path": "/mnt/storage/user/wuzehuan/Downloads/models/segformer-b1-finetuned-cityscapes-1024-1024",
+    "device": "cuda",
+    "autocast": {
+        "device_type": "cuda"
+    }
+}

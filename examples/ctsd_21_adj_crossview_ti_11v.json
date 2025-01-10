@@ -1,0 +1,864 @@
+{
+    "device": "cuda",
+    "pipeline": {
+        "_class_name": "dwm.pipelines.ctsd.CrossviewTemporalSD",
+        "common_config": {
+            "disable_crossview": false,
+            "disable_temporal": true,
+            "condition_on_all_frames": true,
+            "added_time_ids": "fps_camera_transforms",
+            "camera_intrinsic_embedding_indices": [
+                0, 4, 2, 5
+            ],
+            "camera_intrinsic_denom_embedding_indices": [
+                1, 1, 0, 1
+            ],
+            "camera_transform_embedding_indices": [
+                2, 6, 10, 3, 7, 11
+            ],
+            "autocast": {
+                "device_type": "cuda"
+            },
+            "text_encoder_load_args": {
+                "variant": "fp16",
+                "torch_dtype": {
+                    "_class_name": "get_class",
+                    "class_name": "torch.float16"
+                }
+            }
+        },
+        "training_config": {},
+        "inference_config": {
+            "scheduler": "diffusers.DPMSolverMultistepScheduler",
+            "guidance_scale": 3,
+            "inference_steps": 50,
+            "preview_image_size": [
+                448, 252
+            ]
+        },
+        "model_load_state_args": {
+            "strict": true
+        },
+        "model": {
+            "_class_name": "dwm.models.crossview_temporal_unet.UNetCrossviewTemporalConditionModel",
+            "addition_time_embed_dim": 256,
+            "block_out_channels": [
+                320, 640, 1280, 1280
+            ],
+            "cross_attention_dim": 1024,
+            "down_block_types": [
+                "CrossAttnDownBlockCrossviewTemporal",
+                "CrossAttnDownBlockCrossviewTemporal",
+                "CrossAttnDownBlockCrossviewTemporal",
+                "DownBlockCrossviewTemporal"
+            ],
+            "in_channels": 4,
+            "layers_per_block": 2,
+            "num_attention_heads": [
+                5, 10, 20, 20
+            ],
+            "out_channels": 4,
+            "projection_class_embeddings_input_dim": 2816,
+            "sample_size": 96,
+            "transformer_layers_per_block": 1,
+            "up_block_types": [
+                "UpBlockCrossviewTemporal",
+                "CrossAttnUpBlockCrossviewTemporal",
+                "CrossAttnUpBlockCrossviewTemporal",
+                "CrossAttnUpBlockCrossviewTemporal"
+            ],
+            "enable_crossview": true,
+            "enable_rowwise_crossview": true,
+            "enable_temporal": false,
+            "merge_factor": 2
+        },
+        "pretrained_model_name_or_path": "/mnt/storage/user/wuzehuan/Downloads/models/stable-diffusion-2-1",
+        "model_checkpoint_path": "/mnt/storage/user/wuzehuan/Documents/WorldModels/Models/ctsd_21_crossview_tirda_nwapoc_280k.pth"
+    },
+    "inputs": [
+        {
+            "latent_shape": [
+                1, 1, 11, 4, 32, 56
+            ],
+            "batch": {
+                "fps": [10.0],
+                "pts": [
+                    [
+                        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    ]
+                ],
+                "camera_transforms": [
+                    [
+                        [
+                            [
+                                [0.7950, -0.01909, 0.6063, 2.169],
+                                [-0.6061, 0.01422, 0.7952, 0.9194],
+                                [-0.02380, -0.9997, -0.000265, 1.042],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01145, -0.01423, 0.9998, 2.072],
+                                [-0.9998, 0.01734, 0.0117, -0.1122],
+                                [-0.01751, -0.9997, -0.01403, 1.461],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.7819, 0.01132, 0.6234, 2.189],
+                                [-0.6233, 0.005162, -0.7819, -0.9309],
+                                [-0.01207, -0.9999, 0.003017, 1.052],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.8098, -0.001947, -0.5866, 2.816],
+                                [0.5865, 0.02009, -0.8097, -0.9357],
+                                [0.01336, -0.9998, -0.01513, 0.8766],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01019, -0.02407, -0.9997, -0.3547],
+                                [0.9999, -0.007155, 0.01036, 0.01878],
+                                [-0.007402, -0.9997, 0.024, 1.495],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.7858, 0.01072, -0.6184, 2.834],
+                                [0.6183, 0.01356, 0.7858, 1.019],
+                                [0.01681, -0.9999, 0.004032, 0.8514],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.00845, -0.01824, 0.9998, 2.076],
+                                [-1.0, 0.002707, 0.008501, 0.02168],
+                                [-0.002862, -0.9998, -0.01822, 1.475],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.9992, 0.02421, -0.03054, 2.111],
+                                [0.03897, -0.6268, 0.7782, 1.048],
+                                [-0.0003018, -0.7788, -0.6272, 1.126],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01283, -0.433, 0.9013, 3.923],
+                                [-0.9999, -0.002723, 0.01292, -0.008469],
+                                [-0.003142, -0.9014, -0.433, 0.5791],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.9943, 0.06091, -0.08787, 2.055],
+                                [0.1067, 0.6227, -0.7751, -1.104],
+                                [0.007507, -0.7801, -0.6257, 1.051],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.02, 0.5927, -0.8052, -0.9933],
+                                [0.9998, 0.01523, -0.01362, -0.01935],
+                                [0.00419, -0.8053, -0.5928, 0.628],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "camera_intrinsics": [
+                    [
+                        [
+                            [
+                                [1497.8, 0.0, 1938.5],
+                                [0.0, 1497.4, 1054.9],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [7243.8, 0.0, 1787.2],
+                                [0.0, 7242.4, 1061.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1943.2],
+                                [0.0, 1497.6, 1050.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1912.9],
+                                [0.0, 1497.9, 1070.7],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [2019.7, 0.0, 981.4],
+                                [0.0, 2019.2, 504.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1931.6],
+                                [0.0, 1497.6, 1077.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1950.3],
+                                [0.0, 1497.9, 1045.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [319.0, 0.0, 643.7],
+                                [0.0, 319.0, 400.3],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.3],
+                                [0.0, 314.0, 405.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [317.0, 0.0, 653.2],
+                                [0.0, 317.0, 400.1],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.5],
+                                [0.0, 314.0, 399.9],
+                                [0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "image_size": [
+                    [
+                        [
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1920, 1080],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800]
+                        ]
+                    ]
+                ],
+                "crossview_mask": [
+                    [
+                        [true, true, false, false, false, true, true, true, true, false, false],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, false, false, true, false, true, true, false],
+                        [false, false, true, true, true, false, false, false, false, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true],
+                        [true, false, false, false, true, true, false, true, false, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [true, true, false, false, true, true, true, true, true, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, true, false, true, false, true, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true]
+                    ]
+                ],
+                "clip_text": [
+                    [
+                        [
+                            "daytime. sunny, clear sky. urban street with greenery. trees, bushes, paved road, white car. A motion-blurred street view shows a road lined with lush greenery and trees, hinting at movement. No distinct objects or actions are discernible due to the blur.",
+                            "daytime. sunny, clear sky. urban tree-lined street. cars on the road, traffic signs, trees, greenery. A tree-lined urban street with a no-left-turn sign, cars driving on the road, and greenery.",
+                            "daytime. sunny, clear sky. urban street with trees and buildings. cars on the road, green trees, residential buildings. A sunny street scene with trees, a sidewalk, and buildings. A car is in the foreground on the left side of the road, which has a white dashed line down its center.",
+                            "daytime. sunny, clear sky. urban street with trees and buildings. cars on the road, green trees, multi-story buildings. A roadside view shows a multi-lane street with vehicles, lush green trees lining the sidewalks, and modern buildings in the background.",
+                            "daytime. sunny, clear sky. urban street with greenery. cars, trees, lampposts, buildings. The image shows a road with two cars, one leading and another following. The environment is urban with trees lining the street, buildings in the background, and clear skies above.",
+                            "daytime. sunny, clear sky. urban roadside with greenery. trees, bushes, street lights. A roadside view with lush greenery, trees, and a clear sky. The photo is taken from inside a moving vehicle, evident by the motion blur on vegetation.",
+                            "daytime. sunny, clear sky. urban tree-lined street. trees, grassy areas, buildings on the right, a car in the distance. A street view from a vehicle shows trees lining the road, a distant car, and residential buildings. The weather appears overcast with wet ground suggesting recent rain.",
+                            "daytime. sunny, clear sky. urban roadside. trees, grassy area, street curb. A fisheye view from a vehicle shows a curved road with trees and shrubs on the left, leading to an overpass. The sky is visible through the foliage.",
+                            "daytime. sunny, clear sky. urban residential street. trees, grassy areas, buildings on the right. A fisheye view from a vehicle shows an empty, wet road curving between lush greenery and residential buildings under a bright sky.",
+                            "daytime. sunny, clear sky. urban residential street. trees, parked cars, white road markings. The image shows a fisheye view from inside a vehicle, capturing an empty street lined with trees and buildings. There's a white line on the road and another car in the distance.",
+                            "daytime. sunny, clear sky. urban street with greenery. cars on the road, trees and bushes along the sides. The image shows a curved road with two cars in the distance, one following the other. The perspective is from inside a vehicle on the left side of the road, which appears to be moving forward. There are trees and greenery along the sides of the road, suggesting a suburban or park-like setting."
+                                    ]
+                    ]
+                ]
+            },
+            "output_type": "pt"
+        },
+        {
+            "latent_shape": [
+                1, 1, 11, 4, 32, 56
+            ],
+            "batch": {
+                "fps": [10.0],
+                "pts": [
+                    [
+                        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    ]
+                ],
+                "camera_transforms": [
+                    [
+                        [
+                            [
+                                [0.7950, -0.01909, 0.6063, 2.169],
+                                [-0.6061, 0.01422, 0.7952, 0.9194],
+                                [-0.02380, -0.9997, -0.000265, 1.042],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01145, -0.01423, 0.9998, 2.072],
+                                [-0.9998, 0.01734, 0.0117, -0.1122],
+                                [-0.01751, -0.9997, -0.01403, 1.461],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.7819, 0.01132, 0.6234, 2.189],
+                                [-0.6233, 0.005162, -0.7819, -0.9309],
+                                [-0.01207, -0.9999, 0.003017, 1.052],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.8098, -0.001947, -0.5866, 2.816],
+                                [0.5865, 0.02009, -0.8097, -0.9357],
+                                [0.01336, -0.9998, -0.01513, 0.8766],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01019, -0.02407, -0.9997, -0.3547],
+                                [0.9999, -0.007155, 0.01036, 0.01878],
+                                [-0.007402, -0.9997, 0.024, 1.495],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.7858, 0.01072, -0.6184, 2.834],
+                                [0.6183, 0.01356, 0.7858, 1.019],
+                                [0.01681, -0.9999, 0.004032, 0.8514],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.00845, -0.01824, 0.9998, 2.076],
+                                [-1.0, 0.002707, 0.008501, 0.02168],
+                                [-0.002862, -0.9998, -0.01822, 1.475],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.9992, 0.02421, -0.03054, 2.111],
+                                [0.03897, -0.6268, 0.7782, 1.048],
+                                [-0.0003018, -0.7788, -0.6272, 1.126],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01283, -0.433, 0.9013, 3.923],
+                                [-0.9999, -0.002723, 0.01292, -0.008469],
+                                [-0.003142, -0.9014, -0.433, 0.5791],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.9943, 0.06091, -0.08787, 2.055],
+                                [0.1067, 0.6227, -0.7751, -1.104],
+                                [0.007507, -0.7801, -0.6257, 1.051],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.02, 0.5927, -0.8052, -0.9933],
+                                [0.9998, 0.01523, -0.01362, -0.01935],
+                                [0.00419, -0.8053, -0.5928, 0.628],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "camera_intrinsics": [
+                    [
+                        [
+                            [
+                                [1497.8, 0.0, 1938.5],
+                                [0.0, 1497.4, 1054.9],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [7243.8, 0.0, 1787.2],
+                                [0.0, 7242.4, 1061.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1943.2],
+                                [0.0, 1497.6, 1050.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1912.9],
+                                [0.0, 1497.9, 1070.7],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [2019.7, 0.0, 981.4],
+                                [0.0, 2019.2, 504.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1931.6],
+                                [0.0, 1497.6, 1077.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1950.3],
+                                [0.0, 1497.9, 1045.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [319.0, 0.0, 643.7],
+                                [0.0, 319.0, 400.3],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.3],
+                                [0.0, 314.0, 405.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [317.0, 0.0, 653.2],
+                                [0.0, 317.0, 400.1],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.5],
+                                [0.0, 314.0, 399.9],
+                                [0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "image_size": [
+                    [
+                        [
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1920, 1080],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800]
+                        ]
+                    ]
+                ],
+                "crossview_mask": [
+                    [
+                        [true, true, false, false, false, true, true, true, true, false, false],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, false, false, true, false, true, true, false],
+                        [false, false, true, true, true, false, false, false, false, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true],
+                        [true, false, false, false, true, true, false, true, false, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [true, true, false, false, true, true, true, true, true, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, true, false, true, false, true, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true]
+                    ]
+                ],
+                "clip_text": [
+                    [
+                        [
+                            "daytime. sunny, clear sky. urban street with greenery. trees, bushes, paved road, white car. A motion-blurred street view shows a road lined with lush greenery and trees, hinting at movement. A white car drive off into the greenery.",
+                            "daytime. sunny, clear sky. urban tree-lined street. cars on the road, traffic signs, trees, greenery. A tree-lined urban street with a no-left-turn sign, one car drives into the greenery, and other cars driving on the road.",
+                            "daytime. sunny, clear sky. urban street with trees and buildings. cars on the road, green trees, residential buildings. A sunny street scene with trees, a sidewalk, and buildings. A car is in the foreground on the left side of the road, which has a white dashed line down its center.",
+                            "daytime. sunny, clear sky. urban street with trees and buildings. cars on the road, green trees, multi-story buildings. A roadside view shows a multi-lane street with vehicles, lush green trees lining the sidewalks, and modern buildings in the background.",
+                            "daytime. sunny, clear sky. urban street with greenery. cars, trees, lampposts, buildings. The image shows a road with two cars, one leading and another following. The environment is urban with trees lining the street, buildings in the background, and clear skies above.",
+                            "daytime. sunny, clear sky. urban roadside with greenery. trees, bushes, street lights. A roadside view with lush greenery, trees, and a clear sky. The photo is taken from inside a moving vehicle, evident by the motion blur on vegetation.",
+                            "daytime. sunny, clear sky. urban tree-lined street. trees, grassy areas, buildings on the right, cars. A street view from a vehicle shows trees lining the road, a car drives into the greenery, another distant car, and residential buildings. The weather appears overcast with wet ground suggesting recent rain.",
+                            "daytime. sunny, clear sky. urban roadside. trees, grassy area, street curb. A fisheye view from a vehicle shows a curved road with trees and shrubs on the left, leading to an overpass. The sky is visible through the foliage.",
+                            "daytime. sunny, clear sky. urban residential street. trees, grassy areas, buildings on the right, car. A fisheye view from a vehicle shows a white car drive off into the greenery with wet road curving between lush greenery and residential buildings under a bright sky.",
+                            "daytime. sunny, clear sky. urban residential street. trees, parked cars, white road markings. The image shows a fisheye view from inside a vehicle, capturing an empty street lined with trees and buildings. There's a white line on the road and another car in the distance.",
+                            "daytime. sunny, clear sky. urban street with greenery. cars on the road, trees and bushes along the sides. The image shows a curved road with two cars in the distance, one following the other. The perspective is from inside a vehicle on the left side of the road, which appears to be moving forward. There are trees and greenery along the sides of the road, suggesting a suburban or park-like setting."
+                        ]
+                    ]
+                ]
+            },
+            "output_type": "pt"
+        },
+        {
+            "latent_shape": [
+                1, 1, 11, 4, 32, 56
+            ],
+            "batch": {
+                "fps": [10.0],
+                "pts": [
+                    [
+                        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    ]
+                ],
+                "camera_transforms": [
+                    [
+                        [
+                            [
+                                [0.7950, -0.01909, 0.6063, 2.169],
+                                [-0.6061, 0.01422, 0.7952, 0.9194],
+                                [-0.02380, -0.9997, -0.000265, 1.042],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01145, -0.01423, 0.9998, 2.072],
+                                [-0.9998, 0.01734, 0.0117, -0.1122],
+                                [-0.01751, -0.9997, -0.01403, 1.461],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.7819, 0.01132, 0.6234, 2.189],
+                                [-0.6233, 0.005162, -0.7819, -0.9309],
+                                [-0.01207, -0.9999, 0.003017, 1.052],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.8098, -0.001947, -0.5866, 2.816],
+                                [0.5865, 0.02009, -0.8097, -0.9357],
+                                [0.01336, -0.9998, -0.01513, 0.8766],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01019, -0.02407, -0.9997, -0.3547],
+                                [0.9999, -0.007155, 0.01036, 0.01878],
+                                [-0.007402, -0.9997, 0.024, 1.495],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.7858, 0.01072, -0.6184, 2.834],
+                                [0.6183, 0.01356, 0.7858, 1.019],
+                                [0.01681, -0.9999, 0.004032, 0.8514],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.00845, -0.01824, 0.9998, 2.076],
+                                [-1.0, 0.002707, 0.008501, 0.02168],
+                                [-0.002862, -0.9998, -0.01822, 1.475],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.9992, 0.02421, -0.03054, 2.111],
+                                [0.03897, -0.6268, 0.7782, 1.048],
+                                [-0.0003018, -0.7788, -0.6272, 1.126],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01283, -0.433, 0.9013, 3.923],
+                                [-0.9999, -0.002723, 0.01292, -0.008469],
+                                [-0.003142, -0.9014, -0.433, 0.5791],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.9943, 0.06091, -0.08787, 2.055],
+                                [0.1067, 0.6227, -0.7751, -1.104],
+                                [0.007507, -0.7801, -0.6257, 1.051],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.02, 0.5927, -0.8052, -0.9933],
+                                [0.9998, 0.01523, -0.01362, -0.01935],
+                                [0.00419, -0.8053, -0.5928, 0.628],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "camera_intrinsics": [
+                    [
+                        [
+                            [
+                                [1497.8, 0.0, 1938.5],
+                                [0.0, 1497.4, 1054.9],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [7243.8, 0.0, 1787.2],
+                                [0.0, 7242.4, 1061.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1943.2],
+                                [0.0, 1497.6, 1050.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1912.9],
+                                [0.0, 1497.9, 1070.7],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [2019.7, 0.0, 981.4],
+                                [0.0, 2019.2, 504.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1931.6],
+                                [0.0, 1497.6, 1077.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1950.3],
+                                [0.0, 1497.9, 1045.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [319.0, 0.0, 643.7],
+                                [0.0, 319.0, 400.3],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.3],
+                                [0.0, 314.0, 405.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [317.0, 0.0, 653.2],
+                                [0.0, 317.0, 400.1],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.5],
+                                [0.0, 314.0, 399.9],
+                                [0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "image_size": [
+                    [
+                        [
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1920, 1080],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800]
+                        ]
+                    ]
+                ],
+                "crossview_mask": [
+                    [
+                        [true, true, false, false, false, true, true, true, true, false, false],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, false, false, true, false, true, true, false],
+                        [false, false, true, true, true, false, false, false, false, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true],
+                        [true, false, false, false, true, true, false, true, false, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [true, true, false, false, true, true, true, true, true, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, true, false, true, false, true, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true]
+                    ]
+                ],
+                "clip_text": [
+                    [
+                        [
+                            "daytime. overcast, wet road. urban highway. cars, trucks, trees, streetlights, road signs. A white damaged car drives on a wet highway with yellow lines, passing under road signs indicating directions to \"\u4e91\u5e06\u8def\" and \"\u73af\u57ce\u4e00\u8def\". A red truck is in the distance.",
+                            "daytime. overcast, wet road. urban street with trees and fences. truck, cars, traffic signs, pedestrians, trees, fence. A red truck overturned and lost its load on a wet road with trees and a cloudy sky, passing under a blue directional sign for Yunping Road.",
+                            "daytime. overcast, wet road. urban street. trees, fence, grass, road signs. A blurred roadside scene with greenery, a fence, and trees; taken from inside a moving vehicle.",
+                            "daytime. overcast, wet road. urban street. trees, fence, grass, streetlight. A motion-blurred photo from inside a vehicle shows the road ahead, lush greenery on both sides, and a fence parallel to the road. The sky is overcast with soft lighting.",
+                            "daytime. overcast, wet road. urban roadway. cars with headlights on, trees, street signs. The image shows a wet road with vehicles driving under an overcast sky. There's a blue highway sign indicating directions to A1 and A2 highways, alongside lush greenery on the side.",
+                            "daytime. overcast, wet road. urban highway. cars in motion, traffic signs, trees, concrete barriers. A multi-lane highway with vehicles in motion, a wet road reflecting lights, and an overcast sky. Trees line the right side; a blue sign is partially visible on the left.",
+                            "daytime. overcast, wet road. highway with greenery on both sides. cars, trucks, trees, highway signs. A car's rear view shows a red truck overturned and lost its load, beside a road sign indicating directions to Shanghai and other cities.",
+                            "daytime. overcast, wet road. urban street. cars, trees, traffic lights. A fisheye view from a car's perspective shows the road ahead with multiple lanes, vehicles including a white one in the right lane and red ones in the distance. Trees line the sides of the road under an overcast sky.",
+                            "daytime. overcast, wet road. highway with greenery. cars on the road, trees along the highway. A fisheye view from a car's interior shows the road ahead with vehicles, trees on both sides, and an overcast sky. The perspective is dynamic due to motion blur.",
+                            "daytime. overcast, wet road. urban street. cars, trees, metal fence. A fisheye view from inside a vehicle shows the road ahead, with blurred trees and a fence on the left. The car's side mirror is visible in the bottom right corner.",
+                            "daytime. overcast, wet road. urban highway. cars on the road, trees along the sides. The image shows a car's rearview mirror capturing a wet highway with multiple lanes, vehicles in the distance, and an overcast sky. The road appears slick from recent rain."
+                        ]
+                    ]
+                ]
+            },
+            "output_type": "pt"
+        },
+        {
+            "latent_shape": [
+                1, 1, 11, 4, 32, 56
+            ],
+            "batch": {
+                "fps": [10.0],
+                "pts": [
+                    [
+                        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                    ]
+                ],
+                "camera_transforms": [
+                    [
+                        [
+                            [
+                                [0.7950, -0.01909, 0.6063, 2.169],
+                                [-0.6061, 0.01422, 0.7952, 0.9194],
+                                [-0.02380, -0.9997, -0.000265, 1.042],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01145, -0.01423, 0.9998, 2.072],
+                                [-0.9998, 0.01734, 0.0117, -0.1122],
+                                [-0.01751, -0.9997, -0.01403, 1.461],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.7819, 0.01132, 0.6234, 2.189],
+                                [-0.6233, 0.005162, -0.7819, -0.9309],
+                                [-0.01207, -0.9999, 0.003017, 1.052],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.8098, -0.001947, -0.5866, 2.816],
+                                [0.5865, 0.02009, -0.8097, -0.9357],
+                                [0.01336, -0.9998, -0.01513, 0.8766],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01019, -0.02407, -0.9997, -0.3547],
+                                [0.9999, -0.007155, 0.01036, 0.01878],
+                                [-0.007402, -0.9997, 0.024, 1.495],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.7858, 0.01072, -0.6184, 2.834],
+                                [0.6183, 0.01356, 0.7858, 1.019],
+                                [0.01681, -0.9999, 0.004032, 0.8514],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.00845, -0.01824, 0.9998, 2.076],
+                                [-1.0, 0.002707, 0.008501, 0.02168],
+                                [-0.002862, -0.9998, -0.01822, 1.475],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.9992, 0.02421, -0.03054, 2.111],
+                                [0.03897, -0.6268, 0.7782, 1.048],
+                                [-0.0003018, -0.7788, -0.6272, 1.126],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [0.01283, -0.433, 0.9013, 3.923],
+                                [-0.9999, -0.002723, 0.01292, -0.008469],
+                                [-0.003142, -0.9014, -0.433, 0.5791],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.9943, 0.06091, -0.08787, 2.055],
+                                [0.1067, 0.6227, -0.7751, -1.104],
+                                [0.007507, -0.7801, -0.6257, 1.051],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [-0.02, 0.5927, -0.8052, -0.9933],
+                                [0.9998, 0.01523, -0.01362, -0.01935],
+                                [0.00419, -0.8053, -0.5928, 0.628],
+                                [0.0, 0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "camera_intrinsics": [
+                    [
+                        [
+                            [
+                                [1497.8, 0.0, 1938.5],
+                                [0.0, 1497.4, 1054.9],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [7243.8, 0.0, 1787.2],
+                                [0.0, 7242.4, 1061.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1943.2],
+                                [0.0, 1497.6, 1050.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1912.9],
+                                [0.0, 1497.9, 1070.7],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [2019.7, 0.0, 981.4],
+                                [0.0, 2019.2, 504.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1931.6],
+                                [0.0, 1497.6, 1077.0],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [1497.8, 0.0, 1950.3],
+                                [0.0, 1497.9, 1045.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [319.0, 0.0, 643.7],
+                                [0.0, 319.0, 400.3],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.3],
+                                [0.0, 314.0, 405.8],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [317.0, 0.0, 653.2],
+                                [0.0, 317.0, 400.1],
+                                [0.0, 0.0, 1.0]
+                            ],
+                            [
+                                [314.0, 0.0, 640.5],
+                                [0.0, 314.0, 399.9],
+                                [0.0, 0.0, 1.0]
+                            ]
+                        ]
+                    ]
+                ],
+                "image_size": [
+                    [
+                        [
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1920, 1080],
+                            [3840, 2160],
+                            [3840, 2160],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800],
+                            [1280, 800]
+                        ]
+                    ]
+                ],
+                "crossview_mask": [
+                    [
+                        [true, true, false, false, false, true, true, true, true, false, false],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, false, false, true, false, true, true, false],
+                        [false, false, true, true, true, false, false, false, false, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true],
+                        [true, false, false, false, true, true, false, true, false, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [true, true, false, false, true, true, true, true, true, false, true],
+                        [true, true, true, false, false, false, true, true, true, true, false],
+                        [false, true, true, true, true, false, true, false, true, true, true],
+                        [false, false, false, true, true, true, false, true, false, true, true]
+                    ]
+                ],
+                "clip_text": [
+                    [
+                        [
+                            "night. snowy. urban highway. cars, trucks, trees, streetlights, road signs. A white car drives on a snowy highway with yellow lines, passing under road signs indicating directions to \"\u4e91\u5e06\u8def\" and \"\u73af\u57ce\u4e00\u8def\". A red truck is in the distance.",
+                            "night. snowy. urban street with trees and fences. truck, cars, traffic signs, pedestrians, trees, fence. A red truck drives on a snowy road with trees, passing under a blue directional sign for Yunping Road.",
+                            "night. snowy. urban street. trees, fence, grass, road signs. A blurred roadside scene with snowy greenery, a fence, and snowy trees; taken from inside a moving vehicle.",
+                            "night. snowy. urban street. trees, fence, grass, streetlight. A motion-blurred photo from inside a vehicle shows the road ahead, snowy lush greenery on both sides, and a fence parallel to the road.",
+                            "night. snowy. urban roadway. cars with headlights on, trees, street signs. The image shows a snowy road with vehicles. There's a blue highway sign indicating directions to A1 and A2 highways, alongside snowy lush greenery on the side.",
+                            "night. snowy. urban highway. cars in motion, traffic signs, trees, concrete barriers. A multi-lane highway with vehicles in motion, a snowy road reflecting lights. Trees with snow on them line the right side; a blue sign is partially visible on the left.",
+                            "night. snowy. highway with snowy greenery on both sides. cars, trucks, trees, highway signs. A car's rear view shows a white hatchback with red taillights, driving beside a road sign indicating directions to Shanghai and other cities.",
+                            "night. snowy. urban street. cars, trees, traffic lights. A fisheye view from a car's perspective shows the road ahead with multiple lanes, vehicles including a white one in the right lane and red ones in the distance. Trees with snow on them line the sides of the road.",
+                            "night. snowy. highway with snowy greenery. cars on the road, trees along the highway. A fisheye view from a car's interior shows the road ahead with vehicles, trees with snow on them on both sides. The perspective is dynamic due to motion blur.",
+                            "night. snowy. urban street. cars, trees, metal fence. A fisheye view from inside a vehicle shows the road ahead, with blurred snowy trees and a fence on the left. The car's side mirror is visible in the bottom right corner.",
+                            "night. snowy. urban highway. cars on the road, trees along the sides. The image shows a car's rearview mirror capturing a snowy highway with multiple lanes, vehicles in the distance. The road appears slick from recent snow."
+                        ]
+                    ]
+                ]
+            },
+            "output_type": "pt"
+        }
+    ]
+}

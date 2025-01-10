@@ -1,0 +1,33 @@
+{
+    "dataset": {
+        "_class_name": "dwm.datasets.opendv.MotionDataset",
+        "fs": {
+            "_class_name": "fsspec.implementations.dirfs.DirFileSystem",
+            "path": "/cache/aoss.cn-sh-01.sensecoreapi-oss.cn/users/nijingcheng/datasets/opendv-youtube-data",
+            "fs": {
+                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+            }
+        },
+        "meta_path": "/mnt/afs/user/wuzehuan/Documents/WorldModels/Data/OpenDV-YouTube.json",
+        "sequence_length": 1,
+        "fps_stride_tuples": [
+            [
+                1,
+                1
+            ]
+        ]
+    },
+    "prompts": [
+        {
+            "question": "Describe the time, weather, environment, objects in JSON, and each value should be single string and less than 20 words. Here are examples: `{\"time\": \"daytime\", \"weather\": \"overcast, wet road\", \"environment\": \"urban parking lot\", \"objects\": \"cars, pedestrians, traffic signs, trees, brick buildings\"}`, `{\"time\": \"night\", \"weather\": \"clear sky\", \"environment\": \"suburban street\", \"objects\": \"cars, cyclist, tram trucks, trees\"}`, `{\"time\": \"dusk\", \"weather\": \"cloudy\", \"environment\": \"street intersection\", \"objects\": \"pedestrian crossing, traffic lights, road signs, tall buildings, bushes\"}`",
+            "key": null
+        },
+        {
+            "question": "Describe objects in this image within about 30 words.",
+            "key": "image_description"
+        }
+    ],
+    "dump_options": {
+        "indent": 2
+    }
+}

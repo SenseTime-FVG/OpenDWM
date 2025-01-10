@@ -1,0 +1,2523 @@
+<?xml version="1.0" ?>
+<routes>
+   <route id="0" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="209.9803466796875" y="-76.26774597167969" yaw="-90.66909790039062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="209.9803466796875" y="-76.26774597167969" yaw="-90.66909790039062" z="0.0"/>
+         <position x="209.9569854736328" y="-78.26760864257812" yaw="-90.66909790039062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="1" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="189.22467041015625" y="-55.22393798828125" yaw="89.33090209960938" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="189.22467041015625" y="-55.22393798828125" yaw="89.33090209960938" z="0.0"/>
+         <position x="189.24803161621094" y="-53.22406768798828" yaw="89.33090209960938" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="2" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-58.895111083984375" y="-207.52764892578125" yaw="-179.92355346679688" z="6.853691101074219"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-58.895111083984375" y="-207.52764892578125" yaw="-179.92355346679688" z="6.853691101074219"/>
+         <position x="-60.895111083984375" y="-207.53030395507812" yaw="-179.92355346679688" z="7.106688499450684"/>
+      </waypoints>
+   </route>
+   <route id="3" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="185.27255249023438" y="-122.61775207519531" yaw="73.98326110839844" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="185.27255249023438" y="-122.61775207519531" yaw="73.98326110839844" z="0.0"/>
+         <position x="185.74070739746094" y="-120.92386627197266" yaw="75.1178970336914" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="4" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-208.24154663085938" y="-183.23941040039062" yaw="140.71664428710938" z="10.006937980651855"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-208.24154663085938" y="-183.23941040039062" yaw="140.71664428710938" z="10.006937980651855"/>
+         <position x="-209.912109375" y="-181.8445281982422" yaw="139.5615997314453" z="10.006668090820312"/>
+      </waypoints>
+   </route>
+   <route id="5" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-45.82670211791992" y="187.58248901367188" yaw="179.97128295898438" z="3.0260870456695557"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-45.82670211791992" y="187.58248901367188" yaw="179.97128295898438" z="3.0260870456695557"/>
+         <position x="-47.82670211791992" y="187.58348083496094" yaw="179.97128295898438" z="3.2579710483551025"/>
+      </waypoints>
+   </route>
+   <route id="6" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-133.89505004882812" y="-207.627685546875" yaw="-179.92355346679688" z="10.019672393798828"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-133.89505004882812" y="-207.627685546875" yaw="-179.92355346679688" z="10.019672393798828"/>
+         <position x="-135.89505004882812" y="-207.63037109375" yaw="-179.92355346679688" z="10.019306182861328"/>
+      </waypoints>
+   </route>
+   <route id="7" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-65.82669830322266" y="187.59251403808594" yaw="179.97128295898438" z="5.3449273109436035"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-65.82669830322266" y="187.59251403808594" yaw="179.97128295898438" z="5.3449273109436035"/>
+         <position x="-67.82669830322266" y="187.593505859375" yaw="179.97128295898438" z="5.576811790466309"/>
+      </waypoints>
+   </route>
+   <route id="8" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-169.6584930419922" y="204.8928680419922" yaw="15.26086711883545" z="8.83292007446289"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-169.6584930419922" y="204.8928680419922" yaw="15.26086711883545" z="8.83292007446289"/>
+         <position x="-167.54965209960938" y="205.4449920654297" yaw="14.082496643066406" z="8.811817169189453"/>
+      </waypoints>
+   </route>
+   <route id="9" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="189.93077087402344" y="0.12264376878738403" yaw="88.62312316894531" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="189.93077087402344" y="0.12264376878738403" yaw="88.62312316894531" z="0.0"/>
+         <position x="189.97799682617188" y="2.103537082672119" yaw="88.7098617553711" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="10" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-225.7675018310547" y="-25.842016220092773" yaw="269.156005859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-225.7675018310547" y="-25.842016220092773" yaw="269.156005859375" z="10.0"/>
+         <position x="-225.79696655273438" y="-27.8418025970459" yaw="269.156005859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="11" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="173.54876708984375" y="149.28318786621094" yaw="124.33035278320312" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="173.54876708984375" y="149.28318786621094" yaw="124.33035278320312" z="0.0"/>
+         <position x="172.5430908203125" y="150.7249755859375" yaw="125.46273803710938" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="12" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-247.25254821777344" y="66.36627960205078" yaw="90.80999755859375" z="9.990304946899414"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-247.25254821777344" y="66.36627960205078" yaw="90.80999755859375" z="9.990304946899414"/>
+         <position x="-247.28082275390625" y="68.36608123779297" yaw="90.80999755859375" z="9.987701416015625"/>
+      </waypoints>
+   </route>
+   <route id="13" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-225.43199157714844" y="-2.7963755130767822" yaw="269.38092041015625" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-225.43199157714844" y="-2.7963755130767822" yaw="269.38092041015625" z="10.0"/>
+         <position x="-225.4581756591797" y="-4.844297409057617" yaw="269.156005859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="14" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="120.35919189453125" y="-184.50267028808594" yaw="13.280380249023438" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="120.35919189453125" y="-184.50267028808594" yaw="13.280380249023438" z="0.0"/>
+         <position x="122.06549072265625" y="-184.08206176757812" yaw="14.415008544921875" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="15" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-85.89508819580078" y="-207.56365966796875" yaw="-179.92355346679688" z="9.666126251220703"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-85.89508819580078" y="-207.56365966796875" yaw="-179.92355346679688" z="9.666126251220703"/>
+         <position x="-87.89508819580078" y="-207.56631469726562" yaw="-179.92355346679688" z="9.767950057983398"/>
+      </waypoints>
+   </route>
+   <route id="16" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-226.63656616210938" y="-84.83561706542969" yaw="269.156005859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-226.63656616210938" y="-84.83561706542969" yaw="269.156005859375" z="10.0"/>
+         <position x="-226.666015625" y="-86.83540344238281" yaw="269.156005859375" z="10.000000953674316"/>
+      </waypoints>
+   </route>
+   <route id="17" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-226.2099609375" y="63.50346755981445" yaw="270.80999755859375" z="9.993788719177246"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-226.2099609375" y="63.50346755981445" yaw="270.80999755859375" z="9.993788719177246"/>
+         <position x="-226.18170166015625" y="61.503665924072266" yaw="270.80999755859375" z="9.995594024658203"/>
+      </waypoints>
+   </route>
+   <route id="18" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-226.091552734375" y="-47.83963394165039" yaw="269.156005859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-226.091552734375" y="-47.83963394165039" yaw="269.156005859375" z="10.0"/>
+         <position x="-226.1210174560547" y="-49.83941650390625" yaw="269.156005859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="19" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-177.2089080810547" y="-200.9790496826172" yaw="159.77496337890625" z="10.012170791625977"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-177.2089080810547" y="-200.9790496826172" yaw="159.77496337890625" z="10.012170791625977"/>
+         <position x="-179.24337768554688" y="-200.2061004638672" yaw="158.61990356445312" z="10.011812210083008"/>
+      </waypoints>
+   </route>
+   <route id="20" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-247.77923583984375" y="-94.36522674560547" yaw="89.156005859375" z="10.00005054473877"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-247.77923583984375" y="-94.36522674560547" yaw="89.156005859375" z="10.00005054473877"/>
+         <position x="-247.74977111816406" y="-92.36544036865234" yaw="89.156005859375" z="10.000030517578125"/>
+      </waypoints>
+   </route>
+   <route id="21" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-121.76307678222656" y="-186.6114959716797" yaw="0.076446533203125" z="10.021897315979004"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-121.76307678222656" y="-186.6114959716797" yaw="0.076446533203125" z="10.021897315979004"/>
+         <position x="-119.76307678222656" y="-186.60882568359375" yaw="0.076446533203125" z="10.022263526916504"/>
+      </waypoints>
+   </route>
+   <route id="22" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="156.3740997314453" y="167.9996795654297" yaw="140.74996948242188" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="156.3740997314453" y="167.9996795654297" yaw="140.74996948242188" z="0.0"/>
+         <position x="155.00189208984375" y="169.098388671875" yaw="141.88235473632812" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="23" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-246.7577667236328" y="31.36977767944336" yaw="90.80999755859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-246.7577667236328" y="31.36977767944336" yaw="90.80999755859375" z="10.0"/>
+         <position x="-246.78604125976562" y="33.36957931518555" yaw="90.80999755859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="24" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="205.80970764160156" y="-127.15657806396484" yaw="-105.3359603881836" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="205.80970764160156" y="-127.15657806396484" yaw="-105.3359603881836" z="0.0"/>
+         <position x="205.2141876220703" y="-129.24664306640625" yaw="-106.47059631347656" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="25" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="54.134796142578125" y="208.83677673339844" yaw="0.28781425952911377" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="54.134796142578125" y="208.83677673339844" yaw="0.28781425952911377" z="0.0"/>
+         <position x="56.134769439697266" y="208.84681701660156" yaw="0.28781425952911377" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="26" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-238.53871154785156" y="145.86407470703125" yaw="65.93077087402344" z="9.666783332824707"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-238.53871154785156" y="145.86407470703125" yaw="65.93077087402344" z="9.666783332824707"/>
+         <position x="-237.62925720214844" y="147.84521484375" yaw="64.75240325927734" z="9.652271270751953"/>
+      </waypoints>
+   </route>
+   <route id="27" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-233.98992919921875" y="-152.58897399902344" yaw="119.3482437133789" z="10.002808570861816"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-233.98992919921875" y="-152.58897399902344" yaw="119.3482437133789" z="10.002808570861816"/>
+         <position x="-235.0374298095703" y="-150.6812744140625" yaw="118.19319152832031" z="10.00263786315918"/>
+      </waypoints>
+   </route>
+   <route id="28" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="190.01760864257812" y="15.618767738342285" yaw="90.66463470458984" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="190.01760864257812" y="15.618767738342285" yaw="90.66463470458984" z="0.0"/>
+         <position x="189.99440002441406" y="17.61863136291504" yaw="90.66463470458984" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="29" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-17.89514923095703" y="-207.47296142578125" yaw="-179.92355346679688" z="1.674234390258789"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-17.89514923095703" y="-207.47296142578125" yaw="-179.92355346679688" z="1.674234390258789"/>
+         <position x="-19.8951473236084" y="-207.47561645507812" yaw="-179.92355346679688" z="1.9202479124069214"/>
+      </waypoints>
+   </route>
+   <route id="30" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-89.82669830322266" y="187.6045379638672" yaw="179.97128295898438" z="7.7022175788879395"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-89.82669830322266" y="187.6045379638672" yaw="179.97128295898438" z="7.7022175788879395"/>
+         <position x="-91.82669830322266" y="187.6055450439453" yaw="179.97128295898438" z="7.812736988067627"/>
+      </waypoints>
+   </route>
+   <route id="31" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-167.33518981933594" y="-182.18984985351562" yaw="341.59991455078125" z="10.012746810913086"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-167.33518981933594" y="-182.18984985351562" yaw="341.59991455078125" z="10.012746810913086"/>
+         <position x="-165.66629028320312" y="-182.72640991210938" yaw="342.7550048828125" z="10.013113021850586"/>
+      </waypoints>
+   </route>
+   <route id="32" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-226.2415008544922" y="111.9608154296875" yaw="263.7005920410156" z="9.848122596740723"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-226.2415008544922" y="111.9608154296875" yaw="263.7005920410156" z="9.848122596740723"/>
+         <position x="-226.4154510498047" y="110.22145080566406" yaw="264.87896728515625" z="9.857661247253418"/>
+      </waypoints>
+   </route>
+   <route id="33" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="3.0560386180877686" y="-207.46600341796875" yaw="179.757080078125" z="0.10868839174509048"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="3.0560386180877686" y="-207.46600341796875" yaw="179.757080078125" z="0.10868839174509048"/>
+         <position x="1.0560566186904907" y="-207.45751953125" yaw="179.757080078125" z="0.17767226696014404"/>
+      </waypoints>
+   </route>
+   <route id="34" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="7.266000270843506" y="-207.48385620117188" yaw="179.757080078125" z="0.018597183749079704"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="7.266000270843506" y="-207.48385620117188" yaw="179.757080078125" z="0.018597183749079704"/>
+         <position x="5.266018867492676" y="-207.47537231445312" yaw="179.757080078125" z="0.05207713320851326"/>
+      </waypoints>
+   </route>
+   <route id="35" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-211.55633544921875" y="182.4058380126953" yaw="41.18500518798828" z="9.297076225280762"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-211.55633544921875" y="182.4058380126953" yaw="41.18500518798828" z="9.297076225280762"/>
+         <position x="-209.90109252929688" y="183.8243408203125" yaw="40.00663375854492" z="9.27607536315918"/>
+      </waypoints>
+   </route>
+   <route id="36" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-200.71641540527344" y="-161.81838989257812" yaw="315.611328125" z="10.00578498840332"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-200.71641540527344" y="-161.81838989257812" yaw="315.611328125" z="10.00578498840332"/>
+         <position x="-199.45138549804688" y="-163.03196716308594" yaw="316.766357421875" z="10.006036758422852"/>
+      </waypoints>
+   </route>
+   <route id="37" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="150.3922119140625" y="196.88845825195312" yaw="-27.222517013549805" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="150.3922119140625" y="196.88845825195312" yaw="-27.222517013549805" z="0.0"/>
+         <position x="152.31451416015625" y="195.8754119873047" yaw="-28.35490608215332" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="38" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-137.82669067382812" y="187.6285858154297" yaw="179.97128295898438" z="8.51806926727295"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-137.82669067382812" y="187.6285858154297" yaw="179.97128295898438" z="8.51806926727295"/>
+         <position x="-139.82669067382812" y="187.6295928955078" yaw="179.97128295898438" z="8.539172172546387"/>
+      </waypoints>
+   </route>
+   <route id="39" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="174.38961791992188" y="180.16868591308594" yaw="-42.5097541809082" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="174.38961791992188" y="180.16868591308594" yaw="-42.5097541809082" z="0.0"/>
+         <position x="175.97682189941406" y="178.68466186523438" yaw="-43.64213943481445" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="40" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-225.85670471191406" y="-112.7544937133789" yaw="278.6497802734375" z="10.000558853149414"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-225.85670471191406" y="-112.7544937133789" yaw="278.6497802734375" z="10.000558853149414"/>
+         <position x="-225.57559204101562" y="-114.48482513427734" yaw="279.8048095703125" z="10.000638961791992"/>
+      </waypoints>
+   </route>
+   <route id="41" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-180.52957153320312" y="178.27284240722656" yaw="207.1388397216797" z="9.045634269714355"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-180.52957153320312" y="178.27284240722656" yaw="207.1388397216797" z="9.045634269714355"/>
+         <position x="-182.07687377929688" y="177.4595184326172" yaw="208.31719970703125" z="9.066737174987793"/>
+      </waypoints>
+   </route>
+   <route id="42" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="86.43431854248047" y="-186.81930541992188" yaw="359.757080078125" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="86.43431854248047" y="-186.81930541992188" yaw="359.757080078125" z="0.0"/>
+         <position x="88.4343032836914" y="-186.82777404785156" yaw="359.757080078125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="43" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="189.07801818847656" y="96.61331176757812" yaw="90.66463470458984" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="189.07801818847656" y="96.61331176757812" yaw="90.66463470458984" z="0.0"/>
+         <position x="189.05482482910156" y="98.6131820678711" yaw="90.66463470458984" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="44" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="189.66961669921875" y="45.61674499511719" yaw="90.66463470458984" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="189.66961669921875" y="45.61674499511719" yaw="90.66463470458984" z="0.0"/>
+         <position x="189.6464080810547" y="47.61661148071289" yaw="90.66463470458984" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="45" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-246.4608917236328" y="10.371875762939453" yaw="90.80999755859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-246.4608917236328" y="10.371875762939453" yaw="90.80999755859375" z="10.0"/>
+         <position x="-246.48916625976562" y="12.371676445007324" yaw="90.80999755859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="46" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="165.21302795410156" y="-158.29234313964844" yaw="47.31938171386719" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="165.21302795410156" y="-158.29234313964844" yaw="47.31938171386719" z="0.0"/>
+         <position x="166.39154052734375" y="-156.98867797851562" yaw="48.454010009765625" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="47" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="180.0592041015625" y="-173.16519165039062" yaw="-133.1344757080078" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="180.0592041015625" y="-173.16519165039062" yaw="-133.1344757080078" z="0.0"/>
+         <position x="178.55770874023438" y="-174.73634338378906" yaw="-134.26910400390625" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="48" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="188.92105102539062" y="-81.22216033935547" yaw="89.33090209960938" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="188.92105102539062" y="-81.22216033935547" yaw="89.33090209960938" z="0.0"/>
+         <position x="188.9444122314453" y="-79.22229766845703" yaw="89.33090209960938" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="49" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="207.24557495117188" y="123.76484680175781" yaw="-77.0475845336914" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="207.24557495117188" y="123.76484680175781" yaw="-77.0475845336914" z="0.0"/>
+         <position x="207.711669921875" y="121.64252471923828" yaw="-78.17996978759766" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="50" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-228.3048095703125" y="163.83045959472656" yaw="54.73625946044922" z="9.516430854797363"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-228.3048095703125" y="163.83045959472656" yaw="54.73625946044922" z="9.516430854797363"/>
+         <position x="-227.02801513671875" y="165.5973358154297" yaw="53.55788803100586" z="9.498980522155762"/>
+      </waypoints>
+   </route>
+   <route id="51" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-108.89507293701172" y="-207.59432983398438" yaw="-179.92355346679688" z="10.024248123168945"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-108.89507293701172" y="-207.59432983398438" yaw="-179.92355346679688" z="10.024248123168945"/>
+         <position x="-110.89506530761719" y="-207.59701538085938" yaw="-179.92355346679688" z="10.023881912231445"/>
+      </waypoints>
+   </route>
+   <route id="52" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="189.42601013183594" y="66.6153335571289" yaw="90.66463470458984" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="189.42601013183594" y="66.6153335571289" yaw="90.66463470458984" z="0.0"/>
+         <position x="189.40281677246094" y="68.61519622802734" yaw="90.66463470458984" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="53" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="77.13450622558594" y="208.9523162841797" yaw="0.28781425952911377" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="77.13450622558594" y="208.9523162841797" yaw="0.28781425952911377" z="0.0"/>
+         <position x="79.13448333740234" y="208.9623565673828" yaw="0.28781425952911377" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="54" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="189.65675354003906" y="-18.226455688476562" yaw="89.33090209960938" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="189.65675354003906" y="-18.226455688476562" yaw="89.33090209960938" z="0.0"/>
+         <position x="189.6800994873047" y="-16.226593017578125" yaw="89.33090209960938" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="55" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-221.70433044433594" y="131.49673461914062" yaw="250.1493377685547" z="9.716200828552246"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-221.70433044433594" y="131.49673461914062" yaw="250.1493377685547" z="9.716200828552246"/>
+         <position x="-222.28097534179688" y="129.8465576171875" yaw="251.3277130126953" z="9.72929573059082"/>
+      </waypoints>
+   </route>
+   <route id="56" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="6.240889549255371" y="187.59591674804688" yaw="180.28781127929688" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="6.240889549255371" y="187.59591674804688" yaw="180.28781127929688" z="0.0"/>
+         <position x="4.240914821624756" y="187.58587646484375" yaw="180.28781127929688" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="57" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-206.41705322265625" y="157.8036651611328" yaw="229.52786254882812" z="9.436962127685547"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-206.41705322265625" y="157.8036651611328" yaw="229.52786254882812" z="9.436962127685547"/>
+         <position x="-207.5379180908203" y="156.46229553222656" yaw="230.70623779296875" z="9.45547103881836"/>
+      </waypoints>
+   </route>
+   <route id="58" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="210.71603393554688" y="-13.27204418182373" yaw="-90.66909790039062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="210.71603393554688" y="-13.27204418182373" yaw="-90.66909790039062" z="0.0"/>
+         <position x="210.69268798828125" y="-15.271907806396484" yaw="-90.66909790039062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="59" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="210.4797821044922" y="62.101985931396484" yaw="-89.33536529541016" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="210.4797821044922" y="62.101985931396484" yaw="-89.33536529541016" z="0.0"/>
+         <position x="210.5029754638672" y="60.10211944580078" yaw="-89.33536529541016" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="60" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="211.0635528564453" y="9.761560440063477" yaw="-89.99037170410156" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="211.0635528564453" y="9.761560440063477" yaw="-89.99037170410156" z="0.0"/>
+         <position x="211.05804443359375" y="7.7115278244018555" yaw="-90.31806182861328" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="61" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-246.85125732421875" y="-31.372058868408203" yaw="89.156005859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-246.85125732421875" y="-31.372058868408203" yaw="89.156005859375" z="10.0"/>
+         <position x="-246.82179260253906" y="-29.372272491455078" yaw="89.156005859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="62" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-275.9795227050781" y="20.70372200012207" yaw="89.41624450683594" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-275.9795227050781" y="20.70372200012207" yaw="89.41624450683594" z="0.0"/>
+         <position x="-275.9591369628906" y="22.7036190032959" yaw="89.41624450683594" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="63" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-247.747314453125" y="101.38316345214844" yaw="90.67654418945312" z="9.90008544921875"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-247.747314453125" y="101.38316345214844" yaw="90.67654418945312" z="9.90008544921875"/>
+         <position x="-247.75064086914062" y="103.56307983398438" yaw="89.4981689453125" z="9.892068862915039"/>
+      </waypoints>
+   </route>
+   <route id="64" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-108.65616607666016" y="208.61398315429688" yaw="-0.028712520375847816" z="8.210392951965332"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-108.65616607666016" y="208.61398315429688" yaw="-0.028712520375847816" z="8.210392951965332"/>
+         <position x="-106.65616607666016" y="208.61297607421875" yaw="-0.028712520375847816" z="8.189290046691895"/>
+      </waypoints>
+   </route>
+   <route id="65" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-149.2752227783203" y="208.36370849609375" yaw="4.0663533210754395" z="8.632445335388184"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-149.2752227783203" y="208.36370849609375" yaw="4.0663533210754395" z="8.632445335388184"/>
+         <position x="-147.0993194580078" y="208.49594116210938" yaw="2.8879833221435547" z="8.611342430114746"/>
+      </waypoints>
+   </route>
+   <route id="66" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-245.47776794433594" y="-122.163818359375" yaw="102.02250671386719" z="10.000807762145996"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-245.47776794433594" y="-122.163818359375" yaw="102.02250671386719" z="10.000807762145996"/>
+         <position x="-245.90960693359375" y="-120.03073120117188" yaw="100.8674545288086" z="10.000718116760254"/>
+      </waypoints>
+   </route>
+   <route id="67" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="210.10858154296875" y="94.0998306274414" yaw="-89.33536529541016" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="210.10858154296875" y="94.0998306274414" yaw="-89.33536529541016" z="0.0"/>
+         <position x="210.1317901611328" y="92.09996032714844" yaw="-89.33536529541016" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="68" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="210.47080993652344" y="-34.27061462402344" yaw="-90.66909790039062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="210.47080993652344" y="-34.27061462402344" yaw="-90.66909790039062" z="0.0"/>
+         <position x="210.44744873046875" y="-36.270477294921875" yaw="-90.66909790039062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="69" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-216.46250915527344" y="-140.88345336914062" yaw="298.28558349609375" z="10.00265121459961"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-216.46250915527344" y="-140.88345336914062" yaw="298.28558349609375" z="10.00265121459961"/>
+         <position x="-215.6162872314453" y="-142.418701171875" yaw="299.4406433105469" z="10.002822875976562"/>
+      </waypoints>
+   </route>
+   <route id="70" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="65.36450958251953" y="-186.72996520996094" yaw="359.757080078125" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="65.36450958251953" y="-186.72996520996094" yaw="359.757080078125" z="0.0"/>
+         <position x="67.36448669433594" y="-186.7384490966797" yaw="359.757080078125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="71" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="210.74658203125" y="39.10353088378906" yaw="-89.33536529541016" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="210.74658203125" y="39.10353088378906" yaw="-89.33536529541016" z="0.0"/>
+         <position x="210.769775390625" y="37.103668212890625" yaw="-89.33536529541016" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="72" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="131.2595672607422" y="204.55787658691406" yaw="-16.464832305908203" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="131.2595672607422" y="204.55787658691406" yaw="-16.464832305908203" z="0.0"/>
+         <position x="133.33717346191406" y="203.92144775390625" yaw="-17.597219467163086" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="73" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-157.24400329589844" y="-206.23110961914062" yaw="170.74790954589844" z="10.015645980834961"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-157.24400329589844" y="-206.23110961914062" yaw="170.74790954589844" z="10.015645980834961"/>
+         <position x="-159.38841247558594" y="-205.85955810546875" yaw="169.59288024902344" z="10.015279769897461"/>
+      </waypoints>
+   </route>
+   <route id="74" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-225.78587341308594" y="33.506465911865234" yaw="270.80999755859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-225.78587341308594" y="33.506465911865234" yaw="270.80999755859375" z="10.0"/>
+         <position x="-225.75759887695312" y="31.506662368774414" yaw="270.80999755859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="75" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-205.1038360595703" y="84.33202362060547" yaw="-179.93443298339844" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-205.1038360595703" y="84.33202362060547" yaw="-179.93443298339844" z="0.0"/>
+         <position x="-207.1038360595703" y="84.3297348022461" yaw="-179.93443298339844" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="76" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="193.70408630371094" y="156.79124450683594" yaw="-58.36318588256836" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="193.70408630371094" y="156.79124450683594" yaw="-58.36318588256836" z="0.0"/>
+         <position x="194.82550048828125" y="154.9300994873047" yaw="-59.495567321777344" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="77" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="209.5218048095703" y="-104.6827621459961" yaw="-93.42230987548828" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="209.5218048095703" y="-104.6827621459961" yaw="-93.42230987548828" z="0.0"/>
+         <position x="209.37059020996094" y="-106.85074615478516" yaw="-94.55694580078125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="78" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-247.17530822753906" y="-53.36967086791992" yaw="89.156005859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-247.17530822753906" y="-53.36967086791992" yaw="89.156005859375" z="10.0"/>
+         <position x="-247.14584350585938" y="-51.3698844909668" yaw="89.156005859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="79" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="149.9459228515625" y="-171.4683380126953" yaw="34.271087646484375" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="149.9459228515625" y="-171.4683380126953" yaw="34.271087646484375" z="0.0"/>
+         <position x="151.38832092285156" y="-170.46441650390625" yaw="35.40571594238281" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="80" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="194.93191528320312" y="-153.1466522216797" yaw="-120.08619689941406" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="194.93191528320312" y="-153.1466522216797" yaw="-120.08619689941406" z="0.0"/>
+         <position x="193.82388305664062" y="-155.0162353515625" yaw="-121.2208251953125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="81" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-194.74156188964844" y="194.4385986328125" yaw="29.99049186706543" z="9.096702575683594"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-194.74156188964844" y="194.4385986328125" yaw="29.99049186706543" z="9.096702575683594"/>
+         <position x="-192.8424072265625" y="195.50877380371094" yaw="28.81212043762207" z="9.075599670410156"/>
+      </waypoints>
+   </route>
+   <route id="82" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-111.82669830322266" y="187.6155548095703" yaw="179.97128295898438" z="8.243735313415527"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-111.82669830322266" y="187.6155548095703" yaw="179.97128295898438" z="8.243735313415527"/>
+         <position x="-113.82669830322266" y="187.61656188964844" yaw="179.97128295898438" z="8.264838218688965"/>
+      </waypoints>
+   </route>
+   <route id="83" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="187.0181884765625" y="117.99188232421875" yaw="102.24878692626953" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="187.0181884765625" y="117.99188232421875" yaw="102.24878692626953" z="0.0"/>
+         <position x="186.62828063964844" y="119.7059555053711" yaw="103.38117218017578" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="84" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-265.14434814453125" y="-19.181859970092773" yaw="270.4167785644531" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-265.14434814453125" y="-19.181859970092773" yaw="270.4167785644531" z="0.0"/>
+         <position x="-265.1297912597656" y="-21.182138442993164" yaw="270.4167785644531" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="85" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="177.11117553710938" y="-142.00967407226562" yaw="60.36766052246094" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="177.11117553710938" y="-142.00967407226562" yaw="60.36766052246094" z="0.0"/>
+         <position x="177.96490478515625" y="-140.4735870361328" yaw="61.502288818359375" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="86" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-212.4818115234375" y="-95.21385955810547" yaw="-179.9136962890625" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-212.4818115234375" y="-95.21385955810547" yaw="-179.9136962890625" z="0.0"/>
+         <position x="-214.4818115234375" y="-95.21687316894531" yaw="-179.9136962890625" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="87" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-144.1448974609375" y="-186.53126525878906" yaw="357.193115234375" z="10.017688751220703"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-144.1448974609375" y="-186.53126525878906" yaw="357.193115234375" z="10.017688751220703"/>
+         <position x="-142.39320373535156" y="-186.59945678710938" yaw="358.34814453125" z="10.018054008483887"/>
+      </waypoints>
+   </route>
+   <route id="88" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="106.69990539550781" y="208.86790466308594" yaw="-3.4423720836639404" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="106.69990539550781" y="208.86790466308594" yaw="-3.4423720836639404" z="0.0"/>
+         <position x="108.86749267578125" y="208.7160186767578" yaw="-4.5747599601745605" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="89" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="211.00177001953125" y="17.10501480102539" yaw="-89.33536529541016" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="211.00177001953125" y="17.10501480102539" yaw="-89.33536529541016" z="0.0"/>
+         <position x="211.02496337890625" y="15.105144500732422" yaw="-89.33536529541016" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="90" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-245.97373962402344" y="121.9836196899414" yaw="79.48202514648438" z="9.811439514160156"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-245.97373962402344" y="121.9836196899414" yaw="79.48202514648438" z="9.811439514160156"/>
+         <position x="-245.5537872314453" y="124.1227035522461" yaw="78.30365753173828" z="9.800484657287598"/>
+      </waypoints>
+   </route>
+   <route id="91" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-265.1228942871094" y="-22.132112503051758" yaw="270.4167785644531" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-265.1228942871094" y="-22.132112503051758" yaw="270.4167785644531" z="0.0"/>
+         <position x="-265.10833740234375" y="-24.13205909729004" yaw="270.4167785644531" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="92" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-276.02655029296875" y="16.03209114074707" yaw="89.5054702758789" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-276.02655029296875" y="16.03209114074707" yaw="89.5054702758789" z="0.0"/>
+         <position x="-276.00665283203125" y="18.040170669555664" yaw="89.4162368774414" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="93" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-226.52098083496094" y="85.50126647949219" yaw="270.80999755859375" z="9.953512191772461"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-226.52098083496094" y="85.50126647949219" yaw="270.80999755859375" z="9.953512191772461"/>
+         <position x="-226.49270629882812" y="83.50146484375" yaw="270.80999755859375" z="9.958720207214355"/>
+      </waypoints>
+   </route>
+   <route id="94" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-100.76309204101562" y="-186.58348083496094" yaw="0.076446533203125" z="10.025741577148438"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-100.76309204101562" y="-186.58348083496094" yaw="0.076446533203125" z="10.025741577148438"/>
+         <position x="-98.76309204101562" y="-186.580810546875" yaw="0.076446533203125" z="10.025964736938477"/>
+      </waypoints>
+   </route>
+   <route id="95" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-23.826704025268555" y="187.5714569091797" yaw="179.97128295898438" z="0.7049468755722046"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-23.826704025268555" y="187.5714569091797" yaw="179.97128295898438" z="0.7049468755722046"/>
+         <position x="-25.826704025268555" y="187.5724639892578" yaw="179.97128295898438" z="0.8603091835975647"/>
+      </waypoints>
+   </route>
+   <route id="96" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-37.89513397216797" y="-207.4996337890625" yaw="-179.92355346679688" z="4.197221755981445"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-37.89513397216797" y="-207.4996337890625" yaw="-179.92355346679688" z="4.197221755981445"/>
+         <position x="-39.89512634277344" y="-207.50228881835938" yaw="-179.92355346679688" z="4.450218677520752"/>
+      </waypoints>
+   </route>
+   <route id="97" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-247.46990966796875" y="-73.36750030517578" yaw="89.156005859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-247.46990966796875" y="-73.36750030517578" yaw="89.156005859375" z="10.0"/>
+         <position x="-247.44044494628906" y="-71.36772155761719" yaw="89.156005859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="98" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="188.6396026611328" y="-101.84955596923828" yaw="87.59886169433594" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="188.6396026611328" y="-101.84955596923828" yaw="87.59886169433594" z="0.0"/>
+         <position x="188.69583129882812" y="-100.09307861328125" yaw="88.7334976196289" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="99" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-161.72706604003906" y="185.25167846679688" yaw="193.58758544921875" z="8.80295467376709"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-161.72706604003906" y="185.25167846679688" yaw="193.58758544921875" z="8.80295467376709"/>
+         <position x="-163.42185974121094" y="184.8235626220703" yaw="194.7659454345703" z="8.824056625366211"/>
+      </waypoints>
+   </route>
+   <route id="100" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-128.6561737060547" y="208.62399291992188" yaw="-0.028712520375847816" z="8.421419143676758"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-128.6561737060547" y="208.62399291992188" yaw="-0.028712520375847816" z="8.421419143676758"/>
+         <position x="-126.65616607666016" y="208.6230010986328" yaw="-0.028712520375847816" z="8.40031623840332"/>
+      </waypoints>
+   </route>
+   <route id="101" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="210.22557067871094" y="-55.26918029785156" yaw="-90.66909790039062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="210.22557067871094" y="-55.26918029785156" yaw="-90.66909790039062" z="0.0"/>
+         <position x="210.2022247314453" y="-57.26904296875" yaw="-90.66909790039062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="102" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="210.7502899169922" y="-10.33919906616211" yaw="-90.66909790039062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="210.7502899169922" y="-10.33919906616211" yaw="-90.66909790039062" z="0.0"/>
+         <position x="210.7269287109375" y="-12.339075088500977" yaw="-90.66909790039062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="103" town="Town05">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-246.55665588378906" y="-11.374226570129395" yaw="89.156005859375" z="10.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-246.55665588378906" y="-11.374226570129395" yaw="89.156005859375" z="10.0"/>
+         <position x="-246.52719116210938" y="-9.37444019317627" yaw="89.156005859375" z="10.0"/>
+      </waypoints>
+   </route>
+   <route id="104" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-183.70884704589844" y="-22.26781463623047" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-183.70884704589844" y="-22.26781463623047" yaw="179.7913055419922" z="0.0"/>
+         <position x="-185.70883178710938" y="-22.260530471801758" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="105" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-324.31121826171875" y="-3.665294647216797" yaw="149.97601318359375" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-324.31121826171875" y="-3.665294647216797" yaw="149.97601318359375" z="0.0"/>
+         <position x="-326.0578308105469" y="-2.638477325439453" yaw="149.12191772460938" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="106" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-259.4106140136719" y="135.0313720703125" yaw="180.13438415527344" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-259.4106140136719" y="135.0313720703125" yaw="180.13438415527344" z="0.0"/>
+         <position x="-261.4106140136719" y="135.0266876220703" yaw="180.13438415527344" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="107" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="349.5157775878906" y="251.6448516845703" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="349.5157775878906" y="251.6448516845703" yaw="0.019545903429389" z="0.0"/>
+         <position x="351.5157775878906" y="251.64553833007812" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="108" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-362.1581115722656" y="32.314170837402344" yaw="117.22830963134766" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-362.1581115722656" y="32.314170837402344" yaw="117.22830963134766" z="0.0"/>
+         <position x="-363.0699157714844" y="34.15015411376953" yaw="115.59148406982422" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="109" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="172.5158233642578" y="251.58447265625" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="172.5158233642578" y="251.58447265625" yaw="0.019545903429389" z="0.0"/>
+         <position x="174.5158233642578" y="251.58514404296875" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="110" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-255.6251678466797" y="-21.914825439453125" yaw="179.48190307617188" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-255.6251678466797" y="-21.914825439453125" yaw="179.48190307617188" z="0.0"/>
+         <position x="-257.62628173828125" y="-21.896697998046875" yaw="179.44241333007812" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="111" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="279.5157775878906" y="251.6209716796875" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="279.5157775878906" y="251.6209716796875" yaw="0.019545903429389" z="0.0"/>
+         <position x="281.5157775878906" y="251.6216583251953" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="112" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="416.5157775878906" y="251.66770935058594" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="416.5157775878906" y="251.66770935058594" yaw="0.019545903429389" z="0.0"/>
+         <position x="418.5157775878906" y="251.66839599609375" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="113" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="466.81829833984375" y="-24.519472122192383" yaw="-179.8748779296875" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="466.81829833984375" y="-24.519472122192383" yaw="-179.8748779296875" z="0.0"/>
+         <position x="464.81829833984375" y="-24.52383804321289" yaw="-179.8748779296875" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="114" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-370.711181640625" y="94.85079956054688" yaw="450.64923095703125" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-370.711181640625" y="94.85079956054688" yaw="450.64923095703125" z="0.0"/>
+         <position x="-370.72991943359375" y="96.85770416259766" yaw="450.4200744628906" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="115" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="309.74786376953125" y="-24.06511116027832" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="309.74786376953125" y="-24.06511116027832" yaw="179.7913055419922" z="0.0"/>
+         <position x="307.7478942871094" y="-24.05782699584961" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="116" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-10.226901054382324" y="361.1098937988281" yaw="93.23954010009766" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-10.226901054382324" y="361.1098937988281" yaw="93.23954010009766" z="0.0"/>
+         <position x="-10.36380386352539" y="363.0572509765625" yaw="94.80319213867188" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="117" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="356.74755859375" y="-24.236295700073242" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="356.74755859375" y="-24.236295700073242" yaw="179.7913055419922" z="0.0"/>
+         <position x="354.7475891113281" y="-24.22901153564453" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="118" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="218.5158233642578" y="251.60015869140625" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="218.5158233642578" y="251.60015869140625" yaw="0.019545903429389" z="0.0"/>
+         <position x="220.5158233642578" y="251.60084533691406" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="119" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="375.5157775878906" y="251.65371704101562" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="375.5157775878906" y="251.65371704101562" yaw="0.019545903429389" z="0.0"/>
+         <position x="377.5157775878906" y="251.65440368652344" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="120" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-219.59547424316406" y="-22.212675094604492" yaw="180.08680725097656" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-219.59547424316406" y="-22.212675094604492" yaw="180.08680725097656" z="0.0"/>
+         <position x="-221.60247802734375" y="-22.211694717407227" yaw="179.85763549804688" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="121" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="303.057373046875" y="151.17124938964844" yaw="0.23475660383701324" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="303.057373046875" y="151.17124938964844" yaw="0.23475660383701324" z="0.0"/>
+         <position x="305.0573425292969" y="151.179443359375" yaw="0.23475660383701324" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="122" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="270.1959533691406" y="52.34497833251953" yaw="-0.027895338833332062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="270.1959533691406" y="52.34497833251953" yaw="-0.027895338833332062" z="0.0"/>
+         <position x="272.1959533691406" y="52.3440055847168" yaw="-0.027895338833332062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="123" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-369.38616943359375" y="194.88668823242188" yaw="89.14167785644531" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-369.38616943359375" y="194.88668823242188" yaw="89.14167785644531" z="0.0"/>
+         <position x="-369.356201171875" y="196.88645935058594" yaw="89.14167785644531" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="124" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-288.7428894042969" y="59.149471282958984" yaw="-23.821670532226562" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-288.7428894042969" y="59.149471282958984" yaw="-23.821670532226562" z="0.0"/>
+         <position x="-286.97039794921875" y="58.41575241088867" yaw="-21.153076171875" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="125" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="408.7472229003906" y="-24.425691604614258" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="408.7472229003906" y="-24.425691604614258" yaw="179.7913055419922" z="0.0"/>
+         <position x="406.74725341796875" y="-24.418407440185547" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="126" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="332.74774169921875" y="-24.148883819580078" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="332.74774169921875" y="-24.148883819580078" yaw="179.7913055419922" z="0.0"/>
+         <position x="330.74774169921875" y="-24.141597747802734" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="127" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-306.91162109375" y="117.943603515625" yaw="236.38897705078125" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-306.91162109375" y="117.943603515625" yaw="236.38897705078125" z="0.0"/>
+         <position x="-307.929931640625" y="116.32512664794922" yaw="239.25790405273438" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="128" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="284.35595703125" y="52.33808517456055" yaw="-0.027895338833332062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="284.35595703125" y="52.33808517456055" yaw="-0.027895338833332062" z="0.0"/>
+         <position x="286.35595703125" y="52.33710861206055" yaw="-0.027895338833332062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="129" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="379.7474060058594" y="-24.320066452026367" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="379.7474060058594" y="-24.320066452026367" yaw="179.7913055419922" z="0.0"/>
+         <position x="377.7474365234375" y="-24.312782287597656" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="130" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="301.32794189453125" y="-24.034442901611328" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="301.32794189453125" y="-24.034442901611328" yaw="179.7913055419922" z="0.0"/>
+         <position x="299.3279724121094" y="-24.02716064453125" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="131" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-369.9554138183594" y="156.8909454345703" yaw="89.14167785644531" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-369.9554138183594" y="156.8909454345703" yaw="89.14167785644531" z="0.0"/>
+         <position x="-369.9254455566406" y="158.89071655273438" yaw="89.14167785644531" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="132" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="308.3559265136719" y="52.32640075683594" yaw="-0.027895338833332062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="308.3559265136719" y="52.32640075683594" yaw="-0.027895338833332062" z="0.0"/>
+         <position x="310.35595703125" y="52.32542419433594" yaw="-0.027895338833332062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="133" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="459.5157775878906" y="251.682373046875" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="459.5157775878906" y="251.682373046875" yaw="0.019545903429389" z="0.0"/>
+         <position x="461.5157775878906" y="251.6830596923828" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="134" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="579.5158081054688" y="251.7233123779297" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="579.5158081054688" y="251.7233123779297" yaw="0.019545903429389" z="0.0"/>
+         <position x="581.5158081054688" y="251.7239990234375" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="135" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="344.3559265136719" y="52.30887222290039" yaw="-0.027895338833332062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="344.3559265136719" y="52.30887222290039" yaw="-0.027895338833332062" z="0.0"/>
+         <position x="346.3559265136719" y="52.307899475097656" yaw="-0.027895338833332062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="136" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="493.5157775878906" y="251.6939697265625" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="493.5157775878906" y="251.6939697265625" yaw="0.019545903429389" z="0.0"/>
+         <position x="495.5157775878906" y="251.6946563720703" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="137" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="519.215576171875" y="152.05691528320312" yaw="0.23475660383701324" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="519.215576171875" y="152.05691528320312" yaw="0.23475660383701324" z="0.0"/>
+         <position x="521.215576171875" y="152.0651092529297" yaw="0.23475660383701324" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="138" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="436.7470397949219" y="-24.527673721313477" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="436.7470397949219" y="-24.527673721313477" yaw="179.7913055419922" z="0.0"/>
+         <position x="434.7470397949219" y="-24.520389556884766" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="139" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="146.5158233642578" y="251.57559204101562" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="146.5158233642578" y="251.57559204101562" yaw="0.019545903429389" z="0.0"/>
+         <position x="148.5158233642578" y="251.57627868652344" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="140" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-369.1818542480469" y="53.64479064941406" yaw="99.22319030761719" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-369.1818542480469" y="53.64479064941406" yaw="99.22319030761719" z="0.0"/>
+         <position x="-369.48150634765625" y="55.67270278930664" yaw="97.58635711669922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="141" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="437.5157775878906" y="251.67486572265625" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="437.5157775878906" y="251.67486572265625" yaw="0.019545903429389" z="0.0"/>
+         <position x="439.5157775878906" y="251.67555236816406" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="142" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="269.0576477050781" y="151.0319366455078" yaw="0.23475660383701324" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="269.0576477050781" y="151.0319366455078" yaw="0.23475660383701324" z="0.0"/>
+         <position x="271.0576477050781" y="151.04013061523438" yaw="0.23475660383701324" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="143" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="326.0571594238281" y="151.26548767089844" yaw="0.23475660383701324" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="326.0571594238281" y="151.26548767089844" yaw="0.23475660383701324" z="0.0"/>
+         <position x="328.0571594238281" y="151.273681640625" yaw="0.23475660383701324" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="144" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="319.5157775878906" y="251.63461303710938" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="319.5157775878906" y="251.63461303710938" yaw="0.019545903429389" z="0.0"/>
+         <position x="321.5157775878906" y="251.6352996826172" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="145" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-347.4090881347656" y="12.77653980255127" yaw="136.87026977539062" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-347.4090881347656" y="12.77653980255127" yaw="136.87026977539062" z="0.0"/>
+         <position x="-348.88494873046875" y="14.199201583862305" yaw="135.2334442138672" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="146" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-284.85382080078125" y="133.72918701171875" yaw="194.7894744873047" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-284.85382080078125" y="133.72918701171875" yaw="194.7894744873047" z="0.0"/>
+         <position x="-286.6898498535156" y="133.19491577148438" yaw="197.6584014892578" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="147" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-9.874357223510742" y="355.7557067871094" yaw="95.74666595458984" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-9.874357223510742" y="355.7557067871094" yaw="95.74666595458984" z="0.0"/>
+         <position x="-10.049971580505371" y="357.799072265625" yaw="94.07759857177734" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="148" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="657.5504150390625" y="0.5840702056884766" yaw="237.3731689453125" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="657.5504150390625" y="0.5840702056884766" yaw="237.3731689453125" z="0.0"/>
+         <position x="656.095458984375" y="-1.5706253051757812" yaw="234.56576538085938" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="149" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-286.7441711425781" y="-18.450471878051758" yaw="167.0579833984375" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-286.7441711425781" y="-18.450471878051758" yaw="167.0579833984375" z="0.0"/>
+         <position x="-288.71533203125" y="-17.981990814208984" yaw="166.20388793945312" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="150" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="278.3280944824219" y="-23.950672149658203" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="278.3280944824219" y="-23.950672149658203" yaw="179.7913055419922" z="0.0"/>
+         <position x="276.328125" y="-23.943387985229492" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="151" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-363.586669921875" y="223.77682495117188" yaw="420.94580078125" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-363.586669921875" y="223.77682495117188" yaw="420.94580078125" z="0.0"/>
+         <position x="-362.5348205566406" y="225.57167053222656" yaw="418.309814453125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="152" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-370.55462646484375" y="116.89543914794922" yaw="89.14167785644531" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-370.55462646484375" y="116.89543914794922" yaw="89.14167785644531" z="0.0"/>
+         <position x="-370.524658203125" y="118.89521026611328" yaw="89.14167785644531" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="153" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="550.5158081054688" y="251.7134246826172" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="550.5158081054688" y="251.7134246826172" yaw="0.019545903429389" z="0.0"/>
+         <position x="552.5158081054688" y="251.71409606933594" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="154" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-313.29296875" y="96.25763702392578" yaw="-89.20254516601562" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-313.29296875" y="96.25763702392578" yaw="-89.20254516601562" z="0.0"/>
+         <position x="-313.22161865234375" y="94.34064483642578" yaw="-86.533935546875" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="155" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="513.5158081054688" y="251.70079040527344" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="513.5158081054688" y="251.70079040527344" yaw="0.019545903429389" z="0.0"/>
+         <position x="515.5158081054688" y="251.70147705078125" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="156" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="193.5158233642578" y="251.5916290283203" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="193.5158233642578" y="251.5916290283203" yaw="0.019545903429389" z="0.0"/>
+         <position x="195.5158233642578" y="251.59231567382812" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="157" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-232.62611389160156" y="-22.122798919677734" yaw="179.48190307617188" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-232.62611389160156" y="-22.122798919677734" yaw="179.48190307617188" z="0.0"/>
+         <position x="-234.6260223388672" y="-22.104713439941406" yaw="179.48190307617188" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="158" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="665.8593139648438" y="20.101764678955078" yaw="252.71356201171875" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="665.8593139648438" y="20.101764678955078" yaw="252.71356201171875" z="0.0"/>
+         <position x="665.1998901367188" y="18.033727645874023" yaw="251.91543579101562" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="159" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-161.708984375" y="-22.347944259643555" yaw="179.7913055419922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-161.708984375" y="-22.347944259643555" yaw="179.7913055419922" z="0.0"/>
+         <position x="-163.708984375" y="-22.340660095214844" yaw="179.7913055419922" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="160" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="396.5157775878906" y="251.660888671875" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="396.5157775878906" y="251.660888671875" yaw="0.019545903429389" z="0.0"/>
+         <position x="398.5157775878906" y="251.66156005859375" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="161" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="239.5158233642578" y="251.60733032226562" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="239.5158233642578" y="251.60733032226562" yaw="0.019545903429389" z="0.0"/>
+         <position x="241.5158233642578" y="251.60800170898438" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="162" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="299.5157775878906" y="251.62779235839844" yaw="0.019545903429389" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="299.5157775878906" y="251.62779235839844" yaw="0.019545903429389" z="0.0"/>
+         <position x="301.5157775878906" y="251.62847900390625" yaw="0.019545903429389" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="163" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-305.0787658691406" y="72.1431655883789" yaw="-53.176361083984375" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-305.0787658691406" y="72.1431655883789" yaw="-53.176361083984375" z="0.0"/>
+         <position x="-303.8935852050781" y="70.63477325439453" yaw="-50.50775146484375" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="164" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="488.8182373046875" y="-24.471435546875" yaw="-179.8748779296875" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="488.8182373046875" y="-24.471435546875" yaw="-179.8748779296875" z="0.0"/>
+         <position x="486.8182373046875" y="-24.475801467895508" yaw="-179.8748779296875" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="165" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="498.2157287597656" y="151.97088623046875" yaw="0.23475660383701324" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="498.2157287597656" y="151.97088623046875" yaw="0.23475660383701324" z="0.0"/>
+         <position x="500.2156982421875" y="151.9790802001953" yaw="0.23475660383701324" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="166" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-306.0797424316406" y="-12.460491180419922" yaw="158.51699829101562" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-306.0797424316406" y="-12.460491180419922" yaw="158.51699829101562" z="0.0"/>
+         <position x="-307.9594421386719" y="-11.704463958740234" yaw="157.66290283203125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="167" town="Town06">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-370.3023681640625" y="73.83887481689453" yaw="91.17143249511719" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-370.3023681640625" y="73.83887481689453" yaw="91.17143249511719" z="0.0"/>
+         <position x="-370.3432312011719" y="75.83845520019531" yaw="91.17143249511719" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="168" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="87.37017059326172" y="121.06786346435547" yaw="133.56517028808594" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="87.37017059326172" y="121.06786346435547" yaw="133.56517028808594" z="0.0"/>
+         <position x="86.1576919555664" y="122.27424621582031" yaw="136.72329711914062" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="169" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="9.412545204162598" y="-57.40081787109375" yaw="359.9765625" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="9.412545204162598" y="-57.40081787109375" yaw="359.9765625" z="0.0"/>
+         <position x="11.412545204162598" y="-57.401634216308594" yaw="359.9765625" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="170" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-9.582088470458984" y="140.65231323242188" yaw="0.3521270751953125" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-9.582088470458984" y="140.65231323242188" yaw="0.3521270751953125" z="0.0"/>
+         <position x="-7.582124710083008" y="140.66461181640625" yaw="0.3521270751953125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="171" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="3.7618916034698486" y="140.74024963378906" yaw="0.6328414082527161" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="3.7618916034698486" y="140.74024963378906" yaw="0.6328414082527161" z="0.0"/>
+         <position x="5.740721702575684" y="140.7660675048828" yaw="0.8620245456695557" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="172" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="98.27530670166016" y="98.13606262207031" yaw="98.37906646728516" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="98.27530670166016" y="98.13606262207031" yaw="98.37906646728516" z="0.0"/>
+         <position x="97.97911071777344" y="99.89546203613281" yaw="100.7332763671875" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="173" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="109.92987823486328" y="-9.333781242370605" yaw="-89.6092529296875" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="109.92987823486328" y="-9.333781242370605" yaw="-89.6092529296875" z="0.0"/>
+         <position x="109.94214630126953" y="-11.346802711486816" yaw="-89.74725341796875" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="174" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-5.837974548339844" y="-57.555110931396484" yaw="0.5967352390289307" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-5.837974548339844" y="-57.555110931396484" yaw="0.5967352390289307" z="0.0"/>
+         <position x="-3.8425004482269287" y="-57.53409194946289" yaw="0.652130126953125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="175" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="4.632763862609863" y="-57.41167068481445" yaw="360.50482177734375" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="4.632763862609863" y="-57.41167068481445" yaw="360.50482177734375" z="0.0"/>
+         <position x="6.66817569732666" y="-57.40061569213867" yaw="360.11798095703125" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="176" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="109.93666076660156" y="-10.336318969726562" yaw="-89.63265991210938" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="109.93666076660156" y="-10.336318969726562" yaw="-89.63265991210938" z="0.0"/>
+         <position x="109.94557189941406" y="-12.35729694366455" yaw="-89.86184692382812" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="177" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="98.86802673339844" y="-52.74653625488281" yaw="-131.3137664794922" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="98.86802673339844" y="-52.74653625488281" yaw="-131.3137664794922" z="0.0"/>
+         <position x="97.32923889160156" y="-54.41016387939453" yaw="-134.22125244140625" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="178" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="109.56280517578125" y="-29.382476806640625" yaw="-97.87762451171875" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="109.56280517578125" y="-29.382476806640625" yaw="-97.87762451171875" z="0.0"/>
+         <position x="109.19536590576172" y="-31.6186580657959" yaw="-100.78511047363281" z="0.0"/>
+      </waypoints>
+   </route>
+   <route id="179" town="Town10HD">
+      <weathers>
+         <weather cloudiness="5.0" fog_density="2.0" fog_distance="0.75" fog_falloff="0.1" mie_scattering_scale="0.03" precipitation="0.0" precipitation_deposits="0.0" route_percentage="0" scattering_intensity="1.0" sun_altitude_angle="90.0" sun_azimuth_angle="-1.0" wetness="0.0" wind_intensity="10.0"/>
+      </weathers>
+      <scenarios>
+         <scenario name="OpenDoor01_0" type="OpenDoor01">
+            <trigger_point x="-26.836833953857422" y="-57.77382278442383" yaw="0.5967352390289307" z="0.0"/>
+         </scenario>
+      </scenarios>
+      <waypoints>
+         <position x="-26.836833953857422" y="-57.77382278442383" yaw="0.5967352390289307" z="0.0"/>
+         <position x="-24.836942672729492" y="-57.75299072265625" yaw="0.5967352390289307" z="0.0"/>
+      </waypoints>
+   </route>
+</routes>

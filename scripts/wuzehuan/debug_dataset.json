@@ -1,0 +1,265 @@
+{
+    "dataset": {
+        "_class_name": "dwm.datasets.pap_100k.MotionDataset",
+        "scene_indices_path": "/mnt/storage/user/wuzehuan/Downloads/data/pap/pap_pvb_b1_train_indices.json",
+        "fs": {
+            "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+            "fs": {
+                "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                "fs": {
+                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                }
+            },
+            "paths": [
+                "data/pap/pap_pvb_b1.zip"
+            ],
+            "enable_cached_info": true
+        },
+        "sequence_length": 1,
+        "fps_stride_tuples": [
+            [
+                10,
+                0.1
+            ]
+        ],
+        "sensor_channels": [
+            "lidar/top",
+            "camera/left_front_camera",
+            "camera/center_camera_fov30",
+            "camera/right_front_camera",
+            "camera/right_rear_camera",
+            "camera/rear_camera",
+            "camera/left_rear_camera",
+            "camera/center_camera_fov120"
+        ],
+        "enable_camera_transforms": true,
+        "enable_ego_transforms": true,
+        "_3dbox_image_settings": {
+            "fs": {
+                "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                "fs": {
+                    "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                },
+                "paths": [
+                    "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/pap_pvb_b1_annotation.zip"
+                ],
+                "enable_cached_info": true
+            },
+            "time_list_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/pap_pvb_b1_annotation_times.json",
+            "color_table": {
+                "PEDESTRIAN_NORMAL": [
+                    255,
+                    0,
+                    0
+                ],
+                "PEDESTRIAN_TRAFFIC_POLICE": [
+                    255,
+                    0,
+                    0
+                ],
+                "CYCLIST_BICYCLE": [
+                    128,
+                    255,
+                    0
+                ],
+                "CYCLIST_MOTOR": [
+                    0,
+                    255,
+                    128
+                ],
+                "VEHICLE_BUS": [
+                    128,
+                    0,
+                    255
+                ],
+                "VEHICLE_CAR": [
+                    0,
+                    0,
+                    255
+                ],
+                "VEHICLE_MULTI_STAGE": [
+                    0,
+                    0,
+                    255
+                ],
+                "VEHICLE_PICKUP": [
+                    255,
+                    255,
+                    0
+                ],
+                "VEHICLE_POLICE": [
+                    255,
+                    128,
+                    128
+                ],
+                "VEHICLE_SPECIAL": [
+                    255,
+                    128,
+                    128
+                ],
+                "VEHICLE_SUV": [
+                    0,
+                    0,
+                    255
+                ],
+                "VEHICLE_TRIKE": [
+                    0,
+                    255,
+                    0
+                ],
+                "VEHICLE_TRUCK": [
+                    255,
+                    255,
+                    0
+                ]
+            },
+            "edge_indices": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    0,
+                    4
+                ],
+                [
+                    1,
+                    5
+                ],
+                [
+                    2,
+                    6
+                ],
+                [
+                    3,
+                    7
+                ],
+                [
+                    4,
+                    5
+                ],
+                [
+                    4,
+                    6
+                ],
+                [
+                    5,
+                    7
+                ],
+                [
+                    6,
+                    7
+                ],
+                [
+                    6,
+                    3
+                ],
+                [
+                    6,
+                    5
+                ]
+            ]
+        },
+        "image_description_settings": {
+            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/pap_pvb_b1_caption.json",
+            "time_list_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/pap_pvb_b1_caption_times.json",
+            "align_keys": [
+                "time",
+                "weather"
+            ],
+            "reorder_keys": true,
+            "drop_rates": {
+                "environment": 0.04,
+                "objects": 0.08,
+                "image_description": 0.16
+            }
+        },
+        "seek_correction_offset_ms": -500,
+        "stub_key_data_dict": {
+            "crossview_mask": [
+                "content",
+                {
+                    "_class_name": "torch.tensor",
+                    "data": [
+                        [
+                            true,
+                            true,
+                            false,
+                            false,
+                            false,
+                            true,
+                            true
+                        ],
+                        [
+                            true,
+                            true,
+                            true,
+                            false,
+                            false,
+                            false,
+                            true
+                        ],
+                        [
+                            false,
+                            true,
+                            true,
+                            true,
+                            false,
+                            false,
+                            true
+                        ],
+                        [
+                            false,
+                            false,
+                            true,
+                            true,
+                            true,
+                            false,
+                            false
+                        ],
+                        [
+                            false,
+                            false,
+                            false,
+                            true,
+                            true,
+                            true,
+                            false
+                        ],
+                        [
+                            true,
+                            false,
+                            false,
+                            false,
+                            true,
+                            true,
+                            false
+                        ],
+                        [
+                            true,
+                            true,
+                            true,
+                            false,
+                            false,
+                            false,
+                            true
+                        ]
+                    ]
+                }
+            ]
+        }
+    }
+}

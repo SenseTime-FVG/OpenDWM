@@ -1,0 +1,148 @@
+{
+    "validation_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+            "fs": {
+                "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                "fs": {
+                    "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                    "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                    "fs": {
+                        "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                    }
+                },
+                "paths": [
+                    "workspaces/worldmodels/data/nuscenes/interp_12Hz_trainval.zip",
+                    "data/nuscenes/v1.0-trainval01_blobs.zip",
+                    "data/nuscenes/v1.0-trainval02_blobs.zip",
+                    "data/nuscenes/v1.0-trainval03_blobs.zip",
+                    "data/nuscenes/v1.0-trainval04_blobs.zip",
+                    "data/nuscenes/v1.0-trainval05_blobs.zip",
+                    "data/nuscenes/v1.0-trainval06_blobs.zip",
+                    "data/nuscenes/v1.0-trainval07_blobs.zip",
+                    "data/nuscenes/v1.0-trainval08_blobs.zip",
+                    "data/nuscenes/v1.0-trainval09_blobs.zip",
+                    "data/nuscenes/v1.0-trainval10_blobs.zip",
+                    "data/nuscenes/nuScenes-map-expansion-v1.3.zip"
+                ]
+            },
+            "dataset_name": "interp_12Hz_trainval",
+            "split": "val",
+            "sequence_length": 227,
+            "fps_stride_tuples": [
+                [
+                    12,
+                    20
+                ]
+            ],
+            "sensor_channels": [
+                "CAM_FRONT_LEFT",
+                "CAM_FRONT",
+                "CAM_FRONT_RIGHT",
+                "CAM_BACK_RIGHT",
+                "CAM_BACK",
+                "CAM_BACK_LEFT"
+            ],
+            "keyframe_only": true,
+            "enable_sample_data": true,
+            "enable_synchronization_check": false,
+            "enable_camera_transforms": true,
+            "enable_ego_transforms": true,
+            "_3dbox_image_settings": {},
+            "hdmap_image_settings": {},
+            "image_description_settings": {
+                "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_val.json",
+                "time_list_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/data/nuscenes_v1.0-trainval_caption_v2_times_val.json",
+                "align_keys": [
+                    "time",
+                    "weather"
+                ]
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images",
+            "image_description"
+        ]
+    },
+    "validation_dataloader": {
+        "batch_size": 1,
+        "num_workers": 1,
+        "prefetch_factor": 3,
+        "shuffle": true,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "persistent_workers": true
+    }
+}
