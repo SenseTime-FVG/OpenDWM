@@ -9,6 +9,9 @@ import torchvision
 from einops import rearrange
 from collections import defaultdict
 
+import cv2
+import dwm.utils.preview
+
 class SimpleVisualizer:
     """
     A Simple Visualizer, it can accept generated results with shape [b,c,h,w] and [b,t,c,h,w]
@@ -50,9 +53,11 @@ class SimpleVisualizer:
                 imageio.mimsave(path, outputs, duration=1000 * 1 / fps, loop=10)
         else:
             path = path.replace('.gif', '.mp4')
-            with imageio.get_writer(path, fps=fps) as video_writer:
-                for image in outputs:
-                    video_writer.append_data(image)
+            # outputs -> t,c,h,w
+            outputs = torch.stack([torch.from_numpy(v) for v in outputs], dim=0)
+            outputs = torch.tensor(outputs).permute(0, 3, 1, 2)
+            dwm.utils.preview.save_tensor_to_video(path, "libx264", fps, outputs)
+            print(f"Demo video is saved to [{path}]")
 
     def clear(self):
         self.videos = defaultdict(list)
