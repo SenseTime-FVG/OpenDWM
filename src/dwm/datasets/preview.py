@@ -240,11 +240,14 @@ class PreviewDataset(Dataset):
         result["pts"] = torch.tensor(
             [[(int(i["timestamp"]))] * len(self.sensor_channels)
              for i in segment], dtype=torch.float32)
-        if "CAM" in self.sensor_channels:
-            result["images"] = [self.get_camera_element(
-                i, "rgb") for i in segment]
-            result["image_description"] = [self.get_camera_element(
-                i, "image_description") for i in segment]
+        if any(["CAM" in i for i in self.sensor_channels]):
+            result["images"] = [
+                self.get_camera_element(i, "rgb") for i in segment
+            ]
+            result["image_description"] = [
+                self.get_camera_element(i, "image_description")
+                for i in segment
+            ]
         if "LIDAR_TOP" in self.sensor_channels:
             result["lidar_points"] = [
                 self.get_lidar_element(i, "lidar") for i in segment]

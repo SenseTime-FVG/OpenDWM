@@ -66,8 +66,6 @@ Our cross-view temporal SD (CTSD) pipeline support loading the pretrained SD 2.1
 | [SD 3.0](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers) | | [UniMLVG Config](configs/ctsd/unimlvg/ctsd_unimlvg_stage3_tirda_bm_nwa.json), [Download](http://103.237.29.236:10030/ctsd_unimlvg_tirda_bm_nwa_60k.pth) |
 | [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_nwao_20k.pth) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_bm_nwao_40k.pth) |
 
-
-
 ### LiDAR Models
 
 You can download our pre-trained tokenzier and generation model in the following link.
@@ -75,8 +73,6 @@ You can download our pre-trained tokenzier and generation model in the following
 | Model Architecture | Tokenizer | Layout (box, map) conditioned  <br/> driving generation |
 | :-: | :-: | :-: |
 | MaskGIT | VQVAE, [Config](configs/lidar/lidar_vqvae-multi_datasets.json), [Download(TODO)]() | [Config](configs/lidar/lidar_maskgit-nusc.json), [Download(TODO)]() |
-
-
 
 ## Examples
 
@@ -98,14 +94,6 @@ PYTHONPATH=src python examples/ctsd_generation_example.py -c examples/ctsd_35_6v
 PYTHONPATH=src python src/dwm/preview.py -c examples/ctsd_35_6views_video_generation_with_layout.json -o output/ctsd_35_6views_video_generation_with_layout
 ```
 
-### T2V, I2V generation with UniMLVG pipeline
-
-Download base model (for VAE, text encoders, scheduler config) and driving generation model checkpoint. Prepare the data package, or download the sample data package ([carla_town04_package](http://103.237.29.236:10030/carla_town04_package.zip), [nuscenes_scene-0627_package.zip](http://103.237.29.236:10030/nuscenes_scene-0627_package.zip)). Then run follow command for generation.
-
-```bash
-PYTHONPATH=src python src/dwm/preview.py -c examples/unimlvg_stage2_tirda_nwa_preview.json -o output/unimlvg_stage2_tirda_nwa_preview
-```
-
 ### Layout conditioned LiDAR generation with MaskGIT pipeline
 
 1. Download LiDAR tokenizer (VQVAE) and LiDAR MaskGIT generation model checkpoint.
@@ -115,9 +103,6 @@ PYTHONPATH=src python src/dwm/preview.py -c examples/unimlvg_stage2_tirda_nwa_pr
 ```bash
 PYTHONPATH=src python src/dwm/preview.py -c examples/lidar_maskgit_preview.json -o output/test
 ```
-
-
-
 
 ## Train
 
