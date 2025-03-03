@@ -56,8 +56,13 @@ def make_lidar_preview_tensor(
     if "hdmap_bev_images_denorm" in batch:
         collected_images.append(batch["hdmap_bev_images_denorm"])
 
-    collected_images.append(
-        generated_volumn.amax(-3, keepdim=True).repeat_interleave(3, -3).cpu())
+    if isinstance(generated_volumn, list):
+        for gv in generated_volumn:
+            collected_images.append(
+                gv.amax(-3, keepdim=True).repeat_interleave(3, -3).cpu())
+    else:
+        collected_images.append(
+            generated_volumn.amax(-3, keepdim=True).repeat_interleave(3, -3).cpu())
 
     # assume all BEV images have the same size
     stacked_images = torch.stack(collected_images)
