@@ -1,7 +1,7 @@
 import torch
 import torchmetrics
 import torch.distributed
-from dwm.utils.metrics_copilot4d import compute_chamfer_distance, compute_chamfer_distance_inner, compute_ray_errors
+from dwm.utils.metrics_pc import compute_chamfer_distance, compute_chamfer_distance_inner
 
 
 class PointCloudChamfer(torchmetrics.Metric):
