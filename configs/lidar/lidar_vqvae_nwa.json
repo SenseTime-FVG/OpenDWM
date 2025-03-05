@@ -25,6 +25,31 @@
     ],
     "pipeline": {
         "_class_name": "dwm.pipelines.lidar_vqvae.LidarCodebook",
+        "common_config": {
+            "ray_cast_center": [
+                1.0,
+                0.0,
+                2.0
+            ],
+            "autocast": {
+                "device_type": "cuda"
+            }
+        },
+        "training_config": {
+            "loss_coef_dict": {
+                "voxel_loss": 100.0,
+                "emb_loss": 10.0,
+                "depth_loss": 0.05,
+                "sdf_loss": 0.05
+            },
+            "enable_grad_scaler": true
+        },
+        "inference_config": {
+            "preview_image_size": [
+                640,
+                640
+            ]
+        },
         "vq_point_cloud": {
             "_class_name": "dwm.models.vq_point_cloud.VQPointCloud",
             "voxelizer": {
