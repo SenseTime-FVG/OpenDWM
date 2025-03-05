@@ -1,6 +1,0 @@
-{
-    "_class_name": "dwm.fs.s3fs.ForkableS3FileSystem",
-    "endpoint_url": "http://aoss-internal-v2.st-sh-01.sensecoreapi-oss.cn",
-    "aws_access_key_id": "4853705CDE93446E8D902F70291C2C92",
-    "aws_secret_access_key": ""
-}
