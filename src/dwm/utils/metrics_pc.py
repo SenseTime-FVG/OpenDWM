@@ -12,10 +12,6 @@ import cv2
 import concurrent.futures
 from functools import partial
 
-# ===COPILOT4D
-# PC_RANGE = [-70.0, -70.0, -4.5, 70.0, 70.0, 4.5]
-# PC_RANGE = [-50.0, -50.0, -5, 50.0, 50.0, 3]
-# PC_RANGE = [-30.0, -30.0, -5, 30.0, 30.0, 3]
 
 DEFAULT_HZ = {"kittiraw": 10, "nuscenes": 2}
 chamfer_distance = ChamferDistance()
