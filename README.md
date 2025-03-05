@@ -49,9 +49,9 @@ python -m pip install torch==2.5.1 torchvision==0.20.1
 Clone the repository, then install the dependencies.
 
 ```
-cd DWM
+cd OpenDWM
 git submodule update --init --recursive
-python -m pip install requirements.txt -r
+python -m pip install -r requirements.txt
 ```
 
 ## Models
