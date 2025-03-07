@@ -755,5 +755,13 @@
             ]
         },
         "persistent_workers": true
+    },
+    "informations": {
+        "iou": 0.093,
+        "chamfer_distance": 0.093,
+        "chamfer_distance_30": 1.288,
+        "chamfer_distance_40": 2.095,
+        "total_batch_sizes": 64,
+        "steps": 150000
     }
 }
