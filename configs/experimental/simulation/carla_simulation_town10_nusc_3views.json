@@ -1,0 +1,276 @@
+{
+    "world_settings": {
+        "synchronous_mode": true,
+        "fixed_delta_seconds": 0.1
+    },
+    "total_steps": 65536,
+    "seed": 0,
+    "actor_configs": [
+        {
+            "id": "vehicle.lincoln.mkz_2017",
+            "attributes": {
+                "role_name": "hero"
+            },
+            "spawn_index": 1,
+            "state_machine": "dwm.utils.carla_actor_state_machines.BevSpectator",
+            "report_actor_id": true,
+            "child_configs": [
+                {
+                    "id": "sensor.camera.rgb",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.895",
+                        "role_name": "CAM_FRONT_LEFT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            0.02387798135,
+                            -0.494631336551,
+                            1.50932822144
+                        ],
+                        "rotation": [
+                            0.652698,
+                            -55.34048,
+                            0.404783
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.semantic_segmentation",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.895",
+                        "role_name": "CAM_FRONT_LEFT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            0.02387798135,
+                            -0.494631336551,
+                            1.50932822144
+                        ],
+                        "rotation": [
+                            0.652698,
+                            -55.34048,
+                            0.404783
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.rgb",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "65.105",
+                        "role_name": "CAM_FRONT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            0.22200568478,
+                            0.00475453292289,
+                            1.49491291905
+                        ],
+                        "rotation": [
+                            0.483232,
+                            -0.587877,
+                            0.700754
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.semantic_segmentation",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "65.105",
+                        "role_name": "CAM_FRONT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            0.22200568478,
+                            0.00475453292289,
+                            1.49491291905
+                        ],
+                        "rotation": [
+                            0.483232,
+                            -0.587877,
+                            0.700754
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.rgb",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.951",
+                        "role_name": "CAM_FRONT_RIGHT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            0.0508477543,
+                            0.493404796419,
+                            1.49574800619
+                        ],
+                        "rotation": [
+                            1.75806,
+                            57.562786,
+                            1.6914
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.semantic_segmentation",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.951",
+                        "role_name": "CAM_FRONT_RIGHT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            0.0508477543,
+                            0.493404796419,
+                            1.49574800619
+                        ],
+                        "rotation": [
+                            1.75806,
+                            57.562786,
+                            1.6914
+                        ]
+                    },
+                    "report_actor_id": true
+                }
+            ]
+        },
+        {
+            "pattern": "vehicle.audi.*",
+            "spawn_index": 0
+        },
+        {
+            "pattern": "vehicle.tesla.*",
+            "spawn_index": 51
+        },
+        {
+            "pattern": "vehicle.tesla.*",
+            "spawn_index": 52
+        },
+        {
+            "pattern": "vehicle.nissan.*",
+            "spawn_index": 99
+        },
+        {
+            "pattern": "vehicle.audi.*",
+            "spawn_index": 102
+        },
+        {
+            "pattern": "vehicle.mercedes.*",
+            "spawn_index": 79
+        },
+        {
+            "pattern": "vehicle.tesla.*",
+            "spawn_index": 108
+        },
+        {
+            "pattern": "vehicle.mercedes.*",
+            "spawn_index": 53
+        },
+        {
+            "pattern": "vehicle.nissan.*",
+            "spawn_index": 94
+        },
+        {
+            "pattern": "walker.pedestrian.*",
+            "attributes": {
+                "is_invincible": "false",
+                "speed": "1.7"
+            },
+            "spawn_transform": {
+                "location": [
+                    -69,
+                    36,
+                    1
+                ]
+            },
+            "child_configs": [
+                {
+                    "id": "controller.ai.walker",
+                    "spawn_transform": {},
+                    "state_machine": "dwm.utils.carla_actor_state_machines.ClassicPedestrian"
+                }
+            ]
+        },
+        {
+            "pattern": "walker.pedestrian.*",
+            "attributes": {
+                "is_invincible": "false",
+                "speed": "1.7"
+            },
+            "spawn_transform": {
+                "location": [
+                    -52,
+                    36,
+                    1
+                ]
+            },
+            "child_configs": [
+                {
+                    "id": "controller.ai.walker",
+                    "spawn_transform": {},
+                    "state_machine": "dwm.utils.carla_actor_state_machines.ClassicPedestrian"
+                }
+            ]
+        },
+        {
+            "pattern": "walker.pedestrian.*",
+            "attributes": {
+                "is_invincible": "false",
+                "speed": "1.7"
+            },
+            "spawn_transform": {
+                "location": [
+                    -32,
+                    4,
+                    1
+                ]
+            },
+            "child_configs": [
+                {
+                    "id": "controller.ai.walker",
+                    "spawn_transform": {},
+                    "state_machine": "dwm.utils.carla_actor_state_machines.ClassicPedestrian"
+                }
+            ]
+        },
+        {
+            "pattern": "walker.pedestrian.*",
+            "attributes": {
+                "is_invincible": "false",
+                "speed": "1.7"
+            },
+            "spawn_transform": {
+                "location": [
+                    -49,
+                    25,
+                    1
+                ]
+            },
+            "child_configs": [
+                {
+                    "id": "controller.ai.walker",
+                    "spawn_transform": {},
+                    "state_machine": "dwm.utils.carla_actor_state_machines.ClassicPedestrian"
+                }
+            ]
+        }
+    ],
+    "traffic_manager_settings":{
+        "set_global_distance_to_leading_vehicle": 20
+    }
+}

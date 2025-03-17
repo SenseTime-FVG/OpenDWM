@@ -1,0 +1,273 @@
+{
+    "device": "cuda",
+    "generator_seed": 0,
+    "global_state": {
+        "carla_client": {
+            "_class_name": "carla.Client",
+            "host": "127.0.0.1",
+            "port": 2000,
+            "worker_threads": 1
+        }
+    },
+    "preview_condition": true,
+    "pipeline": {
+        "_class_name": "dwm.pipelines.ctsd.StreamingCrossviewTemporalSD",
+        "common_config": {
+            "frame_prediction_style": "diffusion_forcing",
+            "cat_condition": true,
+            "cond_with_action": false,
+            "condition_on_all_frames": true,
+            "uncondition_image_color": 0.1255,
+            "added_time_ids": "fps_camera_transforms",
+            "camera_intrinsic_embedding_indices": [
+                0,
+                4,
+                2,
+                5
+            ],
+            "camera_intrinsic_denom_embedding_indices": [
+                1,
+                1,
+                0,
+                1
+            ],
+            "camera_transform_embedding_indices": [
+                2,
+                6,
+                10,
+                3,
+                7,
+                11
+            ],
+            "autocast": {
+                "device_type": "cuda"
+            },
+            "text_encoder_load_args": {
+                "variant": "fp16",
+                "torch_dtype": {
+                    "_class_name": "get_class",
+                    "class_name": "torch.float16"
+                },
+                "quantization_config": {
+                    "_class_name": "diffusers.quantizers.quantization_config.BitsAndBytesConfig",
+                    "load_in_8bit": true
+                }
+            }
+        },
+        "training_config": {},
+        "inference_config": {
+            "scheduler": "dwm.schedulers.temporal_independent.FlowMatchEulerDiscreteScheduler",
+            "guidance_scale": 4,
+            "inference_steps": 24,
+            "preview_image_size": [
+                304,
+                172
+            ],
+            "sequence_length_per_iteration": 6,
+            "text_prompt_interval": 4,
+            "autoregression_data_exception_for_take_sequence": [
+                "crossview_mask"
+            ],
+            "autoregression_condition_exception_for_take_sequence": [
+                "disable_crossview",
+                "disable_temporal",
+                "crossview_attention_mask",
+                "camera_intrinsics_norm",
+                "camera2referego"
+            ]
+        },
+        "model": {
+            "_class_name": "dwm.models.crossview_temporal_dit.DiTCrossviewTemporalConditionModel",
+            "dual_attention_layers": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ],
+            "attention_head_dim": 64,
+            "caption_projection_dim": 1280,
+            "in_channels": 16,
+            "joint_attention_dim": 4096,
+            "num_attention_heads": 20,
+            "num_layers": 12,
+            "out_channels": 16,
+            "patch_size": 2,
+            "pooled_projection_dim": 2048,
+            "pos_embed_max_size": 384,
+            "qk_norm": "rms_norm",
+            "qk_norm_on_additional_modules": "rms_norm",
+            "sample_size": 128,
+            "perspective_modeling_type": "implicit",
+            "projection_class_embeddings_input_dim": 2816,
+            "enable_crossview": true,
+            "crossview_attention_type": "rowwise",
+            "crossview_block_layers": [
+                1,
+                3,
+                5,
+                7,
+                9,
+                11
+            ],
+            "crossview_gradient_checkpointing": true,
+            "enable_temporal": true,
+            "temporal_attention_type": "pointwise",
+            "temporal_block_layers": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ],
+            "temporal_gradient_checkpointing": true,
+            "mixer_type": "AlphaBlender",
+            "merge_factor": 2,
+            "condition_image_adapter_config": {
+                "in_channels": 6,
+                "channels": [
+                    1280,
+                    1280,
+                    1280,
+                    1280,
+                    1280,
+                    1280
+                ],
+                "is_downblocks": [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "num_res_blocks": 2,
+                "downscale_factor": 8,
+                "use_zero_convs": true
+            }
+        },
+        "model_dtype": {
+            "_class_name": "get_class",
+            "class_name": "torch.float16"
+        },
+        "pretrained_model_name_or_path": "/mnt/afs/user/wuzehuan/Downloads/models/stable-diffusion-3.5-medium",
+        "model_checkpoint_path": "/mnt/afs/user/wuzehuan/Documents/WorldModels/Models/ctsd_35_xs_p6_tirda_bm_nwao_60k.pth"
+    },
+    "latent_size": [
+        22,
+        38
+    ],
+    "data_adapter": {
+        "_class_name": "dwm.datasets.carla_streaming.StreamingDataAdapter",
+        "client": {
+            "_class_name": "dwm.common.get_state",
+            "key": "carla_client"
+        },
+        "sensor_channels": [
+            "CAM_FRONT_LEFT",
+            "CAM_FRONT",
+            "CAM_FRONT_RIGHT"
+        ],
+        "transform_list": [
+            {
+                "old_key": "images",
+                "new_key": "vae_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                176,
+                                304
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "3dbox_images",
+                "new_key": "3dbox_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                176,
+                                304
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_images",
+                "new_key": "hdmap_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                176,
+                                304
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "image_description",
+                "new_key": "clip_text",
+                "transform": {
+                    "_class_name": "dwm.datasets.common.Copy"
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+            "images"
+        ],
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "clip_text"
+            ]
+        },
+        "enable_images": true,
+        "environment_description": "A downtown urban environment with skyscrapers, residential buildings and an ocean promenade.",
+        "fps": 10
+    },
+    "container_options": {
+        "rtsp_transport": "tcp"
+    },
+    "stream_options": {
+        "tune": "zerolatency",
+        "crf": "20",
+        "g": "4"
+    }
+}

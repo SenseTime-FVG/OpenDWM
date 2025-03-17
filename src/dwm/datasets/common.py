@@ -289,7 +289,9 @@ def align_image_description_crossview(caption_list: list, settings: dict):
     return caption_list
 
 
-def make_image_description_string(caption_dict: dict, settings: dict):
+def make_image_description_string(
+    caption_dict: dict, settings: dict, random_state: np.random.RandomState
+):
     """Make the image description string from the caption dict with given
     settings.
 
@@ -300,31 +302,27 @@ def make_image_description_string(caption_dict: dict, settings: dict):
             final image descrption string.
             * selected_keys (list if exist): The value in the caption dict is
                 used when its key in the list of selected keys.
-            * seed (int or None): If a number is set, the random state is
-                initialized to that number. If None is set, the global random
-                state is used.
             * reorder_keys (bool if exist): If set to True, the elements used
                 to compose text descriptions in caption_dict will be shuffled.
             * drop_rates (dict if exist): The entries in the dict are the
                 probabilities of the corresponding key elements in the
                 caption_dict being dropped.
+        random_state (np.random.RandomState): The random state for reproducible
+            randomness.
     """
     default_image_description_keys = [
         "time", "weather", "environment", "objects", "image_description"
     ]
     selected_keys = settings.get(
         "selected_keys", default_image_description_keys)
-    if any([i in settings for i in ["reorder_keys", "drop_rates"]]):
-        rs = np.random.RandomState(
-            settings["seed"] if "seed" in settings else None)
 
     if "reorder_keys" in settings and settings["reorder_keys"]:
-        new_order = rs.permutation(len(selected_keys))
+        new_order = random_state.permutation(len(selected_keys))
         selected_keys = [selected_keys[i] for i in new_order]
 
     if "drop_rates" in settings:
         drop = {
-            k: rs.rand() <= v
+            k: random_state.rand() <= v
             for k, v in settings["drop_rates"].items()
         }
         selected_keys = [

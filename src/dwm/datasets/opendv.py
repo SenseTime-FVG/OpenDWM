@@ -3,6 +3,7 @@ import dwm.common
 import dwm.datasets.common
 import fsspec
 import json
+import numpy as np
 import os
 from PIL import Image
 import torch
@@ -126,6 +127,10 @@ class MotionDataset(torch.utils.data.Dataset):
             ) as f:
                 self.image_descriptions = json.load(f)
 
+            self.image_desc_rs = np.random.RandomState(
+                image_description_settings["seed"]
+                if "seed" in image_description_settings else None)
+
             if "candidates_times_path" in self.image_description_settings:
                 with open(
                     self.image_description_settings["candidates_times_path"],
@@ -235,7 +240,7 @@ class MotionDataset(torch.utils.data.Dataset):
                 ]
                 result["image_description"] = [
                     dwm.datasets.common.make_image_description_string(
-                        i, self.image_description_settings)
+                        i, self.image_description_settings, self.image_desc_rs)
                     for i in image_caption
                 ]
 

@@ -385,5 +385,10 @@
             ]
         },
         "persistent_workers": true
+    },
+    "informations": {
+        "iou": 0.442,
+        "total_batch_sizes": 32,
+        "steps": 60000
     }
 }

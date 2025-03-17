@@ -81,11 +81,69 @@ class CrossviewTemporalSD():
             parsed_shape[level] = level_count
 
     @staticmethod
+    def get_camera_transform_ids(batch, common_config):
+        return torch.cat([
+            batch["camera_intrinsics"].flatten(-2, -1)[
+                ..., common_config["camera_intrinsic_embedding_indices"]
+            ] / batch["image_size"][
+                ..., common_config["camera_intrinsic_denom_embedding_indices"]
+            ],
+            batch["camera_transforms"].flatten(-2, -1)[
+                ..., common_config["camera_transform_embedding_indices"]
+            ]
+        ], -1)
+
+    @staticmethod
+    def get_action_ids(
+        batch, common_config: dict, action_condition_mask=None
+    ):
+        current_pose = batch["ego_transforms"][
+            :, :, common_config["camera_ego_sensor_indices"]
+        ]
+        uncondition_pose = torch.eye(4).unsqueeze(0).unsqueeze(0).unsqueeze(0)
+        if action_condition_mask is None:
+            is_conditioned = (current_pose - uncondition_pose)\
+                .sum((1, 2, 3, 4)).abs() > 1e-3
+        else:
+            is_conditioned = torch.logical_and(
+                (current_pose - uncondition_pose)
+                .sum((1, 2, 3, 4)).abs() > 1e-3,
+                action_condition_mask)
+
+        relative_pose = torch.linalg.solve(
+            current_pose[:, :-1], current_pose[:, 1:])
+        relative_pose = torch.cat([relative_pose[:, :1], relative_pose], 1)
+
+        moving_distance = torch.norm(
+            relative_pose[..., :3, 3], dim=-1, keepdim=True)
+        mps_to_kmph = 3.6
+        speed = mps_to_kmph * moving_distance * \
+            batch["fps"].unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
+
+        rotation_angles = torch.atan2(
+            relative_pose[..., 1, 0:1] - relative_pose[..., 0, 1:2],
+            relative_pose[..., 0, 0:1] + relative_pose[..., 1, 1:2])
+        wheel_base = 2.7
+        steering_ratio = 14
+        steering = torch.where(
+            torch.abs(moving_distance) > 0.01,
+            rotation_angles / moving_distance * wheel_base * steering_ratio,
+            -1000.0 * torch.ones_like(rotation_angles))
+        action_ids = torch.cat([speed, steering], -1)
+
+        # mask with unconditional cases
+        action_ids = torch.where(
+            is_conditioned.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1),
+            action_ids, -1000.0 * torch.ones_like(action_ids))
+
+        return action_ids
+
+    @staticmethod
     def get_conditions(
         model, text_encoder, tokenizer, common_config: dict, latent_shape,
         batch: dict, device, dtype, text_condition_mask=None,
         _3dbox_condition_mask=None, hdmap_condition_mask=None,
-        explicit_view_modeling_mask=None,
+        action_condition_mask=None, explicit_view_modeling_mask=None,
         do_classifier_free_guidance: bool = False
     ):
         batch_size, sequence_length, view_count = latent_shape[:3]
@@ -174,7 +232,7 @@ class CrossviewTemporalSD():
 
                 condition_embedding_list.append(text_embeddings)
 
-        # layout condition (uses the 1st frame condition)
+        # layout condition
         condition_on_all_frames = common_config.get(
             "condition_on_all_frames", False)
         uncondition_image_color = common_config.get(
@@ -228,39 +286,48 @@ class CrossviewTemporalSD():
         else:
             condition_image_tensor = None
 
-        # SVD numeric condition
+        # additional numeric condition
         if "added_time_ids" in common_config:
             if common_config["added_time_ids"] == "fps_camera_transforms":
-                assert "fps" in batch and "camera_intrinsics" in batch and \
-                    "camera_transforms" in batch and \
-                    "camera_intrinsic_embedding_indices" in common_config and \
-                    "camera_intrinsic_denom_embedding_indices" in common_config and \
-                    "camera_transform_embedding_indices" in common_config
                 added_time_ids = torch.cat([
                     batch["fps"].unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
                     .repeat(1, sequence_length, view_count, 1),
-                    batch["camera_intrinsics"].flatten(-2, -1)[
-                        ...,
-                        common_config["camera_intrinsic_embedding_indices"]
-                    ] / batch["image_size"][
-                        ...,
-                        common_config[
-                            "camera_intrinsic_denom_embedding_indices"
-                        ]
-                    ],
-                    batch["camera_transforms"].flatten(-2, -1)[
-                        ...,
-                        common_config["camera_transform_embedding_indices"]
-                    ]
+                    CrossviewTemporalSD.get_camera_transform_ids(
+                        batch, common_config)
                 ], -1)
                 if do_classifier_free_guidance:
                     added_time_ids = torch.cat(
                         [added_time_ids, added_time_ids], 0)
 
                 added_time_ids = added_time_ids.to(device)
+
+            elif (
+                common_config["added_time_ids"] ==
+                "fps_camera_transforms_action"
+            ):
+                added_time_ids = torch.cat([
+                    batch["fps"].unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
+                    .repeat(1, sequence_length, view_count, 1),
+                    CrossviewTemporalSD.get_camera_transform_ids(
+                        batch, common_config),
+                    CrossviewTemporalSD.get_action_ids(
+                        batch, common_config, action_condition_mask)
+                ], -1)
+                if do_classifier_free_guidance:
+                    # action is allowed to be guidance scaled
+                    uncond_added_time_ids = torch.cat([
+                        added_time_ids[..., :-2],
+                        -1000 * torch.ones_like(added_time_ids[..., -2:])
+                    ], -1)
+                    added_time_ids = torch.cat(
+                        [uncond_added_time_ids, added_time_ids], 0)
+
+                added_time_ids = added_time_ids.to(device)
+
             else:
                 added_time_ids = None
 
+        # required by the UniMLVG
         if common_config.get("explicit_view_modeling", False):
             assert "camera_intrinsics" in batch and \
                 "camera_transforms" in batch
@@ -313,7 +380,7 @@ class CrossviewTemporalSD():
             camera_intrinsics_norm = camera_intrinsics_norm.to(device)
             camera2referego = camera2referego.to(device)
 
-        # depth net input
+        # required by the HoloDrive
         has_depth_input = "camera_intrinsics" in batch and \
             "camera_transforms" in batch
         if has_depth_input:
@@ -357,7 +424,11 @@ class CrossviewTemporalSD():
             "added_time_ids": added_time_ids
             if "added_time_ids" in common_config else None
         }
-        if isinstance(model, diffusers.SD3Transformer2DModel):
+
+        if (
+            isinstance(model, diffusers.SD3Transformer2DModel) and
+            text_encoder is not None
+        ):
             result["pooled_projections"] = pooled_text_embeddings
 
         return result
@@ -541,12 +612,12 @@ class CrossviewTemporalSD():
             "frame_prediction_style", None)
         if (
             frame_prediction_style == None or
-            frame_prediction_style == "progressive"
+            frame_prediction_style == "diffusion_forcing"
         ):
             made_timesteps = timesteps
             reference_frame_indicator = torch.zeros(
                 *latents.shape[:3], dtype=torch.bool, device=latents.device)
-            if frame_prediction_style == "progressive":
+            if frame_prediction_style == "diffusion_forcing":
                 # tasks divided by image_generation_ratio:
                 # * Y: image generation with temporal module disabled
                 # * N: video generation
@@ -1104,7 +1175,7 @@ class CrossviewTemporalSD():
 
         if (
             "frame_prediction_style" in self.common_config and
-            self.common_config["frame_prediction_style"] == "progressive"
+            self.common_config["frame_prediction_style"] == "diffusion_forcing"
         ):
             timestep_shape_range = 2
         else:
@@ -1162,6 +1233,9 @@ class CrossviewTemporalSD():
             torch.rand((batch_size,), generator=self.generator) <
             self.training_config.get("hdmap_condition_ratio", 1.0))\
             .to(self.device)
+        action_condition_mask = (
+            torch.rand((batch_size,), generator=self.generator) <
+            self.training_config.get("action_condition_ratio", 1.0))
         if self.common_config.get("explicit_view_modeling", False):
             explicit_view_modeling_mask = (
                 torch.rand((batch_size,), generator=self.generator) <
@@ -1183,7 +1257,7 @@ class CrossviewTemporalSD():
                 self.common_config, batch["vae_images"].shape, batch,
                 self.device, self.model_dtype, text_condition_mask,
                 _3dbox_condition_mask, hdmap_condition_mask,
-                explicit_view_modeling_mask)
+                action_condition_mask, explicit_view_modeling_mask)
 
             noisy_latents, timesteps, additional_conditions, \
                 reference_frame_indicator = \
@@ -1281,11 +1355,11 @@ class CrossviewTemporalSD():
     ):
         self.model_wrapper.eval()
 
-        progressive_mode = (
+        diffusion_forcing_mode = (
             "frame_prediction_style" in self.common_config and
-            self.common_config["frame_prediction_style"] == "progressive"
+            self.common_config["frame_prediction_style"] == "diffusion_forcing"
         )
-        if progressive_mode:
+        if diffusion_forcing_mode:
             clear_reference_frame_count = self.inference_config.get(
                 "clear_reference_frame_count", 0)
             assert self.inference_config["inference_steps"] % \
@@ -1305,7 +1379,7 @@ class CrossviewTemporalSD():
             if self.vae.config.shift_factor is not None else 0
         self.test_scheduler.set_timesteps(
             self.inference_config["inference_steps"], self.device)
-        if progressive_mode and image_latents is not None:
+        if diffusion_forcing_mode and image_latents is not None:
             latents = image_latents
         else:
             # full sequence denoising
@@ -1332,7 +1406,7 @@ class CrossviewTemporalSD():
         )
         for i in range(start_timestep, stop_timestep):
             # make the denoising timesteps
-            if progressive_mode:
+            if diffusion_forcing_mode:
                 timestep_indices = torch\
                     .tensor([
                         min(
@@ -1348,7 +1422,7 @@ class CrossviewTemporalSD():
                     .repeat(*latent_shape[:3])
 
             latent_model_input = latents
-            if not progressive_mode and image_latents is not None:
+            if not diffusion_forcing_mode and image_latents is not None:
                 # the reference frame injection for the full sequence denoising
                 latent_model_input = torch.cat([
                     image_latents[:, :reference_frame_count],
@@ -1367,7 +1441,7 @@ class CrossviewTemporalSD():
                 latent_model_input = self.test_scheduler\
                     .scale_model_input(
                         latent_model_input,
-                        timesteps if progressive_mode else t)\
+                        timesteps if diffusion_forcing_mode else t)\
                     .to(dtype=self.model_dtype)
 
             if do_classifier_free_guidance:
@@ -1388,7 +1462,7 @@ class CrossviewTemporalSD():
                 noise_pred = noise_pred_uncond + guidance_scale * \
                     (noise_pred_cond - noise_pred_uncond)
 
-            if progressive_mode:
+            if diffusion_forcing_mode:
                 if hasattr(self.test_scheduler, "step_by_indices"):
                     staging_latents = self.test_scheduler.step_by_indices(
                         noise_pred, timestep_indices.cpu(), latents
@@ -1439,7 +1513,7 @@ class CrossviewTemporalSD():
                     torch.cat([noisy_images, depth_images], -3).flatten(-2)
                     .flatten(-4, -2))
 
-        if progressive_mode:
+        if diffusion_forcing_mode:
             image_tensor = self.vae.decode(
                 latents[:, take_time].flatten(0, 1).to(dtype=self.vae.dtype) /
                 self.vae.config.scaling_factor + shift_factor,
@@ -1468,11 +1542,11 @@ class CrossviewTemporalSD():
         self, latent_shape, batch, output_type
     ):
         total_frame_count = batch["pts"].shape[1]
-        progressive_mode = (
+        diffusion_forcing_mode = (
             "frame_prediction_style" in self.common_config and
-            self.common_config["frame_prediction_style"] == "progressive"
+            self.common_config["frame_prediction_style"] == "diffusion_forcing"
         )
-        if progressive_mode:
+        if diffusion_forcing_mode:
             assert total_frame_count > \
                 self.inference_config["sequence_length_per_iteration"]
             clear_reference_frame_count = self.inference_config.get(
@@ -1508,7 +1582,7 @@ class CrossviewTemporalSD():
         iteration_sequence_length = latent_shape[1]
         exception_for_take_sequence = self.inference_config.get(
             "autoregression_data_exception_for_take_sequence", [])
-        if progressive_mode:
+        if diffusion_forcing_mode:
             iteration_batch = {
                 k: (
                     v
@@ -1543,7 +1617,7 @@ class CrossviewTemporalSD():
             # prepare the reference frames
             this_ref_frame_count = 0 if image_latents is None \
                 else reference_frame_count
-            if progressive_mode:
+            if diffusion_forcing_mode:
                 if queue_head < clear_reference_frame_count:
                     this_ref_frame_count = latent_shape[1]
                     queue_head += 1
@@ -1596,7 +1670,7 @@ class CrossviewTemporalSD():
                         :, -reference_frame_count:
                     ]
 
-        if progressive_mode:
+        if diffusion_forcing_mode:
             # flushing the tailing frames by reusing the last iteration_batch
             for i in range(queue_head + 1, latent_shape[1]):
                 stop_timestep = (
@@ -1797,3 +1871,318 @@ class CrossviewTemporalSD():
 
         if self.should_save:
             print(text)
+
+
+class StreamingCrossviewTemporalSD(CrossviewTemporalSD):
+
+    def reset_streaming(self, latent_shape, output_type):
+        assert (
+            "frame_prediction_style" in self.common_config and
+            self.common_config["frame_prediction_style"] == "diffusion_forcing"
+        )
+
+        self.conditions = {}
+        self.condition_count = 0
+        self.latents = None
+        self.text_prompt_counter = 0
+        self.frames = []
+        self.latent_shape = latent_shape
+        self.output_type = output_type
+        self.test_scheduler.set_timesteps(
+            self.inference_config["inference_steps"], self.device)
+
+    def inference_pipeline(
+        self, latent_shape, start_timestep: int = 0, stop_timestep=None,
+        take_time: int = 0
+    ):
+        self.model_wrapper.eval()
+
+        assert self.inference_config["inference_steps"] % latent_shape[1] == 0
+
+        do_classifier_free_guidance = "guidance_scale" in self.inference_config
+        guidance_scale = self.inference_config.get("guidance_scale", 1)
+        steps_per_inference = \
+            self.inference_config["inference_steps"] // latent_shape[1]
+        latents = self.latents
+        stop_timestep = \
+            stop_timestep or self.inference_config["inference_steps"]
+        for i in range(start_timestep, stop_timestep):
+            # make the denoising timesteps
+            timestep_indices = torch\
+                .tensor([
+                    min(
+                        i - take_time * steps_per_inference,
+                        max(0, i - j * steps_per_inference))
+                    for j in range(latent_shape[1])
+                ], dtype=torch.int32, device=self.device).unsqueeze(0)\
+                .unsqueeze(-1).repeat(latent_shape[0], 1, latent_shape[2])
+            timesteps = self.test_scheduler.timesteps[timestep_indices]
+
+            latent_model_input = latents.to(dtype=self.model_dtype)
+            if do_classifier_free_guidance:
+                latent_model_input = torch.cat(
+                    [latent_model_input, latent_model_input])
+                timesteps_input = torch.cat([timesteps, timesteps])
+            else:
+                timesteps_input = timesteps
+
+            with self.get_autocast_context():
+                model_output, _, _ = self.model_wrapper(
+                    latent_model_input, timesteps_input, **self.conditions)
+
+            # update the noisy latent
+            noise_pred = model_output[0]
+            if do_classifier_free_guidance:
+                noise_pred_uncond, noise_pred_cond = noise_pred.chunk(2)
+                noise_pred = noise_pred_uncond + guidance_scale * \
+                    (noise_pred_cond - noise_pred_uncond)
+
+            staging_latents = self.test_scheduler.step_by_indices(
+                noise_pred, timestep_indices.cpu(), latents
+            ).prev_sample
+
+            # only update the latents in the schedule range so finally the
+            # timesteps in the queue become progrssive
+            in_schedule_range = torch\
+                .tensor([
+                    i - j * steps_per_inference >= 0
+                    for j in range(latent_shape[1])
+                ], device=self.device).unsqueeze(0).unsqueeze(-1)\
+                .unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
+            latents = torch.where(
+                in_schedule_range, staging_latents, latents)
+
+        if stop_timestep >= self.inference_config["inference_steps"]:
+            shift_factor = self.vae.config.shift_factor \
+                if self.vae.config.shift_factor is not None else 0
+            image_tensor = self.vae.decode(
+                latents[:, take_time].flatten(0, 1).to(dtype=self.vae.dtype) /
+                self.vae.config.scaling_factor + shift_factor,
+                return_dict=False)[0]
+            self.frames.append(
+                self.image_processor.postprocess(
+                    image_tensor, self.output_type))
+
+        return latents
+
+    @torch.no_grad()
+    def send_frame_condition(self, frame_condition_data):
+        do_classifier_free_guidance = "guidance_scale" in self.inference_config
+        steps_per_inference = \
+            self.inference_config["inference_steps"] // self.latent_shape[1]
+
+        if frame_condition_data is None:
+            # flushing
+            assert (
+                self.condition_count ==
+                self.inference_config["sequence_length_per_iteration"]
+            )
+            for i in range(1, self.latent_shape[1]):
+                latents = self.inference_pipeline(
+                    self.latent_shape,
+                    start_timestep=(
+                        self.inference_config["inference_steps"] +
+                        (i - 1) * steps_per_inference
+                    ),
+                    stop_timestep=(
+                        self.inference_config["inference_steps"] +
+                        i * steps_per_inference
+                    ),
+                    take_time=i)
+                is_finished = torch.tensor(
+                    [j <= i for j in range(self.latent_shape[1])],
+                    device=self.device
+                ).unflatten(0, (1, -1, 1, 1, 1, 1))
+                self.latents = torch.where(
+                    is_finished, self.latents, latents)
+
+        else:
+            frame_conditions = CrossviewTemporalSD.get_conditions(
+                self.model,
+                self.text_encoders if self.text_prompt_counter == 0 else None,
+                self.tokenizers
+                if isinstance(self.model, diffusers.SD3Transformer2DModel)
+                else self.tokenizer,
+                self.common_config,
+                (self.latent_shape[0], 1) + self.latent_shape[2:],
+                frame_condition_data, self.device, self.model_dtype,
+                do_classifier_free_guidance=do_classifier_free_guidance)
+            if self.text_prompt_counter > 0:
+                frame_conditions["encoder_hidden_states"] = \
+                    self.conditions["encoder_hidden_states"][:, -1:]
+                frame_conditions["pooled_projections"] = \
+                    self.conditions["pooled_projections"][:, -1:]
+
+            self.text_prompt_counter = (
+                (self.text_prompt_counter + 1) %
+                self.inference_config.get("text_prompt_interval", 1)
+            )
+
+            if (
+                self.condition_count <
+                self.inference_config["sequence_length_per_iteration"]
+            ):
+                # gathering conditions
+                for k, v in frame_conditions.items():
+                    if (k not in self.conditions or k in self.inference_config[
+                        "autoregression_condition_exception_for_take_sequence"
+                    ]):
+                        self.conditions[k] = v
+                    else:
+                        self.conditions[k] = torch.cat(
+                            [self.conditions[k], v], dim=1)
+
+                self.condition_count += 1
+                if (
+                    self.condition_count ==
+                    self.inference_config["sequence_length_per_iteration"]
+                ):
+                    # transfer to streaming state
+                    self.latents = (
+                        torch.randn(
+                            self.latent_shape, generator=self.generator
+                        ).to(self.device) *
+                        getattr(self.test_scheduler, "init_noise_sigma", 1)
+                    )
+                    self.latents = self.inference_pipeline(
+                        self.latent_shape, start_timestep=0,
+                        stop_timestep=self.inference_config["inference_steps"])
+
+            else:
+                # streaming
+                for k, v in frame_conditions.items():
+                    if (k not in self.conditions or k in self.inference_config[
+                        "autoregression_condition_exception_for_take_sequence"
+                    ]):
+                        self.conditions[k] = v
+                    else:
+                        self.conditions[k] = torch.cat(
+                            [self.conditions[k][:, 1:], v], dim=1)
+
+                self.latents = torch.cat([
+                    self.latents[:, 1:],
+                    torch.randn(
+                        (self.latent_shape[0], 1) + self.latent_shape[2:],
+                        generator=self.generator).to(self.device) *
+                    getattr(self.test_scheduler, "init_noise_sigma", 1)
+                ], 1)
+                self.latents = self.inference_pipeline(
+                    self.latent_shape,
+                    start_timestep=(
+                        self.inference_config["inference_steps"] -
+                        steps_per_inference
+                    ),
+                    stop_timestep=(
+                        self.inference_config["inference_steps"]
+                    ))
+
+    def receive_frame(self):
+        if len(self.frames) == 0:
+            return None
+
+        return (
+            [
+                i.resize(self.inference_config["preview_image_size"])
+                for i in self.frames.pop(0)
+            ]
+            if self.output_type == "pil"
+            else self.frames.pop(0)
+        )
+
+    def fifo_inference_pipeline(
+        self, latent_shape, batch, output_type
+    ):
+        total_frame_count = batch["pts"].shape[1]
+        assert (
+            "frame_prediction_style" in self.common_config and
+            self.common_config["frame_prediction_style"] == "diffusion_forcing"
+        )
+        assert (
+            total_frame_count >
+            self.inference_config["sequence_length_per_iteration"]
+        )
+        exception_for_take_sequence = self.inference_config[
+            "autoregression_data_exception_for_take_sequence"
+        ]
+        result = {
+            "images": []
+        }
+        self.reset_streaming(latent_shape, output_type)
+        for i in range(total_frame_count):
+            self.send_frame_condition({
+                k: (
+                    v
+                    if k in exception_for_take_sequence
+                    else dwm.functional.take_sequence_clip(v, i, i + 1)
+                )
+                for k, v in batch.items()
+            })
+            image = self.receive_frame()
+            if image is not None:
+                result["images"].append(image)
+
+        self.send_frame_condition(None)
+        while True:
+            image = self.receive_frame()
+            if image is not None:
+                result["images"].append(image)
+            else:
+                break
+
+        if output_type == "pt":
+            result["images"] = torch.cat(result["images"])
+
+        return result
+
+    @torch.no_grad()
+    def preview_pipeline(
+        self, batch: dict, output_path: str, global_step: int
+    ):
+        batch_size, sequence_length, view_count = batch["vae_images"].shape[:3]
+        latent_height = batch["vae_images"].shape[-2] // \
+            (2 ** (len(self.vae.config.down_block_types) - 1))
+        latent_width = batch["vae_images"].shape[-1] // \
+            (2 ** (len(self.vae.config.down_block_types) - 1))
+        assert "sequence_length_per_iteration" in self.inference_config
+        latent_shape = (
+            batch_size,
+            self.inference_config["sequence_length_per_iteration"],
+            view_count, self.vae.config.latent_channels, latent_height,
+            latent_width
+        )
+        pipeline_output = self.fifo_inference_pipeline(
+            latent_shape, batch, "pt")
+
+        if self.should_save or (
+            torch.distributed.is_initialized() and
+            self.inference_config.get("all_rank_preview", False)
+        ):
+            os.makedirs(os.path.join(output_path, "preview"), exist_ok=True)
+            filename = (
+                "{}_{}".format(global_step, torch.distributed.get_rank())
+                if self.inference_config.get("all_rank_preview", False)
+                else str(global_step)
+            )
+            preview_tensor = dwm.utils.preview.make_ctsd_preview_tensor(
+                pipeline_output["images"], batch, self.inference_config)
+            if sequence_length == 1:
+                image_output_path = os.path.join(
+                    output_path, "preview", "{}.png".format(filename))
+                torchvision.transforms.functional.to_pil_image(preview_tensor)\
+                    .save(image_output_path)
+            else:
+                video_output_path = os.path.join(
+                    output_path, "preview", "{}.mp4".format(filename))
+                dwm.utils.preview.save_tensor_to_video(
+                    video_output_path, "libx264", batch["fps"][0].item(),
+                    preview_tensor)
+
+            preview_depth = self.model.depth_net is not None and \
+                "camera_intrinsics" in batch and "camera_transforms" in batch
+            if preview_depth and "depth" in pipeline_output:
+                os.makedirs(os.path.join(
+                    output_path, "preview_depth"), exist_ok=True)
+                video_output_path = os.path.join(
+                    output_path, "preview_depth", "{}.mp4".format(filename))
+                dwm.utils.preview.save_tensor_to_video(
+                    video_output_path, "libx264", 5, pipeline_output["depth"])

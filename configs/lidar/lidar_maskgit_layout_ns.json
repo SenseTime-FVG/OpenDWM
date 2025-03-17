@@ -755,5 +755,12 @@
             ]
         },
         "persistent_workers": true
+    },
+    "informations": {
+        "chamfer_distance": 3.095,
+        "chamfer_distance_30": 1.288,
+        "chamfer_distance_40": 2.095,
+        "total_batch_sizes": 64,
+        "steps": 150000
     }
 }

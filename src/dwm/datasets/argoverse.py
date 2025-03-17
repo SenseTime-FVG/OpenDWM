@@ -611,6 +611,10 @@ class MotionDataset(torch.utils.data.Dataset):
             ) as f:
                 self.image_descriptions = json.load(f)
 
+            self.image_desc_rs = np.random.RandomState(
+                image_description_settings["seed"]
+                if "seed" in image_description_settings else None)
+
             with open(
                 image_description_settings["time_list_dict_path"], "r",
                 encoding="utf-8"
@@ -876,7 +880,7 @@ class MotionDataset(torch.utils.data.Dataset):
             result["image_description"] = [
                 [
                     dwm.datasets.common.make_image_description_string(
-                        j, self.image_description_settings)
+                        j, self.image_description_settings, self.image_desc_rs)
                     for j in i
                 ]
                 for i in image_captions
