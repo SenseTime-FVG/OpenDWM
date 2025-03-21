@@ -28,6 +28,13 @@ Currently, the project has implemented the following papers:
 > Jingcheng Ni, Yuxin Guo, Yichen Liu, Rui Chen, Lewei Lu, Zehuan Wu<br>
 > SenseTime Research
 
+## News
+
+* [2025/3/17] Experimental release the [Interactive Generation with Carla](docs/InteractiveGeneration.md)
+* [2025/3/7] Release the [LiDAR Generation](#lidar-models)
+* [2025/3/4] Release the [CTSD 3.5 with layout condition](#video-models)
+* [2025/2/7] Release the [UniMLVG](#video-models)
+
 ## Setup
 
 Hardware requirement:
