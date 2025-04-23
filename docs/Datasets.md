@@ -42,6 +42,8 @@ rm -rf data/
 
 6. *Alternative solution for 5*. In the case of a broken download link, you can also regenerate 12 Hz annotations according to the instructions of [ASAP](https://github.com/JeffWang987/ASAP/blob/main/docs/prepare_data.md) from the origin nuScenes dataset.
 
+7. Download the annotation of text prompt and update the config following the section [text description for images](#text-description-for-images)
+
 ## Waymo
 
 There are two versions of the Waymo Perception dataset. This project chooses version 1 (>= 1.4.2) because only this version provides HD map annotation, while version 2 does not provide HD map annotation.
@@ -65,6 +67,8 @@ PYTHONPATH=src python src/dwm/tools/dataset_make_info_json.py -dt waymo -i {WAYM
 
 4. Now the `{WAYMO_ROOT}` and its information JSON files are ready to update the Waymo dataset of your config file, for [example](../configs/ctsd/single_dataset/ctsd_21_crossview_tirda_bm_waymo.json#L182).
 
+5. Download the annotation of text prompt and update the config following the section [text description for images](#text-description-for-images)
+
 ## Argoverse
 
 1. Download the [Argoverse 2 Sensor](https://www.argoverse.org/av2.html#download-link) dataset files to `{ARGOVERSE_ROOT}` on your file system. After the dataset is downloaded, there will be some `*.tar` files under path `{ARGOVERSE_ROOT}`.
@@ -76,6 +80,8 @@ PYTHONPATH=src python src/dwm/tools/dataset_make_info_json.py -dt argoverse -i {
 ```
 
 3. Now the `{ARGOVERSE_ROOT}` is ready to update the Argoverse file system of your config file, for [example](../configs/ctsd/single_dataset/ctsd_21_crossview_tirda_bm_argo.json#L184).
+
+4. Download the annotation of text prompt and update the config following the section [text description for images](#text-description-for-images)
 
 ## OpenDV
 
@@ -90,7 +96,11 @@ python src/dwm/tools/transcode_video.py -c src/dwm/tools/transcode_video.json -i
 
 3. Now the `{OPENDV_ORIGIN_ROOT}` (or `{OPENDV_ROOT}`) is ready to update the OpenDV [file system config](../configs/ctsd/multi_datasets/ctsd_21_tirda_nwao.json#L31), and `{OPENDV_JSON_META_PATH}` to update the [dataset config](../configs/ctsd/multi_datasets/ctsd_21_tirda_nwao.json#L409).
 
-#### Text description for images
+## KITTI360
+
+Register an account and download the [KITTI360](https://www.cvlibs.net/datasets/kitti-360/download.php) dataset. We only require the LiDAR data from KITTI360, so you only need to download the Raw Velodyne Scans, 3D Bounding Boxes, and Vehicle Poses. The scenes `2013_05_28_drive_0000_sync` and `2013_05_28_drive_0002_sync` are used for validation, while all other scenes are used as training data. You may keep the files in their original zip format, as our code processes them automatically.
+
+## Text description for images
 
 We made the image captions for both nuScenes, Waymo, Argoverse, OpenDV datasets by [DriveMLM](https://arxiv.org/abs/2312.09245) model. The caption files are available here.
 
@@ -100,3 +110,9 @@ We made the image captions for both nuScenes, Waymo, Argoverse, OpenDV datasets 
 | Waymo | [trainval](http://103.237.29.236:10030/waymo_caption_v2.zip) |
 | Argoverse | [trainval](http://103.237.29.236:10030/av2_sensor_caption_v2.zip) |
 | OpenDV | [all](http://103.237.29.236:10030/opendv_caption.zip) |
+
+1. Download the packages above and unzip them.
+
+2. You will get some JSON files such as `nuscenes_v1.0-trainval_caption_v2_train.json` (text of image captions), `nuscenes_v1.0-trainval_caption_v2_times_train.json` (indicates the moments of frames selected for image caption annotations in each scenario)
+
+3. Update [paths](../configs/ctsd/multi_datasets/ctsd_35_tirda_bm_nwao.json#L315) to those files in your config. Please notice that the paths in the "image_description_settings" of all the datasets should be updated to your local downloaded and extracted files.

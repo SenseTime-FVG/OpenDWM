@@ -27,23 +27,29 @@
                 "data/nuscenes/nuScenes-map-expansion-v1.3.zip"
             ]
         },
+        "s3fs": {
+            "_class_name": "dwm.fs.s3fs.ForkableS3FileSystem",
+            "endpoint_url": "http://aoss-internal-v2.st-sh-01.sensecoreapi-oss.cn",
+            "aws_access_key_id": "4853705CDE93446E8D902F70291C2C92",
+            "aws_secret_access_key": "",
+            "config": {
+                "_class_name": "botocore.config.Config",
+                "retries": {
+                    "max_attempts": 12
+                }
+            }
+        },
         "opendv_czip_fs": {
             "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
             "fs": {
-                "_class_name": "dwm.fs.dirfs.DirFileSystem",
-                "path": "users/wuzehuan/data/opendv",
-                "fs": {
-                    "_class_name": "dwm.fs.s3fs.ForkableS3FileSystem",
-                    "endpoint_url": "http://aoss-internal-v2.st-sh-01.sensecoreapi-oss.cn",
-                    "aws_access_key_id": "4853705CDE93446E8D902F70291C2C92",
-                    "aws_secret_access_key": ""
-                }
+                "_class_name": "dwm.common.get_state",
+                "key": "s3fs"
             },
             "paths": [
-                "opendv-youtube-10hz-720_0.zip",
-                "opendv-youtube-10hz-720_1.zip",
-                "opendv-youtube-10hz-720_2.zip",
-                "opendv-youtube-10hz-720_3.zip"
+                "users/wuzehuan/data/opendv/opendv-youtube-10hz-720_0.zip",
+                "users/wuzehuan/data/opendv/opendv-youtube-10hz-720_1.zip",
+                "users/wuzehuan/data/opendv/opendv-youtube-10hz-720_2.zip",
+                "users/wuzehuan/data/opendv/opendv-youtube-10hz-720_3.zip"
             ]
         },
         "device_mesh": {
@@ -67,7 +73,7 @@
             "cond_with_action": false,
             "condition_on_all_frames": true,
             "uncondition_image_color": 0.1255,
-            "added_time_ids": "fps_camera_transforms_action",
+            "added_time_ids": "fps_camera_transforms",
             "camera_intrinsic_embedding_indices": [
                 0,
                 4,
@@ -87,11 +93,6 @@
                 3,
                 7,
                 11
-            ],
-            "camera_ego_sensor_indices": [
-                1,
-                2,
-                3
             ],
             "distribution_framework": "fsdp",
             "ddp_wrapper_settings": {
@@ -150,13 +151,13 @@
                     "class_name": "torch.float16"
                 }
             },
-            "memory_efficient_batch": 12
+            "memory_efficient_batch": 12,
+            "report_detail": true
         },
         "training_config": {
             "text_prompt_condition_ratio": 0.8,
             "3dbox_condition_ratio": 0.8,
             "hdmap_condition_ratio": 0.8,
-            "action_condition_mask": 0.8,
             "image_generation_ratio": 0.1,
             "reference_frame_scale_std": 0.01,
             "reference_frame_offset_std": 0.01,
@@ -174,8 +175,7 @@
             "reference_frame_count": 5,
             "autoregression_data_exception_for_take_sequence": [
                 "crossview_mask"
-            ],
-            "evaluation_item_count": 672
+            ]
         },
         "model": {
             "_class_name": "dwm.models.crossview_temporal_dit.DiTCrossviewTemporalConditionModel",
@@ -207,7 +207,7 @@
             "qk_norm_on_additional_modules": "rms_norm",
             "sample_size": 128,
             "perspective_modeling_type": "implicit",
-            "projection_class_embeddings_input_dim": 3328,
+            "projection_class_embeddings_input_dim": 2816,
             "enable_crossview": true,
             "crossview_attention_type": "rowwise",
             "crossview_block_layers": [
@@ -306,14 +306,12 @@
                         ]
                     ],
                     "sensor_channels": [
-                        "LIDAR_TOP",
                         "CAM_FRONT_LEFT",
                         "CAM_FRONT",
                         "CAM_FRONT_RIGHT"
                     ],
                     "keyframe_only": true,
                     "enable_camera_transforms": true,
-                    "enable_ego_transforms": true,
                     "_3dbox_image_settings": {},
                     "hdmap_image_settings": {},
                     "image_description_settings": {
@@ -370,13 +368,11 @@
                         ]
                     ],
                     "sensor_channels": [
-                        "LIDAR_TOP",
                         "CAM_FRONT_LEFT",
                         "CAM_FRONT",
                         "CAM_FRONT_RIGHT"
                     ],
                     "enable_camera_transforms": true,
-                    "enable_ego_transforms": true,
                     "_3dbox_image_settings": {},
                     "hdmap_image_settings": {},
                     "image_description_settings": {
@@ -457,8 +453,8 @@
                         "cameras/ring_front_right",
                         "cameras/ring_side_right"
                     ],
+                    "hide_lidar": true,
                     "enable_camera_transforms": true,
-                    "enable_ego_transforms": true,
                     "_3dbox_image_settings": {},
                     "hdmap_image_settings": {},
                     "image_description_settings": {
@@ -503,7 +499,7 @@
                     "fps_stride_tuples": [
                         [
                             10,
-                            7.5
+                            10
                         ]
                     ],
                     "split": "Train",
@@ -511,7 +507,6 @@
                     "ignore_list": [
                         "izhGt1GnGFk"
                     ],
-                    "enable_pts": false,
                     "enable_fake_camera_transforms": true,
                     "enable_fake_3dbox_images": true,
                     "enable_fake_hdmap_images": true,
@@ -532,16 +527,6 @@
                         }
                     },
                     "stub_key_data_dict": {
-                        "pts": [
-                            "content",
-                            {
-                                "_class_name": "torch.zeros",
-                                "size": [
-                                    6,
-                                    4
-                                ]
-                            }
-                        ],
                         "crossview_mask": [
                             "content",
                             {
@@ -551,32 +536,6 @@
                                     "_class_name": "get_class",
                                     "class_name": "torch.bool"
                                 }
-                            }
-                        ],
-                        "ego_transforms": [
-                            "content",
-                            {
-                                "_class_name": "torch.repeat_interleave",
-                                "input": {
-                                    "_class_name": "torch.repeat_interleave",
-                                    "input": {
-                                        "_class_name": "torch.reshape",
-                                        "input": {
-                                            "_class_name": "torch.eye",
-                                            "n": 4
-                                        },
-                                        "shape": [
-                                            1,
-                                            1,
-                                            4,
-                                            4
-                                        ]
-                                    },
-                                    "repeats": 4,
-                                    "dim": 1
-                                },
-                                "repeats": 6,
-                                "dim": 0
                             }
                         ]
                     }
@@ -652,8 +611,6 @@
         ],
         "pop_list": [
             "images",
-            "lidar_points",
-            "lidar_transforms",
             "image_description"
         ]
     },
@@ -670,7 +627,7 @@
                     },
                     "dataset_name": "interp_12Hz_trainval",
                     "split": "val",
-                    "sequence_length": 30,
+                    "sequence_length": 25,
                     "fps_stride_tuples": [
                         [
                             10,
@@ -678,7 +635,6 @@
                         ]
                     ],
                     "sensor_channels": [
-                        "LIDAR_TOP",
                         "CAM_FRONT_LEFT",
                         "CAM_FRONT",
                         "CAM_FRONT_RIGHT"
@@ -686,7 +642,6 @@
                     "keyframe_only": true,
                     "enable_synchronization_check": false,
                     "enable_camera_transforms": true,
-                    "enable_ego_transforms": true,
                     "_3dbox_image_settings": {},
                     "hdmap_image_settings": {},
                     "image_description_settings": {
@@ -721,7 +676,7 @@
                         "path": "/mnt/storage/wuzehuan/Downloads/data/waymo/waymo_open_dataset_v_1_4_3/validation"
                     },
                     "info_dict_path": "/mnt/storage/wuzehuan/Downloads/data/waymo/waymo_open_dataset_v_1_4_3/validation.info.json",
-                    "sequence_length": 30,
+                    "sequence_length": 25,
                     "fps_stride_tuples": [
                         [
                             10,
@@ -729,13 +684,11 @@
                         ]
                     ],
                     "sensor_channels": [
-                        "LIDAR_TOP",
                         "CAM_FRONT_LEFT",
                         "CAM_FRONT",
                         "CAM_FRONT_RIGHT"
                     ],
                     "enable_camera_transforms": true,
-                    "enable_ego_transforms": true,
                     "_3dbox_image_settings": {},
                     "hdmap_image_settings": {},
                     "image_description_settings": {
@@ -778,7 +731,7 @@
                         ],
                         "enable_cached_info": true
                     },
-                    "sequence_length": 30,
+                    "sequence_length": 25,
                     "fps_stride_tuples": [
                         [
                             10,
@@ -791,8 +744,8 @@
                         "cameras/ring_front_right",
                         "cameras/ring_side_right"
                     ],
+                    "hide_lidar": true,
                     "enable_camera_transforms": true,
-                    "enable_ego_transforms": true,
                     "_3dbox_image_settings": {},
                     "hdmap_image_settings": {},
                     "image_description_settings": {
@@ -827,7 +780,7 @@
                         "key": "opendv_czip_fs"
                     },
                     "meta_path": "/mnt/storage/wuzehuan/Documents/WorldModels/Data/OpenDV-YouTube.json",
-                    "sequence_length": 30,
+                    "sequence_length": 25,
                     "fps_stride_tuples": [
                         [
                             10,
@@ -836,7 +789,6 @@
                     ],
                     "split": "Val",
                     "mini_batch": 3,
-                    "enable_pts": false,
                     "enable_fake_camera_transforms": true,
                     "enable_fake_3dbox_images": true,
                     "enable_fake_hdmap_images": true,
@@ -850,16 +802,6 @@
                         "candidates_times_path": "/mnt/storage/wuzehuan/Documents/WorldModels/Data/opendv_candidates_times.json"
                     },
                     "stub_key_data_dict": {
-                        "pts": [
-                            "content",
-                            {
-                                "_class_name": "torch.zeros",
-                                "size": [
-                                    30,
-                                    4
-                                ]
-                            }
-                        ],
                         "crossview_mask": [
                             "content",
                             {
@@ -869,32 +811,6 @@
                                     "_class_name": "get_class",
                                     "class_name": "torch.bool"
                                 }
-                            }
-                        ],
-                        "ego_transforms": [
-                            "content",
-                            {
-                                "_class_name": "torch.repeat_interleave",
-                                "input": {
-                                    "_class_name": "torch.repeat_interleave",
-                                    "input": {
-                                        "_class_name": "torch.reshape",
-                                        "input": {
-                                            "_class_name": "torch.eye",
-                                            "n": 4
-                                        },
-                                        "shape": [
-                                            1,
-                                            1,
-                                            4,
-                                            4
-                                        ]
-                                    },
-                                    "repeats": 4,
-                                    "dim": 1
-                                },
-                                "repeats": 30,
-                                "dim": 0
                             }
                         ]
                     }
@@ -970,14 +886,12 @@
         ],
         "pop_list": [
             "images",
-            "lidar_points",
-            "lidar_transforms",
             "image_description"
         ]
     },
     "mix_config": {
         "384-688": [
-            0.4,
+            0.6,
             [
                 [
                     6,
@@ -997,21 +911,11 @@
             ]
         ],
         "224-400": [
-            0.2,
-            [
-                [
-                    6,
-                    3,
-                    1.0
-                ]
-            ]
-        ],
-        "192-336": [
             0.1,
             [
                 [
                     6,
-                    4,
+                    3,
                     1.0
                 ]
             ]
@@ -1057,7 +961,7 @@
     "informations": {
         "fid": -1,
         "fvd": -1,
-        "average_total_batch_sizes": 64,
+        "average_total_batch_sizes": 144,
         "steps": 40000
     }
 }

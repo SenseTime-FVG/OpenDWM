@@ -17,11 +17,6 @@
     "pipeline": {
         "_class_name": "dwm.pipelines.lidar_maskgit.MaskGITPipeline",
         "common_config": {
-            "single_frame": true,
-            "cat_condition": true,
-            "cond_with_layout": true,
-            "cond_with_cxt": false,
-            "cond_with_action": false,
             "ray_cast_center": [
                 1.0,
                 0.0,
@@ -32,12 +27,6 @@
             }
         },
         "training_config": {
-            "latent_sample_method": "sample",
-            "train_ctsd": false,
-            "train_maskgit": true,
-            "train_bevformer": false,
-            "train_lss": false,
-            "train_feature_exchange": false,
             "3dbox_condition_ratio": 0.8,
             "hdmap_condition_ratio": 0.8,
             "max_norm_for_grad_clip": 10,
@@ -111,7 +100,7 @@
                 "depth": 24,
                 "condition_adapter": {
                     "_class_name": "dwm.models.adapters.ImageAdapter",
-                    "in_channels": 6,
+                    "in_channels": 3,
                     "channels": [1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280],
                     "downscale_factor": 8,
                     "is_downblocks": [false, false, false, false, false, false, false, false],
@@ -119,8 +108,8 @@
                     "gradient_checkpointing": true
                 }
             },
-        "vq_point_cloud_ckpt_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k.pth",
-        "vq_blank_code_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k_blank_code.pkl",
+        "vq_point_cloud_ckpt_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/checkpoints/80000.pth",
+        "vq_blank_code_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/lidar_vqvae_nwak_80k_blank_code.pkl",
         "metrics": {
             "voxel_iou": {
                 "_class_name": "dwm.metrics.voxel_metrics.VoxelIoU"
@@ -147,30 +136,29 @@
     "training_dataset": {
         "_class_name": "dwm.datasets.common.DatasetAdapter",
         "base_dataset": {
-            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+            "_class_name": "dwm.datasets.kitti360.MotionDataset",
             "fs": {
                 "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
                 "fs": {
                     "_class_name": "dwm.fs.dirfs.DirFileSystem",
-                    "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan"
+                    "path": "/mnt/storage/user/liuyichen"
                 },
                 "paths": [
-                    "workspaces/worldmodels/data/v1.0-trainval_12hz_meta.zip",
-                    "data/nuscenes/v1.0-trainval01_blobs.zip",
-                    "data/nuscenes/v1.0-trainval02_blobs.zip",
-                    "data/nuscenes/v1.0-trainval03_blobs.zip",
-                    "data/nuscenes/v1.0-trainval04_blobs.zip",
-                    "data/nuscenes/v1.0-trainval05_blobs.zip",
-                    "data/nuscenes/v1.0-trainval06_blobs.zip",
-                    "data/nuscenes/v1.0-trainval07_blobs.zip",
-                    "data/nuscenes/v1.0-trainval08_blobs.zip",
-                    "data/nuscenes/v1.0-trainval09_blobs.zip",
-                    "data/nuscenes/v1.0-trainval10_blobs.zip",
-                    "data/nuscenes/nuScenes-map-expansion-v1.3.zip"
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0000_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0002_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0003_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0004_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0005_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0006_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0007_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0009_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0010_sync_velodyne.zip",
+                    "data/kitti360/data_3d_bboxes.zip",
+                    "data/kitti360/data_poses.zip"
                 ],
-                "enable_cached_info": true
+                "enable_cached_info": false
             },
-            "dataset_name": "v1.0-trainval_12hz",
+            "dataset_name": "kitti360",
             "split": "train",
             "sequence_length": 1,
             "fps_stride_tuples": [
@@ -183,8 +171,8 @@
                 "LIDAR_TOP",
                 "CAM_FRONT"
             ],
-            "keyframe_only": true,
-            "enable_camera_transforms": true,
+            "keyframe_only": false,
+            "enable_camera_transforms": false,
             "enable_sample_data": true,
             "_3dbox_bev_settings": {
                 "color_table": {
@@ -272,122 +260,9 @@
                 ],
                 "fill_box": false,
                 "pen_width": 4
-            },
-            "hdmap_bev_settings": {
-                "bev_from_ego_transform": [
-                    [
-                        6.4,
-                        0,
-                        0,
-                        320
-                    ],
-                    [
-                        0,
-                        6.4,
-                        0,
-                        320
-                    ],
-                    [
-                        0,
-                        0,
-                        6.4,
-                        0
-                    ],
-                    [
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                ],
-                "fill_map": false,
-                "pen_width": 4
             }
         },
         "transform_list": [
-            {
-                "old_key": "images",
-                "new_key": "vae_images",
-                "transform": {
-                    "_class_name": "torchvision.transforms.Compose",
-                    "transforms": [
-                        {
-                            "_class_name": "torchvision.transforms.Resize",
-                            "size": [
-                                256,
-                                448
-                            ]
-                        },
-                        {
-                            "_class_name": "torchvision.transforms.ToTensor"
-                        }
-                    ]
-                }
-            },
-            {
-                "old_key": "3dbox_bev_images",
-                "new_key": "3dbox_bev_images",
-                "transform": {
-                    "_class_name": "torchvision.transforms.Compose",
-                    "transforms": [
-                        {
-                            "_class_name": "torchvision.transforms.Resize",
-                            "size": [
-                                640,
-                                640
-                            ]
-                        },
-                        {
-                            "_class_name": "torchvision.transforms.ToTensor"
-                        },
-                        {
-                            "_class_name": "torchvision.transforms.Normalize",
-                            "mean": [
-                                0.485,
-                                0.456,
-                                0.406
-                            ],
-                            "std": [
-                                0.229,
-                                0.224,
-                                0.225
-                            ]
-                        }
-                    ]
-                }
-            },
-            {
-                "old_key": "hdmap_bev_images",
-                "new_key": "hdmap_bev_images",
-                "transform": {
-                    "_class_name": "torchvision.transforms.Compose",
-                    "transforms": [
-                        {
-                            "_class_name": "torchvision.transforms.Resize",
-                            "size": [
-                                640,
-                                640
-                            ]
-                        },
-                        {
-                            "_class_name": "torchvision.transforms.ToTensor"
-                        },
-                        {
-                            "_class_name": "torchvision.transforms.Normalize",
-                            "mean": [
-                                0.485,
-                                0.456,
-                                0.406
-                            ],
-                            "std": [
-                                0.229,
-                                0.224,
-                                0.225
-                            ]
-                        }
-                    ]
-                }
-            },
             {
                 "old_key": "lidar_points",
                 "new_key": "lidar_points",
@@ -406,191 +281,6 @@
                     ]
                 },
                 "stack": false
-            }
-        ],
-        "pop_list": [
-            "images"
-        ]
-    },
-    "validation_dataset": {
-        "_class_name": "dwm.datasets.common.DatasetAdapter",
-        "base_dataset": {
-            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
-            "fs": {
-                "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
-                "fs": {
-                    "_class_name": "dwm.fs.dirfs.DirFileSystem",
-                    "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan"
-                },
-                "paths": [
-                    "data/nuscenes/v1.0-trainval_meta.zip",
-                    "data/nuscenes/v1.0-trainval01_blobs.zip",
-                    "data/nuscenes/v1.0-trainval02_blobs.zip",
-                    "data/nuscenes/v1.0-trainval03_blobs.zip",
-                    "data/nuscenes/v1.0-trainval04_blobs.zip",
-                    "data/nuscenes/v1.0-trainval05_blobs.zip",
-                    "data/nuscenes/v1.0-trainval06_blobs.zip",
-                    "data/nuscenes/v1.0-trainval07_blobs.zip",
-                    "data/nuscenes/v1.0-trainval08_blobs.zip",
-                    "data/nuscenes/v1.0-trainval09_blobs.zip",
-                    "data/nuscenes/v1.0-trainval10_blobs.zip",
-                    "data/nuscenes/nuScenes-map-expansion-v1.3.zip"
-                ],
-                "enable_cached_info": true
-            },
-            "dataset_name": "v1.0-trainval",
-            "split": "val",
-            "sequence_length": 1,
-            "fps_stride_tuples": [
-                [
-                    0,
-                    1
-                ]
-            ],
-            "sensor_channels": [
-                "LIDAR_TOP",
-                "CAM_FRONT"
-            ],
-            "keyframe_only": true,
-            "enable_camera_transforms": true,
-            "enable_sample_data": true,
-            "_3dbox_bev_settings": {
-                "color_table": {
-                    "vehicle.car": [
-                        0,
-                        0,
-                        255
-                    ],
-                    "vehicle.bus": [
-                        128,
-                        0,
-                        255
-                    ],
-                    "vehicle.truck": [
-                        255,
-                        255,
-                        0
-                    ],
-                    "vehicle.construction": [
-                        128,
-                        128,
-                        255
-                    ],
-                    "vehicle.emergency": [
-                        255,
-                        128,
-                        128
-                    ],
-                    "vehicle.trailer": [
-                        255,
-                        255,
-                        255
-                    ],
-                    "vehicle.bicycle": [
-                        128,
-                        255,
-                        0
-                    ],
-                    "vehicle.motorcycle": [
-                        0,
-                        255,
-                        128
-                    ],
-                    "human.pedestrian": [
-                        255,
-                        0,
-                        0
-                    ],
-                    "movable_object.barrier": [
-                        64,
-                        64,
-                        64
-                    ],
-                    "movable_object.trafficcone": [
-                        128,
-                        128,
-                        0
-                    ]
-                },
-                "bev_from_ego_transform": [
-                    [
-                        6.4,
-                        0,
-                        0,
-                        320
-                    ],
-                    [
-                        0,
-                        6.4,
-                        0,
-                        320
-                    ],
-                    [
-                        0,
-                        0,
-                        6.4,
-                        0
-                    ],
-                    [
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                ],
-                "fill_box": false,
-                "pen_width": 4
-            },
-            "hdmap_bev_settings": {
-                "bev_from_ego_transform": [
-                    [
-                        6.4,
-                        0,
-                        0,
-                        320
-                    ],
-                    [
-                        0,
-                        6.4,
-                        0,
-                        320
-                    ],
-                    [
-                        0,
-                        0,
-                        6.4,
-                        0
-                    ],
-                    [
-                        0,
-                        0,
-                        0,
-                        1
-                    ]
-                ],
-                "fill_map": false,
-                "pen_width": 4
-            }
-        },
-        "transform_list": [
-            {
-                "old_key": "images",
-                "new_key": "vae_images",
-                "transform": {
-                    "_class_name": "torchvision.transforms.Compose",
-                    "transforms": [
-                        {
-                            "_class_name": "torchvision.transforms.Resize",
-                            "size": [
-                                256,
-                                448
-                            ]
-                        },
-                        {
-                            "_class_name": "torchvision.transforms.ToTensor"
-                        }
-                    ]
-                }
             },
             {
                 "old_key": "3dbox_bev_images",
@@ -642,10 +332,164 @@
                         }
                     ]
                 }
+            }
+        ],
+        "pop_list": [
+            "images"
+        ]
+    },
+    "validation_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "dwm.datasets.kitti360.MotionDataset",
+            "fs": {
+                "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                "fs": {
+                    "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                    "path": "/mnt/storage/user/liuyichen"
+                },
+                "paths": [
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0000_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0002_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0003_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0004_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0005_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0006_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0007_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0009_sync_velodyne.zip",
+                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0010_sync_velodyne.zip",
+                    "data/kitti360/data_3d_bboxes.zip",
+                    "data/kitti360/data_poses.zip"
+                ],
+                "enable_cached_info": false
+            },
+            "dataset_name": "kitti360",
+            "split": "val",
+            "sequence_length": 1,
+            "fps_stride_tuples": [
+                [
+                    0,
+                    1
+                ]
+            ],
+            "sensor_channels": [
+                "LIDAR_TOP",
+                "CAM_FRONT"
+            ],
+            "keyframe_only": false,
+            "enable_camera_transforms": false,
+            "enable_sample_data": true,
+            "_3dbox_bev_settings": {
+                "color_table": {
+                    "vehicle.car": [
+                        0,
+                        0,
+                        255
+                    ],
+                    "vehicle.bus": [
+                        128,
+                        0,
+                        255
+                    ],
+                    "vehicle.truck": [
+                        255,
+                        255,
+                        0
+                    ],
+                    "vehicle.construction": [
+                        128,
+                        128,
+                        255
+                    ],
+                    "vehicle.emergency": [
+                        255,
+                        128,
+                        128
+                    ],
+                    "vehicle.trailer": [
+                        255,
+                        255,
+                        255
+                    ],
+                    "vehicle.bicycle": [
+                        128,
+                        255,
+                        0
+                    ],
+                    "vehicle.motorcycle": [
+                        0,
+                        255,
+                        128
+                    ],
+                    "human.pedestrian": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "movable_object.barrier": [
+                        64,
+                        64,
+                        64
+                    ],
+                    "movable_object.trafficcone": [
+                        128,
+                        128,
+                        0
+                    ]
+                },
+                "bev_from_ego_transform": [
+                    [
+                        6.4,
+                        0,
+                        0,
+                        320
+                    ],
+                    [
+                        0,
+                        6.4,
+                        0,
+                        320
+                    ],
+                    [
+                        0,
+                        0,
+                        6.4,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "fill_box": false,
+                "pen_width": 4
+            }
+        },
+        "transform_list": [
+            {
+                "old_key": "lidar_points",
+                "new_key": "lidar_points",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "dwm.datasets.common.FilterPoints",
+                            "min_distance": 2.4,
+                            "max_distance": 72.0
+                        },
+                        {
+                            "_class_name": "dwm.datasets.common.TakePoints",
+                            "max_count": 32768
+                        }
+                    ]
+                },
+                "stack": false
             },
             {
-                "old_key": "hdmap_bev_images",
-                "new_key": "hdmap_bev_images_denorm",
+                "old_key": "3dbox_bev_images",
+                "new_key": "3dbox_bev_images_denorm",
                 "transform": {
                     "_class_name": "torchvision.transforms.Compose",
                     "transforms": [
@@ -663,8 +507,8 @@
                 }
             },
             {
-                "old_key": "hdmap_bev_images",
-                "new_key": "hdmap_bev_images",
+                "old_key": "3dbox_bev_images",
+                "new_key": "3dbox_bev_images",
                 "transform": {
                     "_class_name": "torchvision.transforms.Compose",
                     "transforms": [
@@ -693,25 +537,6 @@
                         }
                     ]
                 }
-            },
-            {
-                "old_key": "lidar_points",
-                "new_key": "lidar_points",
-                "transform": {
-                    "_class_name": "torchvision.transforms.Compose",
-                    "transforms": [
-                        {
-                            "_class_name": "dwm.datasets.common.FilterPoints",
-                            "min_distance": 2.4,
-                            "max_distance": 72.0
-                        },
-                        {
-                            "_class_name": "dwm.datasets.common.TakePoints",
-                            "max_count": 32768
-                        }
-                    ]
-                },
-                "stack": false
             }
         ],
         "pop_list": [
@@ -755,12 +580,15 @@
             ]
         },
         "persistent_workers": true
-    },
+    },  
     "informations": {
-        "chamfer_distance": 3.095,
-        "chamfer_distance_30": 1.288,
-        "chamfer_distance_40": 2.095,
+        "voxel_iou": 0.04487199,
+        "chamfer_distance": 5.83799267,
+        "chamfer_distance_30": 3.17836332,
+        "chamfer_distance_40": 4.45944643,
+        "mmd": 0.00461476,
+        "jsd": 0.47146641,
         "total_batch_sizes": 64,
-        "steps": 150000
+        "steps": 120000
     }
 }

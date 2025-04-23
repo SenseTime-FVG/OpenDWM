@@ -5,6 +5,16 @@
     "generator_seed": 0,
     "data_shuffle": true,
     "save_results": false,
+    "global_state": {
+        "device_mesh": {
+            "_class_name": "torch.distributed.device_mesh.init_device_mesh",
+            "device_type": "cuda",
+            "mesh_shape": [
+                2,
+                1
+            ]
+        }
+    },
     "optimizer": {
         "_class_name": "torch.optim.AdamW",
         "lr": 5e-5,
@@ -17,11 +27,6 @@
     "pipeline": {
         "_class_name": "dwm.pipelines.lidar_maskgit.MaskGITPipeline",
         "common_config": {
-            "single_frame": true,
-            "cat_condition": true,
-            "cond_with_layout": true,
-            "cond_with_cxt": false,
-            "cond_with_action": false,
             "ray_cast_center": [
                 1.0,
                 0.0,
@@ -29,17 +34,40 @@
             ],
             "autocast": {
                 "device_type": "cuda"
+            },
+            "distribution_framework": "fsdp",
+            "ddp_wrapper_settings": {
+                "sharding_strategy": {
+                    "_class_name": "torch.distributed.fsdp.ShardingStrategy",
+                    "value": 1
+                },
+                "auto_wrap_policy": {
+                    "_class_name": "torch.distributed.fsdp.wrap.ModuleWrapPolicy",
+                    "module_classes": [
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.maskgit_base.TemporalTransformerBlock"
+                        },
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.vq_point_cloud.SwinTransformerBlock"
+                        }
+                    ]
+                },
+                "mixed_precision": {
+                    "_class_name": "torch.distributed.fsdp.MixedPrecision",
+                    "param_dtype": {
+                        "_class_name": "get_class",
+                        "class_name": "torch.float16"
+                    }
+                }
             }
         },
         "training_config": {
-            "latent_sample_method": "sample",
-            "train_ctsd": false,
-            "train_maskgit": true,
-            "train_bevformer": false,
-            "train_lss": false,
-            "train_feature_exchange": false,
             "3dbox_condition_ratio": 0.8,
             "hdmap_condition_ratio": 0.8,
+            "task_type_ratio": 0.5,
+            "max_reference_frame": 3,
             "max_norm_for_grad_clip": 10,
             "enable_grad_scaler": true
         },
@@ -99,6 +127,7 @@
         "bi_directional_Transformer": {
                 "_class_name": "dwm.models.maskgit_model.BidirectionalTransformerWithAdapter",
                 "use_extra_embedding": true,
+                "enable_temporal": true,
                 "n_e": 2048,
                 "e_dim": 1024,
                 "hidden_dim": 1280,
@@ -119,8 +148,8 @@
                     "gradient_checkpointing": true
                 }
             },
-        "vq_point_cloud_ckpt_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k.pth",
-        "vq_blank_code_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k_blank_code.pkl",
+        "vq_point_cloud_ckpt_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/checkpoints/80000.pth",
+        "vq_blank_code_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/lidar_vqvae_nwak_80k_blank_code.pkl",
         "metrics": {
             "voxel_iou": {
                 "_class_name": "dwm.metrics.voxel_metrics.VoxelIoU"
@@ -172,7 +201,7 @@
             },
             "dataset_name": "v1.0-trainval_12hz",
             "split": "train",
-            "sequence_length": 1,
+            "sequence_length": 8,
             "fps_stride_tuples": [
                 [
                     0,
@@ -440,7 +469,7 @@
             },
             "dataset_name": "v1.0-trainval",
             "split": "val",
-            "sequence_length": 1,
+            "sequence_length": 8,
             "fps_stride_tuples": [
                 [
                     0,
@@ -719,7 +748,7 @@
         ]
     },
     "training_dataloader": {
-        "batch_size": 8,
+        "batch_size": 1,
         "num_workers": 5,
         "prefetch_factor": 3,
         "collate_fn": {
@@ -731,7 +760,7 @@
         "persistent_workers": true
     },
     "validation_dataloader": {
-        "batch_size": 2,
+        "batch_size": 1,
         "num_workers": 2,
         "prefetch_factor": 3,
         "collate_fn": {
@@ -743,7 +772,7 @@
         "persistent_workers": true
     },
     "preview_dataloader": {
-        "batch_size": 2,
+        "batch_size": 1,
         "num_workers": 1,
         "prefetch_factor": 1,
         "shuffle": true,
@@ -757,10 +786,6 @@
         "persistent_workers": true
     },
     "informations": {
-        "chamfer_distance": 3.095,
-        "chamfer_distance_30": 1.288,
-        "chamfer_distance_40": 2.095,
-        "total_batch_sizes": 64,
-        "steps": 150000
+        "todo": "todo"
     }
 }

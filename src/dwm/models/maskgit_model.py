@@ -1,6 +1,6 @@
 import torch
 import torch.distributed
-import torch.distributed.nn.functional
+import torch.nn.functional as F
 from torch import nn
 from dwm.models.vq_point_cloud import (
     get_2d_sincos_pos_embed,
@@ -167,7 +167,10 @@ class BidirectionalTransformerWithAdapter(torch.nn.Module):
                  use_extra_embedding=False,
                  enable_temporal=False,
                  condition_adapter=None,
-                 enable_precomputed_pos_embed=False):
+                 enable_precomputed_pos_embed=False,
+                 enable_perturbation=False,
+                 perturbation_ratio=0.1,
+                 perturbation_topk=5):
         """
         Args:
             n_e: int. Number of vq codes.
@@ -196,6 +199,9 @@ class BidirectionalTransformerWithAdapter(torch.nn.Module):
         # This is the extra embedding for the mask token. It is used to replace the embedding of vq code.
         if self.use_extra_embedding:
             self.extra_embedding = nn.Embedding(n_e, e_dim)
+            self.enable_perturbation = enable_perturbation
+            self.perturbation_ratio = perturbation_ratio
+            self.perturbation_topk = perturbation_topk
         # This is the precomputed position embedding for the mask token. The required_grad is set to False because it is not trainable.
         # If you use fsdp, you can disable this flag.
         if enable_precomputed_pos_embed:
@@ -243,6 +249,65 @@ class BidirectionalTransformerWithAdapter(torch.nn.Module):
             torch.nn.init.constant_(m.bias, 0)
             torch.nn.init.constant_(m.weight, 1.0)
 
+    @torch.no_grad()
+    def add_perturbation(self, x_id):
+        # Only perturb non-masked tokens
+        valid_tokens = x_id != -1
+
+        # Get random mask for which tokens to perturb
+        perturb_mask = (torch.rand_like(x_id.float()) <
+                        self.perturbation_ratio) & valid_tokens
+
+        if not perturb_mask.any():
+            return x_id
+
+        # Get embeddings for all codebook entries
+        codebook = self.extra_embedding.weight  # [n_e, hidden_dim]
+
+        # Get embeddings for tokens we want to perturb
+        tokens_to_perturb = x_id[perturb_mask]
+        perturb_embeds = self.extra_embedding(
+            tokens_to_perturb)  # [num_to_perturb, hidden_dim]
+
+        # Calculate cosine similarity between perturbed tokens and codebook
+        # Calculate similarity one batch at a time to avoid OOM
+        batch_size = 512
+        num_perturb = len(perturb_embeds)
+        num_batches = (num_perturb + batch_size - 1) // batch_size
+
+        # Calculate similarity one batch at a time to avoid OOM
+        similarity_list = []
+        for i in range(num_batches):
+            start_idx = i * batch_size
+            end_idx = min((i + 1) * batch_size, num_perturb)
+            batch_embeds = perturb_embeds[start_idx:end_idx]
+
+            batch_similarity = F.cosine_similarity(
+                batch_embeds.unsqueeze(1),  # [batch_size, 1, hidden_dim]
+                codebook.unsqueeze(0),      # [1, n_e, hidden_dim]
+                dim=2
+            )  # [batch_size, n_e]
+
+            similarity_list.append(batch_similarity)
+
+        similarity = torch.cat(similarity_list, dim=0)  # [num_to_perturb, n_e]
+
+        # Get top-k nearest neighbors
+        k = self.perturbation_topk
+        _, topk_indices = torch.topk(similarity, k=k, dim=1)
+
+        # Randomly select one of the k nearest neighbors for each token
+        random_neighbor_idx = torch.randint(
+            0, k, (len(tokens_to_perturb),), device=x_id.device)
+        selected_neighbors = topk_indices[torch.arange(
+            len(tokens_to_perturb)), random_neighbor_idx]
+
+        # Create perturbed version of x_id
+        perturbed_x_id = x_id.clone()
+        perturbed_x_id[perturb_mask] = selected_neighbors
+
+        return perturbed_x_id
+
     def forward(self,
                 x,
                 x_id=None,
@@ -260,11 +325,14 @@ class BidirectionalTransformerWithAdapter(torch.nn.Module):
         if self.use_extra_embedding:
             x = torch.zeros_like(x)
             x_id = x_id.to(torch.long)
+            if self.enable_perturbation and self.training:
+                x_id = self.add_perturbation(x_id)
             x = torch.where(
                 (x_id == -1).unsqueeze(-1).expand(-1, -1, x.shape[2]),
                 self.mask_token.expand_as(x),
                 self.extra_embedding(x_id.masked_fill(x_id == -1, 0))
             )
+
         else:
             x = torch.where(
                 (x_id == -1).unsqueeze(-1).expand(-1, -1, x.shape[2]),

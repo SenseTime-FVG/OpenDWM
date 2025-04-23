@@ -19,6 +19,24 @@ def create_parser():
     return parser
 
 
+"""
+This script requires:
+  1. The validation dataset should be only nuScenes.
+  2. Add `"enable_sample_data": true` to the dataset arguments, so the Dataset
+     load the filename (path) to save the generated images.
+  3. Add `"sample_data"` to "validation_dataloader.collate_fn.keys" to pass the
+     object data directly to the script here, no need to collate to tensors.
+
+Note:
+  *. Set the "model_checkpoint_path" with the trained checkpoint, rather than
+     the pretrained checkpoint.
+  *. Set the fps_stride to [0, 1] for the image dataset, or
+     [2, 0.5 * sequence_length] for the origin video dataset, or
+     [12, 0.1 * sequence_length] for the 12Hz video dataset. Make sure no
+     sample is missed.
+"""
+
+
 if __name__ == "__main__":
     parser = create_parser()
     args = parser.parse_args()
@@ -38,6 +56,12 @@ if __name__ == "__main__":
         torch.distributed.init_process_group(backend=config["ddp_backend"])
     else:
         device = torch.device(config["device"])
+
+    # setup the global state
+    if "global_state" in config:
+        for key, value in config["global_state"].items():
+            dwm.common.global_state[key] = \
+                dwm.common.create_instance_from_config(value)
 
     should_log = (ddp and local_rank == 0) or not ddp
 
@@ -72,8 +96,20 @@ if __name__ == "__main__":
         validation_datasampler.set_epoch(0)
 
     for batch in validation_dataloader:
+        batch_size, sequence_length, view_count = batch["vae_images"].shape[:3]
+        latent_height = batch["vae_images"].shape[-2] // \
+            (2 ** (len(pipeline.vae.config.down_block_types) - 1))
+        latent_width = batch["vae_images"].shape[-1] // \
+            (2 ** (len(pipeline.vae.config.down_block_types) - 1))
+        latent_shape = (
+            batch_size, sequence_length, view_count,
+            pipeline.vae.config.latent_channels, latent_height,
+            latent_width
+        )
+
         with torch.no_grad():
-            pipeline_output = pipeline.inference_pipeline(batch, "pil")
+            pipeline_output = pipeline.inference_pipeline(
+                latent_shape, batch, "pil")
 
         if "images" in pipeline_output:
             paths = [

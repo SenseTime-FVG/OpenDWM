@@ -42,13 +42,13 @@ The interactive generative model is trained from scratch on autonomous driving d
 
 | Base Model | Temporal Training Style | Prediction Style | Configs | Checkpoint Download |
 | :-: | :-: | :-: | :-: | :-: |
-| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Diffusion forcing transformer](https://arxiv.org/abs/2502.06764) | [FIFO diffusion](https://arxiv.org/abs/2405.11473) | [Config](../configs/experimental/multi_datasets/ctsd_35_xs_p6_tirda_bm_nwao.json) | [Checkpoint](http://103.237.29.236:10030/ctsd_35_xs_p6_tirda_bm_nwao_60k.pth) |
+| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Diffusion forcing transformer](https://arxiv.org/abs/2502.06764) | [FIFO diffusion](https://arxiv.org/abs/2405.11473) | [Config](../configs/experimental/multi_datasets/ctsd_35_xs_df6v3_tirda_bm_nwao.json) | [Checkpoint](http://103.237.29.236:10030/ctsd_35_xs_df6v3_tirda_bm_nwao_60k.pth) |
 
 ## Inference
 
 ### Server-side Setup
 
-1. Download the base model (for VAE and text encoders) and model checkpoint, then edit the [config](../configs/experimental/streaming/ctsd_35_xs_p6_tirda_bm_nwao_streaming.json#L168).
+1. Download the base model (for VAE and text encoders) and model checkpoint, then edit the [config](../configs/experimental/streaming/ctsd_35_xs_df6v3_tirda_bm_nwao_streaming.json#L168).
 
 2. Launch the video streaming server following the [official guide](https://github.com/bluenviron/mediamtx?tab=readme-ov-file#installation).
 
@@ -56,7 +56,7 @@ The interactive generative model is trained from scratch on autonomous driving d
 
 4. Configure the Carla by editing the [config template](../configs/experimental/simulation/carla_simulation_town10_nusc_3views.json) and run: `PYTHONPATH=src python src/dwm/utils/carla_simulation.py -c configs/experimental/simulation/carla_simulation_town10_nusc_3views.json --client-timeout 150`
 
-5. Edit the generation config template (e.g. [Carla endpoint](../configs/experimental/streaming/ctsd_35_xs_p6_tirda_bm_nwao_streaming.json#L7), [video streaming options](../configs/experimental/streaming/ctsd_35_xs_p6_tirda_bm_nwao_streaming.json#L268)) and run: `PYTHONPATH=src python src/dwm/streaming.py -c configs/experimental/streaming/ctsd_35_xs_p6_tirda_bm_nwao_streaming.json -l output/ctsd_35_xs_p6_tirda_bm_nwao_streaming -s rtsp://{VIDEO_STREAMING_ENDPOINT}/live --fps 2`
+5. Edit the generation config template (e.g. [Carla endpoint](../configs/experimental/streaming/ctsd_35_xs_df6v3_tirda_bm_nwao_streaming.json#L7), [video streaming options](../configs/experimental/streaming/ctsd_35_xs_df6v3_tirda_bm_nwao_streaming.json#L268)) and run: `PYTHONPATH=src python src/dwm/streaming.py -c configs/experimental/streaming/ctsd_35_xs_df6v3_tirda_bm_nwao_streaming.json -l output/ctsd_35_xs_df6v3_tirda_bm_nwao_streaming -s rtsp://{VIDEO_STREAMING_ENDPOINT}/live --fps 2`
 
 ### Client-side Setup
 
