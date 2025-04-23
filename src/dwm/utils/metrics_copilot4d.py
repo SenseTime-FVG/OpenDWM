@@ -374,8 +374,6 @@ def compute_mmd(samples1, samples2, kernel, is_hist=True, *args, **kwargs):
     # print('s2: ', disc(samples2, samples2, kernel, *args, **kwargs))
     # print('--------------------------')
     cross = disc(samples1, samples2, kernel, *args, **kwargs)
-    print("cross: ", cross)
-    print("===============================")
     return (
         disc(samples1, samples1, kernel, *args, **kwargs)
         + disc(samples2, samples2, kernel, *args, **kwargs)

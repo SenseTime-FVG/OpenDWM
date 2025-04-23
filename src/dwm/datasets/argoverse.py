@@ -520,7 +520,7 @@ class MotionDataset(torch.utils.data.Dataset):
         self, fs: dwm.fs.czip.CombinedZipFileSystem, sequence_length: int,
         fps_stride_tuples: list,
         sensor_channels: list = ["cameras/ring_front_left"],
-        enable_synchronization_check: bool = True,
+        hide_lidar: bool = False, enable_synchronization_check: bool = True,
         enable_camera_transforms: bool = False,
         enable_ego_transforms: bool = False, _3dbox_image_settings=None,
         hdmap_image_settings=None, _3dbox_bev_settings=None,
@@ -531,6 +531,7 @@ class MotionDataset(torch.utils.data.Dataset):
         self.sequence_length = sequence_length
         self.fps_stride_tuples = fps_stride_tuples
         self.sensor_channels = sensor_channels
+        self.hide_lidar = hide_lidar
         self.enable_camera_transforms = enable_camera_transforms
         self.enable_ego_transforms = enable_ego_transforms
         self._3dbox_image_settings = _3dbox_image_settings
@@ -634,6 +635,10 @@ class MotionDataset(torch.utils.data.Dataset):
                     (j["timestamp"] - item["segment"][0][0]["timestamp"])
                     / 1000000
                     for j in i
+                    if (
+                        j["sensor"].startswith("cameras") or
+                        (j["sensor"] == "lidar" and not self.hide_lidar)
+                    )
                 ]
                 for i in item["segment"]
             ], dtype=torch.float32)
@@ -672,7 +677,7 @@ class MotionDataset(torch.utils.data.Dataset):
         if len(images) > 0:
             result["images"] = images  # [sequence_length, view_count]
 
-        if len(lidar_points) > 0:
+        if len(lidar_points) > 0 and not self.hide_lidar:
             result["lidar_points"] = lidar_points  # [sequence_length]
 
         extrinsics, intrinsics = None, None
@@ -726,7 +731,7 @@ class MotionDataset(torch.utils.data.Dataset):
                     for i in item["segment"]
                 ])
 
-            if "lidar_points" in result:
+            if "lidar_points" in result and not self.hide_lidar:
                 # the LiDAR points are already in the ego space
                 result["lidar_transforms"] = torch.stack([
                     torch.stack([
@@ -749,6 +754,10 @@ class MotionDataset(torch.utils.data.Dataset):
                     MotionDataset.get_transform(
                         poses, "timestamp_ns", j["timestamp"], "pt")
                     for j in i
+                    if (
+                        j["sensor"].startswith("cameras") or
+                        (j["sensor"] == "lidar" and not self.hide_lidar)
+                    )
                 ])
                 for i in item["segment"]
             ])

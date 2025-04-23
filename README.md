@@ -10,11 +10,13 @@ The driving world models generate multi-view images or videos of autonomous driv
 
 The highlights are as follows:
 
-1. **Significant improvement in the environmental diversity.** Through the use of multiple datasets, the model's generalization ability has been enhanced like never before. Take the example of a generation task controlled by layout conditions, such as a snowy city street or a lakeside highway with distant snow mountains, these scenarios are impossible tasks for generative models trained with a single dataset.
+1. **Transparent and reproducable training.** We provide complete training codes and configurations, allowing everyone to reproduce experiments, fine-tune on their own data, and customize development features as needed.
 
-2. **Greatly improved generation quality.** Support for popular model architectures (SD 2.1, 3.5) enables more convenient utilization of the advanced pre-training generation capabilities within the community. Various training techniques, including multitasking and self-supervision, allow the model to utilize the information in autonomous driving video data more effectively.
+2. **Significant improvement in the environmental diversity.** Through the use of multiple datasets, the model's generalization ability has been enhanced like never before. Take the example of a generation task controlled by layout conditions, such as a snowy city street or a lakeside highway with distant snow mountains, these scenarios are impossible tasks for generative models trained with a single dataset.
 
-3. **Convenient evaluation.** Evaluation follows the popular framework `torchmetrics`, which is easy to configure, develop, and integrate into the pipeline. Public configurations (such as FID, FVD on the nuScenes validation set) are provided to align other research works.
+3. **Greatly improved generation quality.** Support for popular model architectures (SD 2.1, 3.5) enables more convenient utilization of the advanced pre-training generation capabilities within the community. Various training techniques, including multitasking and self-supervision, allow the model to utilize the information in autonomous driving video data more effectively.
+
+4. **Convenient evaluation.** Evaluation follows the popular framework `torchmetrics`, which is easy to configure, develop, and integrate into the pipeline. Public configurations (such as FID, FVD on the nuScenes validation set) are provided to align other research works.
 
 Furthermore, our code modules are designed with high reusability in mind, for easy application in other projects.
 
@@ -30,6 +32,7 @@ Currently, the project has implemented the following papers:
 
 ## News
 
+* [2025/4/23] Update the [LiDAR VQVAE (including KITTI-360), LiDAR generation models](#lidar-models), and release the [DFoT on CTSD 3.5 model](#video-models).
 * [2025/3/17] Experimental release the [Interactive Generation with Carla](docs/InteractiveGeneration.md)
 * [2025/3/7] Release the [LiDAR Generation](#lidar-models)
 * [2025/3/4] Release the [CTSD 3.5 with layout condition](#video-models)
@@ -72,16 +75,22 @@ Our cross-view temporal SD (CTSD) pipeline support loading the pretrained SD 2.1
 | [SD 2.1](https://huggingface.co/stabilityai/stable-diffusion-2-1) | [Config](configs/ctsd/multi_datasets/ctsd_21_tirda_nwao.json), [Download](http://103.237.29.236:10030/ctsd_21_tirda_nwao_30k.pth) | [Config](configs/ctsd/multi_datasets/ctsd_21_tirda_bm_nwa.json), [Download](http://103.237.29.236:10030/ctsd_21_tirda_bm_nwa_30k.pth) |
 | [SD 3.0](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers) | | [UniMLVG Config](configs/ctsd/unimlvg/ctsd_unimlvg_stage3_tirda_bm_nwa.json), [Download](http://103.237.29.236:10030/ctsd_unimlvg_tirda_bm_nwa_60k.pth) |
 | [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_nwao_20k.pth) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_bm_nwao_40k.pth) |
+| [DFoT](https://arxiv.org/abs/2502.06764) on [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | | [Config](configs/ctsd/multi_datasets/ctsd_35_df16_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_df16_tirda_bm_nwao_40k.pth) |
+
+The FVD evaluation results for all downloadable models can be found at the bottom of the corresponding configuration files.
 
 ### LiDAR Models
 
 You can download our pre-trained tokenzier and generation model in the following link.
 
-| Model Architecture | Configs | Checkpoint Download |
-| :-: | :-: | :-: |
-| VQVAE | [Config](configs/lidar/lidar_vqvae_nwa.json) | [checkpoint](http://103.237.29.236:10030/lidar_vqvae_nwa_60k.pth), [blank code ](http://103.237.29.236:10030/lidar_vqvae_nwa_60k_blank_code.pkl) |
-| MaskGIT | [Config](configs/lidar/lidar_maskgit_layout_ns.json)| [checkpoint](http://103.237.29.236:10030/lidar_maskgit_nusc_150k.pth) |
-| Temporal MaskGIT |  |  |
+| Model Architecture | Dataset | Configs | Checkpoint Download |
+| :-: | :-: | :-: | :-: |
+| VQVAE | nuscene, waymo, argoverse | [Config](configs/lidar/lidar_vqvae_nwa.json) | [checkpoint](http://103.237.29.236:10030/lidar_vqvae_nwa_60k.pth), [blank code ](http://103.237.29.236:10030/lidar_vqvae_nwa_60k_blank_code.pkl) |
+| | nuscene, waymo, argoverse, kitti360 | [Config](configs/lidar/lidar_vqvae_nwak.json) | [checkpoint](http://103.237.29.236:10030/lidar_vqvae_nwak_80k.pth), [blank code](http://103.237.29.236:10030/lidar_vqvae_nwak_80k_blank_code.pkl) |
+| MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_layout_ns.json) | [ckpt_with_vqvae_nwa](http://103.237.29.236:10030/lidar_maskgit_nusc_150k.pth) <br> [ckpt_with_vqvae_nwak](http://103.237.29.236:10030/lidar_maskgit_vq80k_layout_ns_120k.pth) |
+| | kitti360 | [Config](configs/lidar/lidar_maskgit_vq80k_layout_kt.json) | [checkpoint](http://103.237.29.236:10030/lidar_maskgit_vq80k_layout_kt_120k.pth)|
+| Temporal MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_ns.json) | checkpoint(TODO) |
+| | kitti360 | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_kt.json) | checkpoint(TODO)|
 ## Examples
 
 ### T2I, T2V generation with CTSD pipeline
@@ -106,12 +115,19 @@ PYTHONPATH=src python src/dwm/preview.py -c examples/ctsd_35_6views_video_genera
 
 1. Download LiDAR VQVAE and LiDAR MaskGIT generation model checkpoint.
 2. Prepare the dataset ( [nuscenes_scene-0627_lidar_package.zip](http://103.237.29.236:10030/nuscenes_scene-0627_lidar_package.zip) ).
-3. Modify the values of `json_file`, `vq_point_cloud_ckpt_path`, `vq_blank_code_path` and `model_ckpt_path` to the paths of your dataset and checkpoints in the json file `examples/lidar_maskgit_preview.json` .
-4. Run the following command to visualize the LiDAR of the validation set and save the generated point cloud as `.bin` file.
+3. Modify the values of `json_file`, `vq_point_cloud_ckpt_path`, `vq_blank_code_path` and `model_ckpt_path` to the paths of your dataset and checkpoints in the json file `examples/lidar_maskgit_preview.json` or `examples/lidar_maskgit_temporal_preview.json` .
+4. For single-frame lidar generation, run the following command to visualize the LiDAR of the validation set and save the generated point cloud as `.bin` file.
 
 ```bash
-PYTHONPATH=src python src/dwm/preview.py -c examples/lidar_maskgit_preview.json -o output/test
+PYTHONPATH=src python src/dwm/preview.py -c examples/lidar_maskgit_preview.json -o output/single_frame_maskgit
 ```
+
+5. For lidar sequence generation, `enable_autoregressive_inference` flag is enabled in the config file to support autoregressive generation. If you would like to use ground truth data as reference frames, set `use_ground_truth_as_reference` as `true`. Alternatively, you can set it as `false` for generation from layout condition only. After setting up the config file, run the following command
+
+```bash
+PYTHONPATH=src python3 -m torch.distributed.run --nnodes 1 --nproc-per-node 2 --node-rank 0 --master-addr 127.0.0.1 --master-port 29000 src/dwm/preview.py -c examples/lidar_maskgit_temporal_preview.json -o output/temporal_maskgit
+```
+
 
 ## Train
 
@@ -165,3 +181,27 @@ Or distributed evaluation by `torch.distributed.run`, similar to the distributed
   * `tools` provides dataset and file processing scripts for faster initialization and reading.
 
 Introduction about the [file system](src/dwm/fs/README.md), and [dataset](src/dwm/datasets/README.md).
+
+## Citation
+If you find our OpenDWM useful in your research or refer to the provided baseline results, please star :star: this repository and consider citing our repo or papers :pencil::
+```
+@misc{opendwm,
+  Year = {2025},
+  Note = {https://github.com/SenseTime-FVG/OpenDWM},
+  Title = {OpenDWM: Open Driving World Models}
+}
+
+@article{chen2024unimlvg,
+  title={UniMLVG: Unified Framework for Multi-view Long Video Generation with Comprehensive Control Capabilities for Autonomous Driving},
+  author={Chen, Rui and Wu, Zehuan and Liu, Yichen and Guo, Yuxin and Ni, Jingcheng and Xia, Haifeng and Xia, Siyu},
+  journal={arXiv preprint arXiv:2412.04842},
+  year={2024}
+}
+
+@article{ni2025maskgwm,
+  title={MaskGWM: A Generalizable Driving World Model with Video Mask Reconstruction},
+  author={Ni, Jingcheng and Guo, Yuxin and Liu, Yichen and Chen, Rui and Lu, Lewei and Wu, Zehuan},
+  journal={arXiv preprint arXiv:2502.11663},
+  year={2025}
+}
+```

@@ -17,11 +17,6 @@
     "pipeline": {
         "_class_name": "dwm.pipelines.lidar_maskgit.MaskGITPipeline",
         "common_config": {
-            "single_frame": true,
-            "cat_condition": true,
-            "cond_with_layout": true,
-            "cond_with_cxt": false,
-            "cond_with_action": false,
             "ray_cast_center": [
                 1.0,
                 0.0,
@@ -32,12 +27,6 @@
             }
         },
         "training_config": {
-            "latent_sample_method": "sample",
-            "train_ctsd": false,
-            "train_maskgit": true,
-            "train_bevformer": false,
-            "train_lss": false,
-            "train_feature_exchange": false,
             "3dbox_condition_ratio": 0.8,
             "hdmap_condition_ratio": 0.8,
             "max_norm_for_grad_clip": 10,
@@ -119,8 +108,8 @@
                     "gradient_checkpointing": true
                 }
             },
-        "vq_point_cloud_ckpt_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k.pth",
-        "vq_blank_code_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k_blank_code.pkl",
+        "vq_point_cloud_ckpt_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/checkpoints/80000.pth",
+        "vq_blank_code_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/lidar_vqvae_nwak_80k_blank_code.pkl",
         "metrics": {
             "voxel_iou": {
                 "_class_name": "dwm.metrics.voxel_metrics.VoxelIoU"
@@ -757,10 +746,11 @@
         "persistent_workers": true
     },
     "informations": {
-        "chamfer_distance": 3.095,
-        "chamfer_distance_30": 1.288,
-        "chamfer_distance_40": 2.095,
+        "voxel_iou": 0.055,
+        "chamfer_distance": 4.438,
+        "chamfer_distance_30": 2.129,
+        "chamfer_distance_40": 3.236,
         "total_batch_sizes": 64,
-        "steps": 150000
+        "steps": 120000
     }
 }

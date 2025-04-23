@@ -123,6 +123,7 @@ class DiTCrossviewTemporalConditionModel(diffusers.SD3Transformer2DModel):
         temporal_gradient_checkpointing: bool = False,
         mixer_type: str = "AlphaBlender",
         perspective_modeling_type: str = "",
+        disable_view_emb_on_temporal_module: bool = False,
         qk_norm_on_additional_modules=None,
         mask_module=None,
         **kwargs
@@ -136,6 +137,7 @@ class DiTCrossviewTemporalConditionModel(diffusers.SD3Transformer2DModel):
         )
         self.crossview_gradient_checkpointing = crossview_gradient_checkpointing
         self.temporal_gradient_checkpointing = temporal_gradient_checkpointing
+        self.disable_view_emb_on_temporal_module = disable_view_emb_on_temporal_module
 
         # image condition adapter
         if condition_image_adapter_config is not None:
@@ -505,6 +507,9 @@ class DiTCrossviewTemporalConditionModel(diffusers.SD3Transformer2DModel):
                     temb
                 )
 
+            if encoder_hidden_states is not None:
+                self.encoder_hidden_states_var = torch.var(encoder_hidden_states).item()
+
             # temporal
             if self.enable_temporal and i in self.temporal_block_layers:
                 sequence_emb = torch\
@@ -515,7 +520,7 @@ class DiTCrossviewTemporalConditionModel(diffusers.SD3Transformer2DModel):
                 sequence_emb = self.time_pos_embeds[
                     self.temporal_block_layers.index(i)](sequence_emb).unsqueeze(1)
 
-                if self.enable_crossview:
+                if self.enable_crossview and not self.disable_view_emb_on_temporal_module:
                     sequence_emb = sequence_emb + view_cam_emb
 
                 if self.training and self.temporal_gradient_checkpointing:
@@ -574,7 +579,9 @@ class DiTCrossviewTemporalConditionModel(diffusers.SD3Transformer2DModel):
                         crossview_attention_index)
 
         # debug code
-        self.h_var = torch.var(hidden_states).item()
+        self.hidden_states_var = hidden_states.var().item()
+        if self.enable_temporal:
+            self.temporal_embedding_var = sequence_emb.var().item()
 
         hidden_states = self.norm_out(hidden_states, temb)
         hidden_states = self.proj_out(hidden_states)

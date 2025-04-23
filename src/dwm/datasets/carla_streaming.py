@@ -464,7 +464,7 @@ class StreamingDataAdapter:
         environment_description: str = "urban street scene.", fps=None,
         enable_images: bool = False, rear_vehicle_center=None,
         _3dbox_image_settings=None, hdmap_image_settings=None,
-        min_pixel_ratio: float = 0.005
+        min_pixel_ratio: float = 0.005, stub_key_data_dict=None
     ):
         self.client = client
         self.sensor_channels = sensor_channels
@@ -495,6 +495,7 @@ class StreamingDataAdapter:
         self._3dbox_image_settings = _3dbox_image_settings or {}
         self.hdmap_image_settings = hdmap_image_settings or {}
         self.min_pixel_ratio = min_pixel_ratio
+        self.stub_key_data_dict = stub_key_data_dict
 
         if self.master:
             self.world.tick()
@@ -662,6 +663,8 @@ class StreamingDataAdapter:
                     self.buffer["sensor.camera.rgb"][i])
                 for i in self.sensor_channels
             ]]
+
+        dwm.datasets.common.add_stub_key_data(self.stub_key_data_dict, item)
 
         for i in self.transform_list:
             item[i["new_key"]] = dwm.datasets.common.DatasetAdapter\

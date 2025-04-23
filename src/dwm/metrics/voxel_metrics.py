@@ -30,8 +30,10 @@ class VoxelIoU(torchmetrics.Metric):
             torch.distributed.all_gather_into_tensor(
                 all_iou, iou_list)
             iou_list = all_iou
-        self.num_samples = len(iou_list)
-        return iou_list.mean()
+        num_samples = (~torch.isnan(iou_list) & ~torch.isinf(iou_list)).sum()
+        iou_list = torch.nan_to_num(iou_list, nan=0.0)
+        self.num_samples = num_samples
+        return iou_list.sum() / num_samples
 
     def reset(self):
         self.iou_list.clear()

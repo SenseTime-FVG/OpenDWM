@@ -209,3 +209,6 @@ if __name__ == "__main__":
 
         if should_log:
             print("Epoch {} done.".format(epoch))
+
+    if torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()

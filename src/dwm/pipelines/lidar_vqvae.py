@@ -10,6 +10,7 @@ import torch.distributed
 import torch.nn.functional as F
 import torch.utils.tensorboard
 import torchvision
+from dwm.utils.lidar import preprocess_points
 
 
 class LidarCodebook():
@@ -25,22 +26,6 @@ class LidarCodebook():
             state.pop("vector_quantizer.reservoir")
 
         return state
-
-    @staticmethod
-    def preprocess_points(batch, common_config, device):
-        if common_config.get("point_space", "ego") == "ego":
-            mhv = dwm.functional.make_homogeneous_vector
-            return [
-                [
-                    (mhv(p_j.to(device)) @ t_j.permute(1, 0))[:, :3]
-                    for p_j, t_j in zip(p_i, t_i.flatten(0, 1))
-                ]
-                for p_i, t_i in zip(
-                    batch["lidar_points"],
-                    batch["lidar_transforms"].to(device))
-            ]
-        else:
-            return [[j.to(device) for j in i] for i in batch["lidar_points"]]
 
     def __init__(
         self, output_path: str, config: dict, device, common_config: dict,
@@ -180,8 +165,7 @@ class LidarCodebook():
 
         self.vq_point_cloud_wrapper.train()
 
-        points = LidarCodebook.preprocess_points(
-            batch, self.common_config, self.device)
+        points = preprocess_points(batch, self.device)  
         with self.get_autocast_context():
             ray_cast_center = self.common_config.get("ray_cast_center", None)
             if ray_cast_center is not None:
@@ -283,9 +267,7 @@ class LidarCodebook():
         self, batch: dict, output_path: str, global_step: int
     ):
         self.vq_point_cloud_wrapper.eval()
-
-        points = LidarCodebook.preprocess_points(
-            batch, self.common_config, self.device)
+        points = preprocess_points(batch, self.device)
 
         with self.get_autocast_context():
             ray_cast_center = self.common_config.get("ray_cast_center", None)

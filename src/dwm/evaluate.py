@@ -89,3 +89,6 @@ if __name__ == "__main__":
     pipeline.evaluate_pipeline(
         0, len(validation_dataset), validation_dataloader,
         validation_datasampler)
+
+    if torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()

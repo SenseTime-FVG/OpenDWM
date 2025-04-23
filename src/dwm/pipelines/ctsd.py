@@ -2,6 +2,7 @@ import contextlib
 import diffusers
 import diffusers.image_processor
 import dwm.common
+import dwm.distributed
 import dwm.functional
 import dwm.models.crossview_temporal_unet
 import dwm.utils.preview
@@ -95,9 +96,23 @@ class CrossviewTemporalSD():
 
     @staticmethod
     def get_action_ids(
-        batch, common_config: dict, action_condition_mask=None
+        batch, common_config: dict, action_condition_mask=None,
+        streaming_mode: bool = False, prev_ego_transforms=None
     ):
-        current_pose = batch["ego_transforms"][
+        if streaming_mode:
+            assert batch["ego_transforms"].shape[1] == 1
+            ego_transforms = torch.cat([
+                (
+                    batch["ego_transforms"]
+                    if prev_ego_transforms is None
+                    else prev_ego_transforms
+                ),
+                batch["ego_transforms"]
+            ], dim=1)
+        else:
+            ego_transforms = batch["ego_transforms"]
+
+        current_pose = ego_transforms[
             :, :, common_config["camera_ego_sensor_indices"]
         ]
         uncondition_pose = torch.eye(4).unsqueeze(0).unsqueeze(0).unsqueeze(0)
@@ -135,6 +150,8 @@ class CrossviewTemporalSD():
         action_ids = torch.where(
             is_conditioned.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1),
             action_ids, -1000.0 * torch.ones_like(action_ids))
+        if streaming_mode:
+            action_ids = action_ids.chunk(2, dim=1)[-1]
 
         return action_ids
 
@@ -144,6 +161,7 @@ class CrossviewTemporalSD():
         batch: dict, device, dtype, text_condition_mask=None,
         _3dbox_condition_mask=None, hdmap_condition_mask=None,
         action_condition_mask=None, explicit_view_modeling_mask=None,
+        streaming_mode: bool = False, prev_ego_transforms=None,
         do_classifier_free_guidance: bool = False
     ):
         batch_size, sequence_length, view_count = latent_shape[:3]
@@ -311,7 +329,8 @@ class CrossviewTemporalSD():
                     CrossviewTemporalSD.get_camera_transform_ids(
                         batch, common_config),
                     CrossviewTemporalSD.get_action_ids(
-                        batch, common_config, action_condition_mask)
+                        batch, common_config, action_condition_mask,
+                        streaming_mode, prev_ego_transforms)
                 ], -1)
                 if do_classifier_free_guidance:
                     # action is allowed to be guidance scaled
@@ -1056,19 +1075,9 @@ class CrossviewTemporalSD():
         ) if "optimizer" in config else None
 
         if resume_from is not None:
-            optimizer_state_path = os.path.join(
-                output_path, "optimizer", "{}.pth".format(resume_from))
-            optimizer_state = torch.load(
-                optimizer_state_path, map_location="cpu", weights_only=True)
-            if torch.distributed.is_initialized():
-                options = torch.distributed.checkpoint.state_dict\
-                    .StateDictOptions(full_state_dict=True, cpu_offload=True)
-                torch.distributed.checkpoint.state_dict\
-                    .set_optimizer_state_dict(
-                        self.model_wrapper, self.optimizer, optimizer_state,
-                        options=options)
-            else:
-                self.optimizer.load_state_dict(optimizer_state)
+            dwm.distributed.distributed_load_optimizer_state(
+                self.model_wrapper, self.optimizer,
+                os.path.join(output_path, "optimizer"), str(resume_from))
 
         self.lr_scheduler = dwm.common.create_instance_from_config(
             config["lr_scheduler"], optimizer=self.optimizer) \
@@ -1087,31 +1096,26 @@ class CrossviewTemporalSD():
 
     def save_checkpoint(self, output_path: str, steps: int):
         if torch.distributed.is_initialized():
+            # model is fully saved by rank0 for compatibility
             options = torch.distributed.checkpoint.state_dict.StateDictOptions(
                 full_state_dict=True, cpu_offload=True)
-            model_state_dict, optimizer_state_dict = torch.distributed\
-                .checkpoint.state_dict.get_state_dict(
-                    self.model_wrapper, self.optimizer, options=options)
+            model_state_dict = torch.distributed.checkpoint.state_dict\
+                .get_model_state_dict(self.model_wrapper, options=options)
 
         elif self.should_save:
             model_state_dict = self.model.state_dict()
-            optimizer_state_dict = self.optimizer.state_dict()
 
+        os.makedirs(os.path.join(output_path, "checkpoints"), exist_ok=True)
+        os.makedirs(os.path.join(output_path, "optimizer"), exist_ok=True)
         if self.should_save:
-            os.makedirs(
-                os.path.join(output_path, "checkpoints"), exist_ok=True)
             torch.save(
                 model_state_dict,
                 os.path.join(
                     output_path, "checkpoints", "{}.pth".format(steps)))
 
-            os.makedirs(os.path.join(output_path, "optimizer"), exist_ok=True)
-            torch.save(
-                optimizer_state_dict,
-                os.path.join(output_path, "optimizer", "{}.pth".format(steps)))
-
-        if torch.distributed.is_initialized():
-            torch.distributed.barrier()
+        dwm.distributed.distributed_save_optimizer_state(
+            self.model_wrapper, self.optimizer,
+            os.path.join(output_path, "optimizer"), str(steps))
 
     def log(self, global_step: int, log_steps: int):
         if self.should_save:
@@ -1302,8 +1306,15 @@ class CrossviewTemporalSD():
         loss_report = {"loss": loss.item()}
 
         # debug code
-        if hasattr(self.model, "h_var"):
-            loss_report["h_var"] = self.model.h_var
+        report_detail = self.common_config.get("report_detail", False)
+        if hasattr(self.model, "hidden_states_var") and report_detail:
+            loss_report["h_var"] = self.model.hidden_states_var
+
+        if hasattr(self.model, "encoder_hidden_states_var") and report_detail:
+            loss_report["eh_var"] = self.model.encoder_hidden_states_var
+
+        if hasattr(self.model, "temporal_embedding_var") and report_detail:
+            loss_report["se_var"] = self.model.temporal_embedding_var
 
         if len(loss_dict.items()) > 1:
             for i in loss_dict.items():
@@ -1891,6 +1902,9 @@ class StreamingCrossviewTemporalSD(CrossviewTemporalSD):
         self.test_scheduler.set_timesteps(
             self.inference_config["inference_steps"], self.device)
 
+        # cache the last ego transform to calculate the action
+        self.prev_ego_transforms = None
+
     def inference_pipeline(
         self, latent_shape, start_timestep: int = 0, stop_timestep=None,
         take_time: int = 0
@@ -2006,7 +2020,12 @@ class StreamingCrossviewTemporalSD(CrossviewTemporalSD):
                 self.common_config,
                 (self.latent_shape[0], 1) + self.latent_shape[2:],
                 frame_condition_data, self.device, self.model_dtype,
+                streaming_mode=True,
+                prev_ego_transforms=self.prev_ego_transforms,
                 do_classifier_free_guidance=do_classifier_free_guidance)
+            if "ego_transforms" in frame_condition_data:
+                self.prev_ego_transforms = frame_condition_data["ego_transforms"]
+
             if self.text_prompt_counter > 0:
                 frame_conditions["encoder_hidden_states"] = \
                     self.conditions["encoder_hidden_states"][:, -1:]

@@ -168,3 +168,6 @@ if __name__ == "__main__":
         global_step += 1
         if should_log:
             print(f"preview: {global_step}")
+
+    if torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()
