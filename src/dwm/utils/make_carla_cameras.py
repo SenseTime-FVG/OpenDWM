@@ -42,7 +42,7 @@ if __name__ == "__main__":
         carla_transform = lh_from_rh @ np.array(v["transform"]) @ \
             z_frontal_camera_from_x_frontal_camera @ rh_from_lh
         euler_rotation = transforms3d.euler.mat2euler(
-            carla_transform[:3, :3], "syzx")
+            carla_transform[:3, :3], "szyx")
         result[k] = {
             "attributes": {
                 "fov": str(
@@ -60,8 +60,8 @@ if __name__ == "__main__":
                     for i in range(3)
                 ],
                 "rotation": [
-                    math.degrees(-euler_rotation[0]),
-                    math.degrees(euler_rotation[1]),
+                    math.degrees(-euler_rotation[1]),
+                    math.degrees(euler_rotation[0]),
                     math.degrees(-euler_rotation[2])
                 ]
             }

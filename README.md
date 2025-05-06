@@ -32,6 +32,7 @@ Currently, the project has implemented the following papers:
 
 ## News
 
+* [2025/5/6] Release the [CTSD 3.5 with CogVideoX VAE](#video-models) for faster generation.
 * [2025/4/23] Update the [LiDAR VQVAE (including KITTI-360), LiDAR generation models](#lidar-models), and release the [DFoT on CTSD 3.5 model](#video-models).
 * [2025/3/17] Experimental release the [Interactive Generation with Carla](docs/InteractiveGeneration.md)
 * [2025/3/7] Release the [LiDAR Generation](#lidar-models)
@@ -76,6 +77,7 @@ Our cross-view temporal SD (CTSD) pipeline support loading the pretrained SD 2.1
 | [SD 3.0](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers) | | [UniMLVG Config](configs/ctsd/unimlvg/ctsd_unimlvg_stage3_tirda_bm_nwa.json), [Download](http://103.237.29.236:10030/ctsd_unimlvg_tirda_bm_nwa_60k.pth) |
 | [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_nwao_20k.pth) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_bm_nwao_40k.pth) |
 | [DFoT](https://arxiv.org/abs/2502.06764) on [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | | [Config](configs/ctsd/multi_datasets/ctsd_35_df16_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_df16_tirda_bm_nwao_40k.pth) |
+| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) with [CogVideoX VAE](https://huggingface.co/THUDM/CogVideoX-2b) | | [Config](configs/ctsd/multi_datasets/ctsd_35_tvae_f17_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tvae_f17_tirda_bm_nwao_50k.pth) |
 
 The FVD evaluation results for all downloadable models can be found at the bottom of the corresponding configuration files.
 
