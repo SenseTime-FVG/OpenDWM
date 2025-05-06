@@ -162,9 +162,11 @@ class CrossviewTemporalSD():
         _3dbox_condition_mask=None, hdmap_condition_mask=None,
         action_condition_mask=None, explicit_view_modeling_mask=None,
         streaming_mode: bool = False, prev_ego_transforms=None,
-        do_classifier_free_guidance: bool = False
+        do_classifier_free_guidance: bool = False,
+        latents_shape=None,
     ):
-        batch_size, sequence_length, view_count = latent_shape[:3]
+        batch_size, _, view_count = latent_shape[:3]
+        sequence_length = batch["pts"].shape[1]
         if do_classifier_free_guidance:
             batch_size *= 2
 
@@ -449,6 +451,14 @@ class CrossviewTemporalSD():
             text_encoder is not None
         ):
             result["pooled_projections"] = pooled_text_embeddings
+        # for adopting temporal vae
+        if latents_shape[1] != sequence_length:
+            pre = 1 if sequence_length % 2 == 1 else 0
+            stride = (sequence_length - pre)//(latents_shape[1] - pre)
+            for k in result:
+                if result[k] is not None and result[k].ndim > 1 and result[k].shape[1] == sequence_length:
+                    result[k] = torch.cat(
+                        [result[k][:, :pre], result[k][:, pre::stride]], dim=1)
 
         return result
 
@@ -608,7 +618,8 @@ class CrossviewTemporalSD():
     def try_make_input_for_prediction(
         noisy_input: torch.Tensor, latents, timesteps: torch.Tensor,
         training_config: dict, common_config: dict,
-        generator: torch.Generator = None
+        generator: torch.Generator = None,
+        reference_latent_count=None
     ):
         # for the reference frame augmentation
         rf_scale = (
@@ -682,29 +693,27 @@ class CrossviewTemporalSD():
                     generator=generator) < \
                 training_config.get("reference_visible_rate", 1.0)
 
-            reference_frame_count = training_config.get(
-                "reference_frame_count", 0)
-            if isinstance(reference_frame_count, int):
-                reference_frame_count_tensor = reference_frame_count * \
+            if isinstance(reference_latent_count, int):
+                reference_latent_count_tensor = reference_latent_count * \
                     torch.ones((batch_size, 1, 1), dtype=torch.int32)
-            elif isinstance(reference_frame_count, dict):
+            elif isinstance(reference_latent_count, dict):
                 count_list = torch.tensor(
-                    [int(i) for i in reference_frame_count.keys()],
+                    [int(i) for i in reference_latent_count.keys()],
                     dtype=torch.int32)
                 ratio_cumsum_list = torch.tensor(
-                    list(itertools.accumulate(reference_frame_count.values())))
+                    list(itertools.accumulate(reference_latent_count.values())))
                 ratio_indices = torch.searchsorted(
                     ratio_cumsum_list, torch.rand(
                         (batch_size, 1, 1), generator=generator))
-                reference_frame_count_tensor = count_list[ratio_indices]
+                reference_latent_count_tensor = count_list[ratio_indices]
             else:
                 raise Exception("Un implemented dynamic reference frame count")
 
-            reference_frame_count_indicator = torch\
+            reference_latent_count_indicator = torch\
                 .arange(sequence_length, dtype=torch.int32)\
                 .unsqueeze(0).unsqueeze(-1)\
                 .repeat(batch_size, 1, view_count) < \
-                reference_frame_count_tensor
+                reference_latent_count_tensor
             reference_frame_indicator = torch.logical_and(
                 torch.logical_and(
                     torch.logical_not(generation_task_indicator),
@@ -712,7 +721,7 @@ class CrossviewTemporalSD():
                         all_reference_visible_indicator,
                         partial_reference_indicator
                     )),
-                reference_frame_count_indicator)
+                reference_latent_count_indicator)
 
             made_noisy_input = torch.where(
                 reference_frame_indicator.view(*latents.shape[:3], 1, 1, 1)
@@ -940,12 +949,18 @@ class CrossviewTemporalSD():
             raise Exception("Unsupported diffusion model type.")
 
         # vae & image processor
-        self.vae = diffusers.AutoencoderKL.from_pretrained(
-            pretrained_model_name_or_path, subfolder="vae")
+        vae_type = dwm.common.get_class(
+            self.common_config.get("vae", "diffusers.AutoencoderKL"))
+        vae_pretrained_model_name_or_path = self.common_config.get(
+            "vae_pretrained_model_name_or_path", pretrained_model_name_or_path)
+        self.vae = vae_type.from_pretrained(
+            vae_pretrained_model_name_or_path, subfolder="vae")
         self.vae.requires_grad_(False)
         self.vae.to(self.device)
         self.image_processor = diffusers.image_processor.VaeImageProcessor(
             vae_scale_factor=2 ** (len(self.vae.config.block_out_channels) - 1))
+        self.is_temporal_vae = isinstance(
+            self.vae, diffusers.models.autoencoders.autoencoder_kl_cogvideox.AutoencoderKLCogVideoX)
 
         # scheduler
         if isinstance(self.model, diffusers.UNetSpatioTemporalConditionModel):
@@ -1094,6 +1109,27 @@ class CrossviewTemporalSD():
 
         return loss_coef
 
+    def get_latent_sequence_length(self, sequence_length):
+        pre = self.inference_config.get("vae_pre", 0)
+        stride = self.inference_config.get("vae_stride", 1)
+        assert sequence_length % stride == pre or sequence_length == 0, \
+            f"{sequence_length} vs {pre} vs {stride}"
+        return (sequence_length-pre)//stride + (1 if pre > 0 else 0)
+
+    def get_reference_latent_count(self):
+        reference_frame_count = self.training_config.get(
+            "reference_frame_count", 0)
+        if isinstance(reference_frame_count, int):
+            reference_latent_count = self.get_latent_sequence_length(
+                reference_frame_count)
+        elif isinstance(reference_frame_count, dict):
+            reference_latent_count = {
+                str(self.get_latent_sequence_length(int(k))): v
+                for k, v in reference_frame_count.items()}
+        else:
+            raise Exception("Un implemented dynamic reference frame count")
+        return reference_latent_count
+
     def save_checkpoint(self, output_path: str, steps: int):
         if torch.distributed.is_initialized():
             # model is fully saved by rank0 for compatibility
@@ -1165,6 +1201,12 @@ class CrossviewTemporalSD():
             batch["vae_images"].flatten(0, 2).to(self.device))
 
         # prepare the training target
+        # use different shape for 3D and 2D vae
+        if self.is_temporal_vae:
+            image_tensor = einops.rearrange(
+                image_tensor, "(b t v) c h w -> (b v) c t h w",
+                t=sequence_length, v=view_count)
+
         shift_factor = self.vae.config.shift_factor\
             if self.vae.config.shift_factor is not None else 0
         latents = dwm.functional.memory_efficient_split_call(
@@ -1173,7 +1215,16 @@ class CrossviewTemporalSD():
                 block.encode(tensor).latent_dist.sample() - shift_factor
             ) * block.config.scaling_factor,
             self.common_config.get("memory_efficient_batch", -1))
-        latents = latents.unflatten(0, batch["vae_images"].shape[:3])
+
+        if self.is_temporal_vae:
+            latents = einops.rearrange(
+                latents, "(b v) c t h w -> b t v c h w", v=view_count)
+        else:
+            latents = einops.rearrange(
+                latents, "(b t v) c h w -> b t v c h w",
+                t=sequence_length, v=view_count)
+
+        # latents = latents.unflatten(0, batch["vae_images"].shape[:3])
         noise = torch.randn(
             latents.shape, generator=self.generator).to(self.device)
 
@@ -1261,14 +1312,39 @@ class CrossviewTemporalSD():
                 self.common_config, batch["vae_images"].shape, batch,
                 self.device, self.model_dtype, text_condition_mask,
                 _3dbox_condition_mask, hdmap_condition_mask,
-                action_condition_mask, explicit_view_modeling_mask)
+                action_condition_mask, explicit_view_modeling_mask,
+                latents_shape=latents.shape)
+
+            reference_latent_count = self.get_reference_latent_count()
+            if self.training_config.get("extra_reference_infer", 0) > 0:
+                # NOTE: infer temporal vae with only reference frames
+                # This setting is more aligned with inference stage
+                extra_image_tensor = image_tensor[
+                    :, :, :self.training_config.get("extra_reference_infer", 0)]
+                extra_latents = dwm.functional.memory_efficient_split_call(
+                    self.vae, extra_image_tensor,
+                    lambda block, tensor: (
+                        block.encode(tensor).latent_dist.sample() -
+                        shift_factor
+                    ) * block.config.scaling_factor,
+                    self.common_config.get("memory_efficient_batch", -1))
+                if self.is_temporal_vae:
+                    extra_latents = einops.rearrange(
+                        extra_latents, "(b v) c t h w -> b t v c h w", v=view_count)
+                else:
+                    raise Exception("Not support now.")
+                latents_for_prediction = torch.cat(
+                    [extra_latents, latents[:, extra_latents.shape[1]:]], dim=1)
+            else:
+                latents_for_prediction = latents
 
             noisy_latents, timesteps, additional_conditions, \
                 reference_frame_indicator = \
                 CrossviewTemporalSD.try_make_input_for_prediction(
-                    noisy_latents, latents, timesteps,
+                    noisy_latents, latents_for_prediction, timesteps,
                     self.training_config, self.common_config,
-                    generator=self.generator)
+                    generator=self.generator,
+                    reference_latent_count=reference_latent_count)
             if additional_conditions is not None:
                 model_conditions.update(additional_conditions)
             if getattr(self.model_wrapper, "mask_module", None) is not None:
@@ -1408,7 +1484,8 @@ class CrossviewTemporalSD():
             else self.tokenizer,
             self.common_config, latent_shape, batch, self.device,
             self.model_dtype,
-            do_classifier_free_guidance=do_classifier_free_guidance)
+            do_classifier_free_guidance=do_classifier_free_guidance,
+            latents_shape=latents.shape)
         result = {}
         stop_timestep = (
             self.inference_config["inference_steps"]
@@ -1525,18 +1602,44 @@ class CrossviewTemporalSD():
                     .flatten(-4, -2))
 
         if diffusion_forcing_mode:
+            # NOTE if is_temporal_vae, the tranport of different duration is not straightforward
+            # which mean: for time-window_pos, [0-0, 1-1, 2-2] --(out 0-0)--> [1-0, 2-1, 3-2] is required
+            # this coming from that temporal vae is not position independent
+            cur_latents = latents[:, take_time].flatten(
+                0, 1).to(dtype=self.vae.dtype)
+            if self.is_temporal_vae:
+                view_count = latents.shape[2]
+                cur_latents = torch.cat(
+                    [cur_latents[:, :, None], cur_latents[:, :, None]*0], dim=2)
             image_tensor = self.vae.decode(
-                latents[:, take_time].flatten(0, 1).to(dtype=self.vae.dtype) /
-                self.vae.config.scaling_factor + shift_factor,
+                cur_latents / self.vae.config.scaling_factor + shift_factor,
                 return_dict=False)[0]
+            if self.is_temporal_vae:
+                image_tensor = image_tensor.chunk(2, dim=2)[0]
+                image_tensor = einops.rearrange(
+                    image_tensor, "(b v) c t h w -> (b t v) c h w", v=view_count)
         else:
+            if image_latents is not None:
+                latents = torch.cat([
+                    image_latents[:, :reference_frame_count],
+                    latents[:, reference_frame_count:]
+                ], 1)
+            if self.is_temporal_vae:
+                view_count = latents.shape[2]
+                cur_latents = einops.rearrange(
+                    latents, "b t v c h w -> (b v) c t h w")
+            else:
+                cur_latents = latents.flatten(0, 2)
             image_tensor = dwm.functional.memory_efficient_split_call(
-                self.vae, latents.flatten(0, 2).to(dtype=self.vae.dtype),
+                self.vae, cur_latents.to(dtype=self.vae.dtype),
                 lambda block, tensor: block.decode(
                     tensor / block.config.scaling_factor + shift_factor,
                     return_dict=False
                 )[0],
                 self.common_config.get("memory_efficient_batch", -1))
+            if self.is_temporal_vae:
+                image_tensor = einops.rearrange(
+                    image_tensor, "(b v) c t h w -> (b t v) c h w", v=view_count)
 
         result = {
             "images": self.image_processor.postprocess(
@@ -1578,19 +1681,27 @@ class CrossviewTemporalSD():
                 raw_image_tensor.flatten(0, 2).to(self.device))
             shift_factor = self.vae.config.shift_factor \
                 if self.vae.config.shift_factor is not None else 0
+            # use different shape for 3D and 2D vae
+            if self.is_temporal_vae:
+                image_tensor = einops.rearrange(image_tensor, "(b t v) c h w -> (b v) c t h w",
+                                                t=raw_image_tensor.shape[1], v=raw_image_tensor.shape[2])
             image_latents = dwm.functional.memory_efficient_split_call(
                 self.vae, image_tensor,
                 lambda block, tensor: (
                     block.encode(tensor).latent_dist.mode() - shift_factor
                 ) * block.config.scaling_factor,
                 self.common_config.get("memory_efficient_batch", -1))
-            image_latents = image_latents.unflatten(
-                0, raw_image_tensor.shape[:3])
+            if self.is_temporal_vae:
+                image_latents = einops.rearrange(
+                    image_latents, "(b v) c t h w -> b t v c h w", v=raw_image_tensor.shape[2])
+            else:
+                image_latents = image_latents.unflatten(
+                    0, raw_image_tensor.shape[:3])
 
         result = {
             "images": []
         }
-        iteration_sequence_length = latent_shape[1]
+        iteration_sequence_length = self.inference_config["sequence_length_per_iteration"]
         exception_for_take_sequence = self.inference_config.get(
             "autoregression_data_exception_for_take_sequence", [])
         if diffusion_forcing_mode:
@@ -1645,7 +1756,11 @@ class CrossviewTemporalSD():
                         queue_head * steps_per_inference
                     ),
                     take_time=queue_head)
-                result["images"].append(iteration_output["images"])
+                if self.is_temporal_vae and i == 0:
+                    result["images"].append(
+                        iteration_output["images"].chunk(4)[-1])
+                else:
+                    result["images"].append(iteration_output["images"])
                 is_finished = torch.tensor(
                     [j <= queue_head for j in range(latent_shape[1])],
                     device=self.device
@@ -1669,7 +1784,8 @@ class CrossviewTemporalSD():
             else:
                 iteration_output = self.inference_pipeline(
                     latent_shape, iteration_batch, output_type, image_latents,
-                    reference_frame_count=this_ref_frame_count)
+                    reference_frame_count=self.get_latent_sequence_length(
+                        this_ref_frame_count))
                 result["images"].append(
                     iteration_output["images"]
                     [latent_shape[0] * this_ref_frame_count * latent_shape[2]:])
@@ -1677,8 +1793,10 @@ class CrossviewTemporalSD():
                     i + iteration_sequence_length - reference_frame_count <
                     total_frame_count - iteration_sequence_length + 1
                 ):
+                    reference_latent_count = self.get_latent_sequence_length(
+                        reference_frame_count)
                     image_latents = iteration_output["latents"][
-                        :, -reference_frame_count:
+                        :, -reference_latent_count:
                     ]
 
         if diffusion_forcing_mode:
@@ -1725,7 +1843,8 @@ class CrossviewTemporalSD():
         if "sequence_length_per_iteration" in self.inference_config:
             latent_shape = (
                 batch_size,
-                self.inference_config["sequence_length_per_iteration"],
+                self.get_latent_sequence_length(
+                    self.inference_config["sequence_length_per_iteration"]),
                 view_count, self.vae.config.latent_channels, latent_height,
                 latent_width
             )
@@ -1733,7 +1852,8 @@ class CrossviewTemporalSD():
                 latent_shape, batch, "pt")
         else:
             latent_shape = (
-                batch_size, sequence_length, view_count,
+                batch_size, self.get_latent_sequence_length(
+                    sequence_length), view_count,
                 self.vae.config.latent_channels, latent_height,
                 latent_width
             )
@@ -1804,7 +1924,8 @@ class CrossviewTemporalSD():
             if "sequence_length_per_iteration" in self.inference_config:
                 latent_shape = (
                     batch_size,
-                    self.inference_config["sequence_length_per_iteration"],
+                    self.get_latent_sequence_length(
+                        self.inference_config["sequence_length_per_iteration"]),
                     view_count, self.vae.config.latent_channels, latent_height,
                     latent_width
                 )
@@ -1812,7 +1933,8 @@ class CrossviewTemporalSD():
                     latent_shape, batch, "pt")
             else:
                 latent_shape = (
-                    batch_size, sequence_length, view_count,
+                    batch_size, self.get_latent_sequence_length(
+                        sequence_length), sequence_length, view_count,
                     self.vae.config.latent_channels, latent_height,
                     latent_width
                 )

@@ -146,6 +146,138 @@
                         ]
                     },
                     "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.rgb",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.843",
+                        "role_name": "CAM_BACK_RIGHT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            -0.4851219,
+                            0.4805682,
+                            1.562395
+                        ],
+                        "rotation": [
+                            0.9096567,
+                            110.7891,
+                            0.6515776
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.semantic_segmentation",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.843",
+                        "role_name": "CAM_BACK_RIGHT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            -0.4851219,
+                            0.4805682,
+                            1.562395
+                        ],
+                        "rotation": [
+                            0.9096567,
+                            110.7891,
+                            0.6515776
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.rgb",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "89.306",
+                        "role_name": "CAM_BACK"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            -1.471674,
+                            -0.003451368,
+                            1.579103
+                        ],
+                        "rotation": [
+                            -0.959956,
+                            -179.8612,
+                            -0.2268726
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.semantic_segmentation",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "89.306",
+                        "role_name": "CAM_BACK"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            -1.471674,
+                            -0.003451368,
+                            1.579103
+                        ],
+                        "rotation": [
+                            -0.959956,
+                            -179.8612,
+                            -0.2268726
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.rgb",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.958",
+                        "role_name": "CAM_BACK_LEFT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            -0.464309,
+                            -0.484795,
+                            1.59097
+                        ],
+                        "rotation": [
+                            0.4965155,
+                            -108.5951,
+                            -0.8008391
+                        ]
+                    },
+                    "report_actor_id": true
+                },
+                {
+                    "id": "sensor.camera.semantic_segmentation",
+                    "attributes": {
+                        "image_size_x": "640",
+                        "image_size_y": "360",
+                        "fov": "64.958",
+                        "role_name": "CAM_BACK_LEFT"
+                    },
+                    "spawn_transform": {
+                        "location": [
+                            -0.464309,
+                            -0.484795,
+                            1.59097
+                        ],
+                        "rotation": [
+                            0.4965155,
+                            -108.5951,
+                            -0.8008391
+                        ]
+                    },
+                    "report_actor_id": true
                 }
             ]
         },
