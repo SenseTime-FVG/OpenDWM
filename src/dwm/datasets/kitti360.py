@@ -431,7 +431,7 @@ class MotionDataset(torch.utils.data.Dataset):
             result["lidar_transforms"] = torch.stack([
                 torch.stack([torch.eye(4, dtype=torch.float32)]) for _ in range(self.sequence_length)
             ])
-            result["lidar_transforms"][0, 0, :3, 3] = torch.tensor(
+            result["lidar_transforms"][..., :3, 3] = torch.tensor(
                 [x_transform, y_transform, z_transform])
 
         # Add stub data if needed

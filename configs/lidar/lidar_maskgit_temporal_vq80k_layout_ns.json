@@ -786,6 +786,11 @@
         "persistent_workers": true
     },
     "informations": {
-        "todo": "todo"
+        "voxel_iou": 0.12602140,
+        "chamfer_distance": 3.48719001,
+        "chamfer_distance_30": 1.59294820,
+        "chamfer_distance_40": 2.51212931,
+        "total_batch_sizes": 24,
+        "steps": 150000
     }
 }

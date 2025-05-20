@@ -31,7 +31,7 @@ class VoxelIoU(torchmetrics.Metric):
                 all_iou, iou_list)
             iou_list = all_iou
         num_samples = (~torch.isnan(iou_list) & ~torch.isinf(iou_list)).sum()
-        iou_list = torch.nan_to_num(iou_list, nan=0.0)
+        iou_list = torch.nan_to_num(iou_list, nan=0.0, posinf=0.0, neginf=0.0)
         self.num_samples = num_samples
         return iou_list.sum() / num_samples
 

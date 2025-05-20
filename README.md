@@ -91,8 +91,8 @@ You can download our pre-trained tokenzier and generation model in the following
 | | nuscene, waymo, argoverse, kitti360 | [Config](configs/lidar/lidar_vqvae_nwak.json) | [checkpoint](http://103.237.29.236:10030/lidar_vqvae_nwak_80k.pth), [blank code](http://103.237.29.236:10030/lidar_vqvae_nwak_80k_blank_code.pkl) |
 | MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_layout_ns.json) | [ckpt_with_vqvae_nwa](http://103.237.29.236:10030/lidar_maskgit_nusc_150k.pth) <br> [ckpt_with_vqvae_nwak](http://103.237.29.236:10030/lidar_maskgit_vq80k_layout_ns_120k.pth) |
 | | kitti360 | [Config](configs/lidar/lidar_maskgit_vq80k_layout_kt.json) | [checkpoint](http://103.237.29.236:10030/lidar_maskgit_vq80k_layout_kt_120k.pth)|
-| Temporal MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_ns.json) | checkpoint(TODO) |
-| | kitti360 | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_kt.json) | checkpoint(TODO)|
+| Temporal MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_ns.json) | [checkpoint](http://103.237.29.236:10030/lidar_maskgit_temporal_vq80k_layout_kt_150k.pth) |
+| | kitti360 | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_kt.json) | [checkpoint](http://103.237.29.236:10030/lidar_maskgit_temporal_vq80k_layout_ns_150k.pth)|
 ## Examples
 
 ### T2I, T2V generation with CTSD pipeline

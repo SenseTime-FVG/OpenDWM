@@ -451,8 +451,9 @@ class CrossviewTemporalSD():
             text_encoder is not None
         ):
             result["pooled_projections"] = pooled_text_embeddings
+
         # for adopting temporal vae
-        if latents_shape[1] != sequence_length:
+        if latents_shape is not None and latents_shape[1] != sequence_length:
             pre = 1 if sequence_length % 2 == 1 else 0
             stride = (sequence_length - pre)//(latents_shape[1] - pre)
             for k in result:

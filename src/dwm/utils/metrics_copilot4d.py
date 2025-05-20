@@ -206,18 +206,18 @@ def _clamp(points, origin, pc_range=[-70.0, -70.0, -4.5, 70.0, 70.0, 4.5]):
 
 
 def compute_chamfer_distance_inner(pred_pcd, gt_pcd, device, pc_range=[-70.0, -70.0, -4.5, 70.0, 70.0, 4.5], savename=""):
-    mask1 = np.logical_and(
+    mask1 = torch.logical_and(
         pc_range[0] <= pred_pcd[:, 0], pred_pcd[:, 0] <= pc_range[3])
-    mask2 = np.logical_and(
+    mask2 = torch.logical_and(
         pc_range[1] <= pred_pcd[:, 1], pred_pcd[:, 1] <= pc_range[4])
-    mask3 = np.logical_and(
+    mask3 = torch.logical_and(
         pc_range[2] <= pred_pcd[:, 2], pred_pcd[:, 2] <= pc_range[5])
     inner_mask_pred = mask1 & mask2 & mask3
-    mask1 = np.logical_and(
+    mask1 = torch.logical_and(
         pc_range[0] <= gt_pcd[:, 0], gt_pcd[:, 0] <= pc_range[3])
-    mask2 = np.logical_and(
+    mask2 = torch.logical_and(
         pc_range[1] <= gt_pcd[:, 1], gt_pcd[:, 1] <= pc_range[4])
-    mask3 = np.logical_and(
+    mask3 = torch.logical_and(
         pc_range[2] <= gt_pcd[:, 2], gt_pcd[:, 2] <= pc_range[5])
     inner_mask_gt = mask1 & mask2 & mask3
     if inner_mask_pred.sum() == 0 or inner_mask_gt.sum() == 0:
@@ -405,7 +405,7 @@ def jsd_2d(p, q):
 
 
 def point_cloud_to_histogram(field_size, bins, point_cloud):
-    point_cloud_flat = point_cloud[:, 0:2]  # .cpu().detach().numpy()
+    point_cloud_flat = point_cloud[:, 0:2].cpu().detach().numpy()
     square_size = field_size / bins
     halfway_offset = 0
     if bins % 2 == 0:
