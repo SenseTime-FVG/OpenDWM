@@ -898,6 +898,7 @@ class MaskGITPipeline(torch.nn.Module):
 
     @torch.no_grad()
     def autoregressive_inference_pipeline(self, batch, output_for_eval=False, output_from_ray=False):
+        torch.cuda.empty_cache()
         batch_size, num_frames = len(
             batch["lidar_points"]), len(batch["lidar_points"][0])
         points = preprocess_points(batch, self.device)
@@ -911,8 +912,8 @@ class MaskGITPipeline(torch.nn.Module):
         num_reference_frame = self.common_config.get("max_reference_frame", 3)
         num_training_frames = self.training_config.get(
             "num_training_frames", 8)
-        prediction_steps = math.ceil(
-            (num_frames - num_reference_frame) / float(num_training_frames - num_reference_frame))
+        prediction_steps = math.ceil((num_frames - num_reference_frame) / \
+            float(num_training_frames - num_reference_frame))
         self.bi_directional_Transformer_wrapper.eval()
         reference_points = [points[i][:num_reference_frame]
                                 for i in range(batch_size)]
@@ -920,7 +921,7 @@ class MaskGITPipeline(torch.nn.Module):
         voxels = voxels.flatten(0, 1)
         lidar_feats = self.vq_point_cloud.lidar_encoder(voxels)
         # Select the first few frames as the reference frames
-        if self.inference_config.get("use_ground_truth_as_reference", False):
+        if self.inference_config.get("use_ground_truth_as_reference", True):
             reference_code, _, reference_code_indices = self.vq_point_cloud.vector_quantizer(
                 lidar_feats, self.vq_point_cloud.code_age, self.vq_point_cloud.code_usage)
             # prepare the code and code_indices for the init step
@@ -935,10 +936,10 @@ class MaskGITPipeline(torch.nn.Module):
             code[reference_frame_mask] = reference_code
             code_indices[reference_frame_mask] = reference_code_indices
         else:
-            code = torch.zeros_like(lidar_feats,
-                    device=lidar_feats.device, dtype=lidar_feats.dtype)
-            code_indices = torch.ones_like(lidar_feats,
-                    device=lidar_feats.device, dtype=torch.int64) * -1
+            code = torch.zeros((batch_size * num_training_frames, *reference_code.shape[1:]),
+                    device=reference_code.device, dtype=reference_code.dtype)
+            code_indices = torch.ones((batch_size * num_training_frames, *reference_code_indices.shape[1:]),
+                    device=reference_code_indices.device, dtype=reference_code_indices.dtype) * -1
 
         results = {}
         results['pred_points'] = [[] for _ in range(batch_size)]
@@ -950,12 +951,21 @@ class MaskGITPipeline(torch.nn.Module):
         )
         all_maskgit_conditions["context"] = all_maskgit_conditions["context"].unflatten(
             0, (batch_size, -1))
+
         for i in range(prediction_steps):
             choice_temperature = 2.0
             start_idx = i * (num_training_frames - num_reference_frame)
+            end_idx = min(start_idx + num_training_frames, num_frames)
+            sequence_length = end_idx - start_idx
             maskgit_conditions = {
-                "context": all_maskgit_conditions["context"][:, start_idx: start_idx + num_training_frames].flatten(0, 1),
+                "context": all_maskgit_conditions["context"][:, start_idx: end_idx]
             }
+            if sequence_length < num_training_frames:
+                # pad the context with the last frame
+                context = maskgit_conditions["context"]
+                pad_context = context[:, -1:].repeat(1, num_training_frames - sequence_length, 1, 1)
+                maskgit_conditions["context"] = torch.cat([maskgit_conditions["context"], pad_context], dim=1)              
+            maskgit_conditions["context"] = maskgit_conditions["context"].flatten(0, 1)
             # ===Sample task code
             x, x_indices = code.clone(), code_indices.clone()
 
@@ -1037,12 +1047,16 @@ class MaskGITPipeline(torch.nn.Module):
             code_indices[:, :num_reference_frame] = sample_ids[:, -num_reference_frame:].clone()
             code = code.flatten(0, 1)
             code_indices = code_indices.flatten(0, 1)
+            torch.cuda.empty_cache()
 
-        results['pred_voxels'] = torch.cat(results['pred_voxels'], dim=1).flatten(0, 1)
+        results['pred_voxels'] = torch.cat(results['pred_voxels'], dim=1)[:, :num_frames].flatten(0, 1)
+        results['pred_points'] = [pts[:num_frames] for pts in results['pred_points']]
         results['gt_voxels'] = self.vq_point_cloud.voxelizer(points).flatten(0, 1)
-
+        results['gt_points'] = points
+        
         return results
 
+    @torch.no_grad()
     def inference_pipeline(self, batch, output_for_eval=False, output_from_ray=False):
         batch_size, num_frames = len(
             batch["lidar_points"]), len(batch["lidar_points"][0])

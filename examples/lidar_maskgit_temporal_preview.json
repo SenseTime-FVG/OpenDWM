@@ -1,10 +1,24 @@
 {
     "device": "cuda",
+    "ddp_backend": "nccl",
     "generator_seed": 0,
+    "data_shuffle": true,
+    "save_results": true,
+    "global_state": {
+        "device_mesh": {
+            "_class_name": "torch.distributed.device_mesh.init_device_mesh",
+            "device_type": "cuda",
+            "mesh_shape": [
+                2,
+                1
+            ]
+        }
+    },
     "optimizer": null,
     "pipeline": {
         "_class_name": "dwm.pipelines.lidar_maskgit.MaskGITPipeline",
         "common_config": {
+            "should_evaluate": false,
             "single_frame": true,
             "cat_condition": true,
             "cond_with_layout": true,
@@ -17,17 +31,57 @@
             ],
             "autocast": {
                 "device_type": "cuda"
+            },
+            "distribution_framework": "fsdp",
+            "ddp_wrapper_settings": {
+                "sharding_strategy": {
+                    "_class_name": "torch.distributed.fsdp.ShardingStrategy",
+                    "value": 1
+                },
+                "auto_wrap_policy": {
+                    "_class_name": "torch.distributed.fsdp.wrap.ModuleWrapPolicy",
+                    "module_classes": [
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.maskgit_base.TemporalTransformerBlock"
+                        },
+                        {
+                            "_class_name": "get_class",
+                            "class_name": "dwm.models.vq_point_cloud.SwinTransformerBlock"
+                        }
+                    ]
+                },
+                "mixed_precision": {
+                    "_class_name": "torch.distributed.fsdp.MixedPrecision",
+                    "param_dtype": {
+                        "_class_name": "get_class",
+                        "class_name": "torch.float16"
+                    }
+                }
             }
+        },
+        "training_config": {
+            "num_training_frames": 8,
+            "latent_sample_method": "sample",
+            "train_ctsd": false,
+            "train_maskgit": true,
+            "train_bevformer": false,
+            "train_lss": false,
+            "train_feature_exchange": false,
+            "3dbox_condition_ratio": 0.8,
+            "hdmap_condition_ratio": 0.8,
+            "task_type_ratio": 0.5,
+            "max_reference_frame": 3,
+            "max_norm_for_grad_clip": 10,
+            "enable_grad_scaler": true
         },
         "inference_config": {
             "infer_feature_exchange": false,
             "use_blank_code": true,
             "use_maskgit": true,
             "inference_steps": 50,
-            "save_vq_results": false,
-            "save_raw_results": false,
-            "save_gt_results": false,
-            "save_preview": false
+            "use_ground_truth_as_reference": false,
+            "enable_autoregressive_inference": true
         },
         "bev_layout_encoder": null,
         "vq_point_cloud": {
@@ -79,6 +133,7 @@
         "bi_directional_Transformer": {
             "_class_name": "dwm.models.maskgit_model.BidirectionalTransformerWithAdapter",
             "use_extra_embedding": true,
+            "enable_temporal": true,
             "n_e": 2048,
             "e_dim": 1024,
             "hidden_dim": 1280,
@@ -99,9 +154,9 @@
                 "gradient_checkpointing": true
             }
         },
-        "vq_point_cloud_ckpt_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k.pth",
-        "vq_blank_code_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_vqvae_nwa_60k_blank_code.pkl",
-        "model_ckpt_path": "/mnt/storage/user/liuyichen/tasks/lidar_maskgit_nusc_full-align-line/checkpoints/150k.pth",
+        "vq_point_cloud_ckpt_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_codebook_nusc_waymo_argo_60000.pth",
+        "vq_blank_code_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/workspaces/worldmodels/models/lidar_codebook_nusc_waymo_argo_60000_blank_code.pkl",
+        "model_ckpt_path": "/mnt/storage/user/liuyichen/tasks/lidar_maskgit_nusc_full-temporal-8_frame-align-line-auto/checkpoints/35000.pth",
         "metrics": {
             "voxel_iou_with_maskgit": {
                 "_class_name": "dwm.metrics.voxel_metrics.VoxelIoU"
@@ -124,7 +179,7 @@
         "base_dataset": {
             "_class_name": "dwm.datasets.preview.PreviewDataset",
             "json_file": "/mnt/storage/user/liuyichen/repo/driving-world-models/nuscenes_scene-0627_package/data_lidar.json",
-            "sequence_length": 1,
+            "sequence_length": 13,
             "fps_stride_tuples": [
                 [
                     0,
@@ -138,23 +193,7 @@
             "use_hdmap": false,
             "use_3dbox": false,
             "use_3dbox_bev": true,
-            "use_hdmap_bev": true,
-            "stub_key_data_dict": {
-                "crossview_mask": [
-                    "content",
-                    {
-                        "_class_name": "torch.tensor",
-                        "data": {
-                            "_class_name": "json.loads",
-                            "s": "[[1,1,0,0,0,1],[1,1,1,0,0,0],[0,1,1,1,0,0],[0,0,1,1,1,0],[0,0,0,1,1,1],[1,0,0,0,1,1]]"
-                        },
-                        "dtype": {
-                            "_class_name": "get_class",
-                            "class_name": "torch.bool"
-                        }
-                    }
-                ]
-            }
+            "use_hdmap_bev": true
         },
         "transform_list": [
             {
