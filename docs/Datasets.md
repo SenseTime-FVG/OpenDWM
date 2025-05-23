@@ -106,10 +106,10 @@ We made the image captions for both nuScenes, Waymo, Argoverse, OpenDV datasets 
 
 | Dataset | Downloads |
 | :-: | :-: |
-| nuScenes | [mini](http://103.237.29.236:10030/nuscenes_v1.0-mini_caption_v2.zip), [trainval](http://103.237.29.236:10030/nuscenes_v1.0-trainval_caption_v2.zip) |
-| Waymo | [trainval](http://103.237.29.236:10030/waymo_caption_v2.zip) |
-| Argoverse | [trainval](http://103.237.29.236:10030/av2_sensor_caption_v2.zip) |
-| OpenDV | [all](http://103.237.29.236:10030/opendv_caption.zip) |
+| nuScenes | [mini](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/nuscenes_v1.0-mini_caption_v2.zip?download=true), [trainval](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/nuscenes_v1.0-trainval_caption_v2.zip?download=true) |
+| Waymo | [trainval](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/waymo_caption_v2.zip?download=true) |
+| Argoverse | [trainval](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/av2_sensor_caption_v2.zip?download=true) |
+| OpenDV | [all](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/opendv_caption.zip?download=true) |
 
 1. Download the packages above and unzip them.
 

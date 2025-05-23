@@ -73,11 +73,11 @@ Our cross-view temporal SD (CTSD) pipeline support loading the pretrained SD 2.1
 
 | Base model | Text conditioned <br/> driving generation | Text and layout (box, map) <br/> conditioned driving generation |
 | :-: | :-: | :-: |
-| [SD 2.1](https://huggingface.co/stabilityai/stable-diffusion-2-1) | [Config](configs/ctsd/multi_datasets/ctsd_21_tirda_nwao.json), [Download](http://103.237.29.236:10030/ctsd_21_tirda_nwao_30k.pth) | [Config](configs/ctsd/multi_datasets/ctsd_21_tirda_bm_nwa.json), [Download](http://103.237.29.236:10030/ctsd_21_tirda_bm_nwa_30k.pth) |
-| [SD 3.0](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers) | | [UniMLVG Config](configs/ctsd/unimlvg/ctsd_unimlvg_stage3_tirda_bm_nwa.json), [Download](http://103.237.29.236:10030/ctsd_unimlvg_tirda_bm_nwa_60k.pth) |
-| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_nwao_20k.pth) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tirda_bm_nwao_40k.pth) |
-| [DFoT](https://arxiv.org/abs/2502.06764) on [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | | [Config](configs/ctsd/multi_datasets/ctsd_35_df16_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_df16_tirda_bm_nwao_40k.pth) |
-| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) with [CogVideoX VAE](https://huggingface.co/THUDM/CogVideoX-2b) | | [Config](configs/ctsd/multi_datasets/ctsd_35_tvae_f17_tirda_bm_nwao.json), [Download](http://103.237.29.236:10030/ctsd_35_tvae_f17_tirda_bm_nwao_50k.pth) |
+| [SD 2.1](https://huggingface.co/stabilityai/stable-diffusion-2-1) | [Config](configs/ctsd/multi_datasets/ctsd_21_tirda_nwao.json), [Download](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_21_tirda_nwao_30k.pth?download=true) | [Config](configs/ctsd/multi_datasets/ctsd_21_tirda_bm_nwa.json), [Download](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_21_tirda_bm_nwa_30k.pth?download=true) |
+| [SD 3.0](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers) | | [UniMLVG Config](configs/ctsd/unimlvg/ctsd_unimlvg_stage3_tirda_bm_nwa.json), [Download](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_unimlvg_tirda_bm_nwa_60k.pth?download=true) |
+| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_nwao.json), [Download](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_35_tirda_nwao_20k.pth?download=true) | [Config](configs/ctsd/multi_datasets/ctsd_35_tirda_bm_nwao.json), [Download](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_35_tirda_bm_nwao_40k.pth?download=true) |
+| [DFoT](https://arxiv.org/abs/2502.06764) on [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | | [Config](configs/ctsd/multi_datasets/ctsd_35_df16_tirda_bm_nwao.json), [Download](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_35_df16_tirda_bm_nwao_40k.pth?download=true) |
+| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) with [CogVideoX VAE](https://huggingface.co/THUDM/CogVideoX-2b) | | [Config](configs/ctsd/multi_datasets/ctsd_35_tvae_f17_tirda_bm_nwao.json), [Download](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_35_tvae_f17_tirda_bm_nwao_50k.pth?download=true) |
 
 The FVD evaluation results for all downloadable models can be found at the bottom of the corresponding configuration files.
 
@@ -87,12 +87,12 @@ You can download our pre-trained tokenzier and generation model in the following
 
 | Model Architecture | Dataset | Configs | Checkpoint Download |
 | :-: | :-: | :-: | :-: |
-| VQVAE | nuscene, waymo, argoverse | [Config](configs/lidar/lidar_vqvae_nwa.json) | [checkpoint](http://103.237.29.236:10030/lidar_vqvae_nwa_60k.pth), [blank code ](http://103.237.29.236:10030/lidar_vqvae_nwa_60k_blank_code.pkl) |
-| | nuscene, waymo, argoverse, kitti360 | [Config](configs/lidar/lidar_vqvae_nwak.json) | [checkpoint](http://103.237.29.236:10030/lidar_vqvae_nwak_80k.pth), [blank code](http://103.237.29.236:10030/lidar_vqvae_nwak_80k_blank_code.pkl) |
-| MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_layout_ns.json) | [ckpt_with_vqvae_nwa](http://103.237.29.236:10030/lidar_maskgit_nusc_150k.pth) <br> [ckpt_with_vqvae_nwak](http://103.237.29.236:10030/lidar_maskgit_vq80k_layout_ns_120k.pth) |
-| | kitti360 | [Config](configs/lidar/lidar_maskgit_vq80k_layout_kt.json) | [checkpoint](http://103.237.29.236:10030/lidar_maskgit_vq80k_layout_kt_120k.pth)|
-| Temporal MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_ns.json) | [checkpoint](http://103.237.29.236:10030/lidar_maskgit_temporal_vq80k_layout_kt_150k.pth) |
-| | kitti360 | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_kt.json) | [checkpoint](http://103.237.29.236:10030/lidar_maskgit_temporal_vq80k_layout_ns_150k.pth)|
+| VQVAE | nuscene, waymo, argoverse | [Config](configs/lidar/lidar_vqvae_nwa.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwa_60k.pth?download=true), [blank code](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwa_60k_blank_code.pkl?download=true) |
+| | nuscene, waymo, argoverse, kitti360 | [Config](configs/lidar/lidar_vqvae_nwak.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwak_80k.pth?download=true), [blank code](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwak_80k_blank_code.pkl?download=true) |
+| MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_layout_ns.json) | [ckpt_with_vqvae_nwa](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_nusc_150k.pth?download=true) <br> [ckpt_with_vqvae_nwak](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_vq80k_layout_ns_120k.pth?download=true) |
+| | kitti360 | [Config](configs/lidar/lidar_maskgit_vq80k_layout_kt.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_vq80k_layout_kt_120k.pth?download=true)|
+| Temporal MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_ns.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_temporal_vq80k_layout_kt_150k.pth?download=true) |
+| | kitti360 | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_kt.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_temporal_vq80k_layout_ns_150k.pth?download=true)|
 ## Examples
 
 ### T2I, T2V generation with CTSD pipeline
@@ -106,7 +106,7 @@ PYTHONPATH=src python examples/ctsd_generation_example.py -c examples/ctsd_35_6v
 ### Layout conditioned T2V generation with CTSD pipeline
 
 1. Download base model (for VAE, text encoders, scheduler config) and driving generation model checkpoint, and edit the [path](examples/ctsd_35_6views_video_generation_with_layout.json#L156) in the JSON config.
-2. Download layout resource package ([nuscenes_scene-0627_package.zip](http://103.237.29.236:10030/nuscenes_scene-0627_package.zip), or [carla_town04_package](http://103.237.29.236:10030/carla_town04_package.zip)) and unzip to the `{RESOURCE_PATH}`. Then edit the meta [path](examples/ctsd_35_6views_video_generation_with_layout.json#L162) as `{RESOURCE_PATH}/data.json` in the JSON config.
+2. Download layout resource package ([nuscenes_scene-0627_package.zip](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/nuscenes_scene-0627_package.zip?download=true), or [carla_town04_package](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/carla_town04_package.zip?download=true)) and unzip to the `{RESOURCE_PATH}`. Then edit the meta [path](examples/ctsd_35_6views_video_generation_with_layout.json#L162) as `{RESOURCE_PATH}/data.json` in the JSON config.
 3. Run this command to generate the video.
 
 ```bash
@@ -116,7 +116,7 @@ PYTHONPATH=src python src/dwm/preview.py -c examples/ctsd_35_6views_video_genera
 ### Layout conditioned LiDAR generation with MaskGIT pipeline
 
 1. Download LiDAR VQVAE and LiDAR MaskGIT generation model checkpoint.
-2. Prepare the dataset ( [nuscenes_scene-0627_lidar_package.zip](http://103.237.29.236:10030/nuscenes_scene-0627_lidar_package.zip) ).
+2. Prepare the dataset ( [nuscenes_scene-0627_lidar_package.zip](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/nuscenes_scene-0627_lidar_package.zip?download=true) ).
 3. Modify the values of `json_file`, `vq_point_cloud_ckpt_path`, `vq_blank_code_path` and `model_ckpt_path` to the paths of your dataset and checkpoints in the json file `examples/lidar_maskgit_preview.json` or `examples/lidar_maskgit_temporal_preview.json` .
 4. For single-frame lidar generation, run the following command to visualize the LiDAR of the validation set and save the generated point cloud as `.bin` file.
 
