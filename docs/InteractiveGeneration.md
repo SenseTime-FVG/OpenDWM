@@ -42,7 +42,7 @@ The interactive generative model is trained from scratch on autonomous driving d
 
 | Base Model | Temporal Training Style | Prediction Style | Configs | Checkpoint Download |
 | :-: | :-: | :-: | :-: | :-: |
-| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Diffusion forcing transformer](https://arxiv.org/abs/2502.06764) | [FIFO diffusion](https://arxiv.org/abs/2405.11473) | [Config](../configs/experimental/multi_datasets/ctsd_35_xs_df6v3_tirda_bm_nwao.json) | [Checkpoint](http://103.237.29.236:10030/ctsd_35_xs_df6v3_tirda_bm_nwao_60k.pth) |
+| [SD 3.5](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) | [Diffusion forcing transformer](https://arxiv.org/abs/2502.06764) | [FIFO diffusion](https://arxiv.org/abs/2405.11473) | [Config](../configs/experimental/multi_datasets/ctsd_35_xs_df6v3_tirda_bm_nwao.json) | [Checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/ctsd_35_xs_df6v3_tirda_bm_nwao_60k.pth?download=true) |
 
 ## Inference
 
