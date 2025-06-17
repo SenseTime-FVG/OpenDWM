@@ -1,10 +1,9 @@
 {
     "device": "cuda",
     "ddp_backend": "nccl",
-    "train_epochs": 200000,
+    "train_epochs": 400000,
     "generator_seed": 0,
     "data_shuffle": true,
-    "save_results": false,
     "global_state": {
         "device_mesh": {
             "_class_name": "torch.distributed.device_mesh.init_device_mesh",
@@ -24,9 +23,20 @@
         ],
         "weight_decay": 0.0001
     },
+    "scheduler": {
+        "_class_name": "torch.optim.lr_scheduler.CosineAnnealingLR",
+        "T_max": 100000,
+        "eta_min": 1e-5
+    },
     "pipeline": {
-        "_class_name": "dwm.pipelines.lidar_maskgit.MaskGITPipeline",
+        "_class_name": "dwm.pipelines.lidar_diffusion.LidarDiffusionPipeline",
         "common_config": {
+            "disable_condition": false,
+            "separate_forward": true,
+            "enable_temporal": true,
+            "enable_gradient_checkpointing": true,
+            "text_embeddings_dim": 4096,
+            "pooled_text_embeddings_dim": 2048,
             "ray_cast_center": [
                 1.0,
                 0.0,
@@ -46,11 +56,11 @@
                     "module_classes": [
                         {
                             "_class_name": "get_class",
-                            "class_name": "dwm.models.maskgit_base.TemporalTransformerBlock"
+                            "class_name": "diffusers.models.attention.JointTransformerBlock"
                         },
                         {
                             "_class_name": "get_class",
-                            "class_name": "dwm.models.vq_point_cloud.SwinTransformerBlock"
+                            "class_name": "dwm.models.crossview_temporal.VTSelfAttentionBlock"
                         }
                     ]
                 },
@@ -66,20 +76,30 @@
         "training_config": {
             "3dbox_condition_ratio": 0.8,
             "hdmap_condition_ratio": 0.8,
-            "task_type_ratio": 0.5,
-            "max_reference_frame": 3,
-            "max_norm_for_grad_clip": 10,
+            "reference_frame_count": 3,
+            "generation_task_ratio": 0.6,
+            "image_generation_ratio": 0.3,
             "enable_grad_scaler": true
         },
         "inference_config": {
-            "infer_feature_exchange": false,
-            "use_blank_code": true,
-            "use_maskgit": true,
-            "inference_steps": 50
+            "guidance_scale": 3,
+            "inference_steps": 5,
+            "separate_forward": true
         },
-        "bev_layout_encoder": null,
-        "vq_point_cloud": {
-            "_class_name": "dwm.models.vq_point_cloud.VQPointCloud",
+        "train_diffusion_scheduler": {
+            "_class_name": "diffusers.FlowMatchEulerDiscreteScheduler",
+            "num_train_timesteps": 1000,
+            "shift": 3.0
+
+        },
+        "test_diffusion_scheduler": {
+            "_class_name": "diffusers.FlowMatchEulerDiscreteScheduler",
+            "num_train_timesteps": 1000,
+            "shift": 3.0
+        },
+        "autoencoder_ckpt_path": "/mnt/storage/user/liuyichen/tasks/lidar_vae_nwak/checkpoints/45000.pth",
+        "autoencoder": {
+            "_class_name": "dwm.models.vae_point_cloud.VAEPointCloud",
             "voxelizer": {
                 "_class_name": "dwm.models.voxelizer.Voxelizer",
                 "x_min": -50.0,
@@ -91,67 +111,135 @@
                 "step": 0.15625,
                 "z_step": 0.125
             },
-            "vector_quantizer": {
-                "_class_name": "dwm.models.vq_point_cloud.VectorQuantizer",
-                "n_e": 2048,
-                "e_dim": 1024,
-                "beta": 0.25,
-                "cosine_similarity": false
+            "variational_model": {
+                "_class_name": "dwm.models.vae_point_cloud.VariationalModel",
+                "model_type": "vae",
+                "variational_model_config": {
+                    "encoder_out_channels": 512,
+                    "decoder_in_channels": 32
+                }
             },
             "lidar_encoder": {
-                "_class_name": "dwm.models.vq_point_cloud.VQEncoder",
-                "img_size": 640,
-                "codebook_dim": 1024,
-                "in_chans": 64,
-                "embed_dim": 512,
-                "num_heads": 8,
-                "use_checkpoint": true
-            },
-            "lidar_decoder": {
-                "_class_name": "dwm.models.vq_point_cloud.VQDecoder",
+                "_class_name": "dwm.models.vae_point_cloud.PointCloudEncoder",
                 "img_size": [
                     640,
                     640
                 ],
-                "num_patches": 6400,
-                "in_chans": 64,
-                "embed_dim": 512,
-                "num_heads": 8,
-                "codebook_dim": 1024,
-                "bias_init": -5.0,
-                "upsample_style": "pixel_shuffle",
+                "depths": [4, 8],
+                "num_heads": [16, 16],
+                "embed_dim": 256,
+                "patch_size": 4,
+                "window_size": 8,
                 "use_checkpoint": true
             },
-            "bias_init": -5.0
-        },
-        "bi_directional_Transformer": {
-                "_class_name": "dwm.models.maskgit_model.BidirectionalTransformerWithAdapter",
-                "use_extra_embedding": true,
-                "enable_temporal": true,
-                "n_e": 2048,
-                "e_dim": 1024,
-                "hidden_dim": 1280,
-                "img_size": [
-                    80,
-                    80
+            "lidar_decoder": {
+                "_class_name": "dwm.models.vae_point_cloud.PointCloudDecoder",
+                "upcast": true,
+                "lidar_size": [
+                    640, 
+                    640
                 ],
-                "num_heads": 40,
-                "use_checkpoint": true,
-                "depth": 24,
-                "condition_adapter": {
-                    "_class_name": "dwm.models.adapters.ImageAdapter",
-                    "in_channels": 3,
-                    "channels": [1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280],
-                    "downscale_factor": 8,
-                    "is_downblocks": [false, false, false, false, false, false, false, false],
-                    "use_zero_convs": true,
-                    "gradient_checkpointing": true
-                }
-            },
-        "vq_point_cloud_ckpt_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/checkpoints/80000.pth",
-        "vq_blank_code_path": "/mnt/storage/user/liuyichen/tasks/lidar_vqvae_nwak/lidar_vqvae_nwak_80k_blank_code.pkl",
+                "patch_size": 4,
+                "feature_depth": 32,
+                "voxel_depth": 64,
+                "embed_dim": 512,
+                "num_heads": 8,
+                "in_channels": 32,
+                "bias_init": -6.9,
+                "use_gt_voxel": false,
+                "visual_grid_feat_dim": 64,
+                "depth": [8, 4],
+                "use_render_decoder": false,
+                "grid_size_offset": [
+                    [0,0,0],
+                    [0,0,3]
+                ],
+                "render_config": {
+                    "near": 0,
+                    "far": 1e9,
+                    "stepsize": 0.15
+                },
+                "downsample_voxel": [4, 4, 4],
+                "upsample_style":  "pixel_shuffle",
+                "use_checkpoint": true
+            }
+        },
+        "diffusion_model": {
+            "_class_name": "dwm.models.crossview_temporal_dit.DiTCrossviewTemporalConditionModel",
+            "dual_attention_layers": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ],
+            "attention_head_dim": 64,
+            "caption_projection_dim": 1280,
+            "in_channels": 32,
+            "joint_attention_dim": 4096,
+            "num_attention_heads": 20,
+            "num_layers": 12,
+            "out_channels": 32,
+            "patch_size": 2,
+            "pooled_projection_dim": 2048,
+            "pos_embed_max_size": 384,
+            "qk_norm": "rms_norm",
+            "qk_norm_on_additional_modules": "rms_norm",
+            "sample_size": 128,
+            "perspective_modeling_type": null,
+            "projection_class_embeddings_input_dim": 3328,
+            "enable_crossview": false,
+            "enable_temporal": true,
+            "temporal_attention_type": "pointwise",
+            "temporal_block_layers": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ],
+            "temporal_gradient_checkpointing": true,
+            "mixer_type": "AlphaBlender",
+            "merge_factor": 2,
+            "condition_image_adapter_config": {
+                "in_channels": 6,
+                "channels": [
+                    1280,
+                    1280,
+                    1280,
+                    1280,
+                    1280,
+                    1280
+                ],
+                "is_downblocks": [
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "num_res_blocks": 2,
+                "downscale_factor": 8,
+                "use_zero_convs": true
+            }
+        },
         "metrics": {
-            "voxel_iou": {
+            "voxel_iou_with_gt": {
                 "_class_name": "dwm.metrics.voxel_metrics.VoxelIoU"
             },
             "chamfer_distance": {
@@ -176,29 +264,30 @@
     "training_dataset": {
         "_class_name": "dwm.datasets.common.DatasetAdapter",
         "base_dataset": {
-            "_class_name": "dwm.datasets.kitti360.MotionDataset",
+            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
             "fs": {
                 "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
                 "fs": {
                     "_class_name": "dwm.fs.dirfs.DirFileSystem",
-                    "path": "/mnt/storage/user/liuyichen"
+                    "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan"
                 },
                 "paths": [
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0000_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0002_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0003_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0004_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0005_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0006_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0007_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0009_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0010_sync_velodyne.zip",
-                    "data/kitti360/data_3d_bboxes.zip",
-                    "data/kitti360/data_poses.zip"
+                    "workspaces/worldmodels/data/v1.0-trainval_12hz_meta.zip",
+                    "data/nuscenes/v1.0-trainval01_blobs.zip",
+                    "data/nuscenes/v1.0-trainval02_blobs.zip",
+                    "data/nuscenes/v1.0-trainval03_blobs.zip",
+                    "data/nuscenes/v1.0-trainval04_blobs.zip",
+                    "data/nuscenes/v1.0-trainval05_blobs.zip",
+                    "data/nuscenes/v1.0-trainval06_blobs.zip",
+                    "data/nuscenes/v1.0-trainval07_blobs.zip",
+                    "data/nuscenes/v1.0-trainval08_blobs.zip",
+                    "data/nuscenes/v1.0-trainval09_blobs.zip",
+                    "data/nuscenes/v1.0-trainval10_blobs.zip",
+                    "data/nuscenes/nuScenes-map-expansion-v1.3.zip"
                 ],
-                "enable_cached_info": false
+                "enable_cached_info": true
             },
-            "dataset_name": "kitti360",
+            "dataset_name": "v1.0-trainval_12hz",
             "split": "train",
             "sequence_length": 8,
             "fps_stride_tuples": [
@@ -211,8 +300,8 @@
                 "LIDAR_TOP",
                 "CAM_FRONT"
             ],
-            "keyframe_only": false,
-            "enable_camera_transforms": false,
+            "keyframe_only": true,
+            "enable_camera_transforms": true,
             "enable_sample_data": true,
             "_3dbox_bev_settings": {
                 "color_table": {
@@ -300,39 +389,50 @@
                 ],
                 "fill_box": false,
                 "pen_width": 4
+            },
+            "hdmap_bev_settings": {
+                "bev_from_ego_transform": [
+                    [
+                        6.4,
+                        0,
+                        0,
+                        320
+                    ],
+                    [
+                        0,
+                        6.4,
+                        0,
+                        320
+                    ],
+                    [
+                        0,
+                        0,
+                        6.4,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "fill_map": false,
+                "pen_width": 4
             }
         },
         "transform_list": [
             {
-                "old_key": "lidar_points",
-                "new_key": "lidar_points",
-                "transform": {
-                    "_class_name": "torchvision.transforms.Compose",
-                    "transforms": [
-                        {
-                            "_class_name": "dwm.datasets.common.FilterPoints",
-                            "min_distance": 2.4,
-                            "max_distance": 72.0
-                        },
-                        {
-                            "_class_name": "dwm.datasets.common.TakePoints",
-                            "max_count": 32768
-                        }
-                    ]
-                },
-                "stack": false
-            },
-            {
-                "old_key": "3dbox_bev_images",
-                "new_key": "3dbox_bev_images_denorm",
+                "old_key": "images",
+                "new_key": "vae_images",
                 "transform": {
                     "_class_name": "torchvision.transforms.Compose",
                     "transforms": [
                         {
                             "_class_name": "torchvision.transforms.Resize",
                             "size": [
-                                640,
-                                640
+                                256,
+                                448
                             ]
                         },
                         {
@@ -372,6 +472,57 @@
                         }
                     ]
                 }
+            },
+            {
+                "old_key": "hdmap_bev_images",
+                "new_key": "hdmap_bev_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                640,
+                                640
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.Normalize",
+                            "mean": [
+                                0.485,
+                                0.456,
+                                0.406
+                            ],
+                            "std": [
+                                0.229,
+                                0.224,
+                                0.225
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "lidar_points",
+                "new_key": "lidar_points",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "dwm.datasets.common.FilterPoints",
+                            "min_distance": 2.4,
+                            "max_distance": 72.0
+                        },
+                        {
+                            "_class_name": "dwm.datasets.common.TakePoints",
+                            "max_count": 32768
+                        }
+                    ]
+                },
+                "stack": false
             }
         ],
         "pop_list": [
@@ -381,29 +532,30 @@
     "validation_dataset": {
         "_class_name": "dwm.datasets.common.DatasetAdapter",
         "base_dataset": {
-            "_class_name": "dwm.datasets.kitti360.MotionDataset",
+            "_class_name": "dwm.datasets.nuscenes.MotionDataset",
             "fs": {
                 "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
                 "fs": {
                     "_class_name": "dwm.fs.dirfs.DirFileSystem",
-                    "path": "/mnt/storage/user/liuyichen"
+                    "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan"
                 },
                 "paths": [
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0000_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0002_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0003_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0004_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0005_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0006_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0007_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0009_sync_velodyne.zip",
-                    "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0010_sync_velodyne.zip",
-                    "data/kitti360/data_3d_bboxes.zip",
-                    "data/kitti360/data_poses.zip"
+                    "data/nuscenes/v1.0-trainval_meta.zip",
+                    "data/nuscenes/v1.0-trainval01_blobs.zip",
+                    "data/nuscenes/v1.0-trainval02_blobs.zip",
+                    "data/nuscenes/v1.0-trainval03_blobs.zip",
+                    "data/nuscenes/v1.0-trainval04_blobs.zip",
+                    "data/nuscenes/v1.0-trainval05_blobs.zip",
+                    "data/nuscenes/v1.0-trainval06_blobs.zip",
+                    "data/nuscenes/v1.0-trainval07_blobs.zip",
+                    "data/nuscenes/v1.0-trainval08_blobs.zip",
+                    "data/nuscenes/v1.0-trainval09_blobs.zip",
+                    "data/nuscenes/v1.0-trainval10_blobs.zip",
+                    "data/nuscenes/nuScenes-map-expansion-v1.3.zip"
                 ],
-                "enable_cached_info": false
+                "enable_cached_info": true
             },
-            "dataset_name": "kitti360",
+            "dataset_name": "v1.0-trainval",
             "split": "val",
             "sequence_length": 8,
             "fps_stride_tuples": [
@@ -416,8 +568,8 @@
                 "LIDAR_TOP",
                 "CAM_FRONT"
             ],
-            "keyframe_only": false,
-            "enable_camera_transforms": false,
+            "keyframe_only": true,
+            "enable_camera_transforms": true,
             "enable_sample_data": true,
             "_3dbox_bev_settings": {
                 "color_table": {
@@ -505,27 +657,57 @@
                 ],
                 "fill_box": false,
                 "pen_width": 4
+            },
+            "hdmap_bev_settings": {
+                "bev_from_ego_transform": [
+                    [
+                        6.4,
+                        0,
+                        0,
+                        320
+                    ],
+                    [
+                        0,
+                        6.4,
+                        0,
+                        320
+                    ],
+                    [
+                        0,
+                        0,
+                        6.4,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "fill_map": false,
+                "pen_width": 4
             }
         },
         "transform_list": [
             {
-                "old_key": "lidar_points",
-                "new_key": "lidar_points",
+                "old_key": "images",
+                "new_key": "vae_images",
                 "transform": {
                     "_class_name": "torchvision.transforms.Compose",
                     "transforms": [
                         {
-                            "_class_name": "dwm.datasets.common.FilterPoints",
-                            "min_distance": 2.4,
-                            "max_distance": 72.0
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                256,
+                                448
+                            ]
                         },
                         {
-                            "_class_name": "dwm.datasets.common.TakePoints",
-                            "max_count": 32768
+                            "_class_name": "torchvision.transforms.ToTensor"
                         }
                     ]
-                },
-                "stack": false
+                }
             },
             {
                 "old_key": "3dbox_bev_images",
@@ -577,6 +759,76 @@
                         }
                     ]
                 }
+            },
+            {
+                "old_key": "hdmap_bev_images",
+                "new_key": "hdmap_bev_images_denorm",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                640,
+                                640
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "hdmap_bev_images",
+                "new_key": "hdmap_bev_images",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "torchvision.transforms.Resize",
+                            "size": [
+                                640,
+                                640
+                            ]
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.ToTensor"
+                        },
+                        {
+                            "_class_name": "torchvision.transforms.Normalize",
+                            "mean": [
+                                0.485,
+                                0.456,
+                                0.406
+                            ],
+                            "std": [
+                                0.229,
+                                0.224,
+                                0.225
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "old_key": "lidar_points",
+                "new_key": "lidar_points",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "dwm.datasets.common.FilterPoints",
+                            "min_distance": 2.4,
+                            "max_distance": 72.0
+                        },
+                        {
+                            "_class_name": "dwm.datasets.common.TakePoints",
+                            "max_count": 32768
+                        }
+                    ]
+                },
+                "stack": false
             }
         ],
         "pop_list": [
@@ -622,12 +874,12 @@
         "persistent_workers": true
     },
     "informations": {
-        "voxel_iou": 0.11702190,
-        "chamfer_distance": 3.34721875,
-        "chamfer_distance_30": 1.88547862,
-        "chamfer_distance_40": 2.57636571,
-        "mmd": 0.00411365,
-        "jsd": 0.31335828,
+        "voxel_iou": 0.210,
+        "chamfer_distance": 2.879,
+        "chamfer_distance_30": 0.352,
+        "chamfer_distance_40": 0.456,
+        "mmd": 0.005,
+        "jsd": 0.310,
         "total_batch_sizes": 24,
         "steps": 150000
     }

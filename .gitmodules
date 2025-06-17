@@ -8,5 +8,5 @@
 	path = externals/waymo-open-dataset
 	url = https://github.com/waymo-research/waymo-open-dataset.git
 [submodule "externals/dvgo_cuda"]
-        path = externals/dvgo_cuda
-        url = https://github.com/sunset1995/DirectVoxGO.git
+	path = externals/dvgo_cuda
+	url = https://github.com/sunset1995/DirectVoxGO.git

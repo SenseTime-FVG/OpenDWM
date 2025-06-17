@@ -386,8 +386,21 @@ class DiTCrossviewTemporalConditionModel(diffusers.SD3Transformer2DModel):
         camera_intrinsics_norm: torch.Tensor = None,
         camera2referego: torch.Tensor = None,
         added_time_ids: torch.Tensor = None,
-        noise: torch.Tensor = None
+        noise: torch.Tensor = None,
+        return_dict: bool = False
     ):
+        should_add_dim = len(sample.shape) < 6
+        if should_add_dim:
+            sample = sample.unsqueeze(2)
+            timestep = timestep.unsqueeze(2)
+            if condition_image_tensor is not None:
+                condition_image_tensor = condition_image_tensor.unsqueeze(2)
+            if encoder_hidden_states is not None:
+                encoder_hidden_states = encoder_hidden_states.unsqueeze(2)
+            if disable_temporal is not None:
+                disable_temporal = disable_temporal.unsqueeze(2)
+            if pooled_projections is not None:
+                pooled_projections = pooled_projections.unsqueeze(2)
 
         hidden_states = sample
         batch_size, sequence_length, view_count, _, height, width = \
@@ -608,4 +621,10 @@ class DiTCrossviewTemporalConditionModel(diffusers.SD3Transformer2DModel):
         )
 
         result = [output,]
+        if should_add_dim:
+            output = output.squeeze(2)
+        if return_dict:
+            return {
+                "noise_pred": output,
+            }
         return result, _, _

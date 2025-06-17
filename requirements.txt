@@ -5,6 +5,7 @@ bitsandbytes
 botocore
 diffusers==0.31.0
 einops
+easydict
 fsspec
 numpy
 pandas
@@ -25,5 +26,4 @@ timm
 rotary-embedding-torch
 opencv-python
 wandb
-edict
 git+https://github.com/autonomousvision/kitti360Scripts.git

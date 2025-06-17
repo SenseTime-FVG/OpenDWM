@@ -123,7 +123,7 @@
         "_class_name": "dwm.datasets.common.DatasetAdapter",
         "base_dataset": {
             "_class_name": "dwm.datasets.preview.PreviewDataset",
-            "json_file": "/mnt/storage/user/liuyichen/repo/driving-world-models/nuscenes_scene-0627_package/data_lidar.json",
+            "json_file": "nuscenes_scene-0627_package/data_lidar.json",
             "sequence_length": 1,
             "fps_stride_tuples": [
                 [

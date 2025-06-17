@@ -21,6 +21,7 @@ import torch.distributed.fsdp.sharded_grad_scaler
 import torch.distributed.checkpoint.state_dict
 from dwm.utils.preview import make_lidar_preview_tensor, save_tensor_to_video
 from dwm.utils.lidar import preprocess_points, postprocess_points, voxels2points
+from dwm.functional import gumbel_sigmoid
 from torchvision import transforms
 
 # schedule the mask level
@@ -43,50 +44,8 @@ def gamma_func(mode="cosine"):
     else:
         raise NotImplementedError
 
-
-def _sample_logistic(shape, out=None, generator=None):
-    U = out.resize_(shape).uniform_() if out is not None else torch.rand(
-        shape, generator=generator)
-    return torch.log(U) - torch.log(1 - U)
-
-
-def _sigmoid_sample(logits, tau=1, generator=None):
-    """
-    Implementation of Bernouilli reparametrization based on Maddison et al. 2017
-    """
-    dims = logits.dim()
-    logistic_noise = _sample_logistic(
-        logits.size(), out=logits.data.new(), generator=generator)
-    y = logits + logistic_noise
-    return torch.sigmoid(y / tau)
-
-
-# Transform the logits to the mask level
-def gumbel_sigmoid(logits, tau=1, hard=False, generator=None):
-
-    gumbel_sigmoid_coeff = 1.0
-    y_soft = _sigmoid_sample(
-        logits * gumbel_sigmoid_coeff, tau=tau, generator=generator)
-    if hard:
-        y_hard = torch.where(y_soft > 0.5, torch.ones_like(
-            y_soft), torch.zeros_like(y_soft))
-        y = y_hard.data - y_soft.data + y_soft
-    else:
-        y = y_soft
-    return y
-
-
 def log(t, eps=1e-20):
     return torch.log(t.clamp(min=eps))
-
-
-def gumbel_noise(t):
-    noise = torch.zeros_like(t).uniform_(0, 1)
-    return -log(-log(noise))
-
-
-def gumbel_sample(t, temperature=1., dim=-1):
-    return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim=dim)
 
 
 class MaskGITPipeline(torch.nn.Module):
@@ -145,7 +104,7 @@ class MaskGITPipeline(torch.nn.Module):
             if 'state_dict' in state_dict.keys():
                 state_dict = state_dict['state_dict']
             missing_keys, unexpected_keys = self.vq_point_cloud.load_state_dict(
-                state_dict, strict=False)
+                state_dict)
             if missing_keys:
                 print("Missing keys in state dict:", missing_keys)
             if unexpected_keys:
@@ -699,7 +658,7 @@ class MaskGITPipeline(torch.nn.Module):
             batch["lidar_points"]), len(batch["lidar_points"][0])
         results = self.inference_pipeline(batch)
         voxels = results['gt_voxels']
-        generated_sample_v = results['pred_voxels']
+        pred_voxels = results['pred_voxels']
         vq_voxels = results['vq_voxels']
         if "task_type" in results and num_frames > 1:
             task_type = results["task_type"]
@@ -711,7 +670,7 @@ class MaskGITPipeline(torch.nn.Module):
             preview_lidar = make_lidar_preview_tensor(
                 voxels.unflatten(0, (batch_size, num_frames)),
                 [vq_voxels.unflatten(0, (batch_size, num_frames)),
-                 generated_sample_v.unflatten(0, (batch_size, num_frames)),],
+                 pred_voxels.unflatten(0, (batch_size, num_frames)),],
                 batch, self.inference_config)
 
             if len(preview_lidar.shape) == 4:
@@ -724,38 +683,36 @@ class MaskGITPipeline(torch.nn.Module):
             else:
                 preview_lidar = [preview_lidar]
 
-            if self.should_save:
-                os.makedirs(os.path.join(
-                    output_path, "preview"), exist_ok=True)
-                if len(preview_lidar) == 1:
-                    transforms.ToPILImage()(preview_lidar[0]).save(
+            os.makedirs(os.path.join(
+                output_path, "preview"), exist_ok=True)
+            if len(preview_lidar) == 1:
+                transforms.ToPILImage()(preview_lidar[0]).save(
+                    os.path.join(
+                        output_path, "preview", "{}{}.png".format(global_step, suffix)))
+                video_frame_list = preview_lidar[0].unflatten(
+                    1, (num_frames, -1)).permute(1, 0, 2, 3).detach().cpu()
+                if num_frames > 1:
+                    save_tensor_to_video(
+                        os.path.join(output_path, "preview", "{}{}.mp4".
+                                        format(global_step, suffix)),
+                        "libx264", 2, video_frame_list)
+            else:
+                for i in range(len(preview_lidar)):
+                    transforms.ToPILImage()(preview_lidar[i]).save(
                         os.path.join(
-                            output_path, "preview", "{}{}.png".format(global_step, suffix)))
+                            output_path, "preview", "{}{}{}.png".format(global_step, suffix, i)))
                     video_frame_list = preview_lidar[0].unflatten(
                         1, (num_frames, -1)).permute(1, 0, 2, 3).detach().cpu()
                     if num_frames > 1:
                         save_tensor_to_video(
-                            os.path.join(output_path, "preview", "{}{}.mp4".
-                                         format(global_step, suffix)),
+                            os.path.join(output_path, "preview", "{}{}{}.mp4".
+                                            format(global_step, suffix, i)),
                             "libx264", 2, video_frame_list)
-                else:
-                    for i in range(len(preview_lidar)):
-                        transforms.ToPILImage()(preview_lidar[i]).save(
-                            os.path.join(
-                                output_path, "preview", "{}{}{}.png".format(global_step, suffix, i)))
-                        video_frame_list = preview_lidar[0].unflatten(
-                            1, (num_frames, -1)).permute(1, 0, 2, 3).detach().cpu()
-                        if num_frames > 1:
-                            save_tensor_to_video(
-                                os.path.join(output_path, "preview", "{}{}{}.mp4".
-                                             format(global_step, suffix, i)),
-                                "libx264", 2, video_frame_list)
 
         torch.cuda.empty_cache() # might help to avoid OOM
 
     def save_results(self, results, batch, batch_size, num_frames):
-        suffix = str(self.resume_from) + \
-            "_" if hasattr(self, 'resume_from') else ""
+        suffix = str(self.resume_from)
 
         gt_voxels = results['gt_voxels'] if "gt_voxels" in results else None
         pred_voxels = results['pred_voxels'] if "pred_voxels" in results else None
@@ -770,11 +727,11 @@ class MaskGITPipeline(torch.nn.Module):
                 preview_lidar = preview_lidar.permute(
                     1, 0, 2, 3).flatten(1, 2)
                 paths = [os.path.join(
-                    self.output_path, f'pred_voxel_{suffix}preview', batch["sample_data"][0][0]["filename"][0])]
+                    self.output_path, f'pred_voxel_{suffix}_preview', batch["sample_data"][0][0]["filename"][0])]
             else:
                 paths = [
                     os.path.join(self.output_path,
-                                 f'pred_voxel_{suffix}preview', k)
+                                 f'pred_voxel_{suffix}_preview', k)
                     for i in batch["sample_data"]
                     for j in i
                     for k in j["filename"] if k.endswith(".bin")
@@ -782,14 +739,14 @@ class MaskGITPipeline(torch.nn.Module):
             preview_lidar_height = preview_lidar.shape[1]
             preview_img_height = preview_lidar_height // len(paths)
             for i in range(len(paths)):
-                os.makedirs(os.path.join(self.output_path,
-                            f'pred_voxel_{suffix}preview'), exist_ok=True)
+                cur_path = paths[i].replace('samples/LIDAR_TOP/', '').\
+                                    replace('/velodyne_points/data/', '/').\
+                                    replace('.bin', '.png')
+                os.makedirs(os.path.dirname(cur_path), exist_ok=True)
                 cur_image = preview_lidar[:, i *
                     preview_img_height:(i + 1) * preview_img_height]
                 cur_image = transforms.ToPILImage()(cur_image)
-                cur_image.save(paths[i].replace('samples/LIDAR_TOP/', '').
-                                        replace('/velodyne_points/data/', '_').
-                                        replace('.bin', '.png'))
+                cur_image.save(cur_path)
                 
                 if num_frames > 1:
                     video_frame_list = preview_lidar[:, i *
@@ -798,14 +755,14 @@ class MaskGITPipeline(torch.nn.Module):
                         1, (num_frames, -1)).permute(1, 0, 2, 3).detach().cpu()
                     save_tensor_to_video(
                         paths[i].replace('samples/LIDAR_TOP/', '').
-                                 replace('/velodyne_points/data/', '_').
+                                 replace('/velodyne_points/data/', '/').
                                  replace('.bin', '.mp4'),
                         "libx264", 2, video_frame_list)
 
         # save pred voxels
         if self.inference_config.get("save_pred_results", False):
             paths = [
-                os.path.join(self.output_path, 'pred_voxel_' + suffix + k)
+                os.path.join(self.output_path, f'pred_voxel_{suffix}_samples', k)
                 for i in batch["sample_data"]
                 for j in i
                 for k in j["filename"] if k.endswith(".bin")
@@ -818,6 +775,8 @@ class MaskGITPipeline(torch.nn.Module):
                 for j in i
             ]
             for path, points in zip(paths, pred_voxel_pc):
+                path = path.replace('samples/LIDAR_TOP/', '') \
+                    .replace('/velodyne_points/data/', '/')
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 points = points.numpy()
                 padded_points = np.concatenate([
@@ -829,7 +788,7 @@ class MaskGITPipeline(torch.nn.Module):
         # save raw points (the points before voxelization)
         if self.inference_config.get("save_raw_results", False):
             paths = [
-                os.path.join(self.output_path, 'raw_' + suffix + k)
+                os.path.join(self.output_path, f'raw_{suffix}_samples',  k)
                 for i in batch["sample_data"]
                 for j in i
                 for k in j["filename"] if k.endswith(".bin")
@@ -840,6 +799,8 @@ class MaskGITPipeline(torch.nn.Module):
                 for j in i
             ]
             for path, points in zip(paths, raw_points):
+                path = path.replace('samples/LIDAR_TOP/', '') \
+                    .replace('/velodyne_points/data/', '/')
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 points = points.numpy()
                 padded_points = np.concatenate([
@@ -851,7 +812,7 @@ class MaskGITPipeline(torch.nn.Module):
         # save gt points (the points that are voxelized and then devoxelized)
         if self.inference_config.get("save_gt_results", False):
             paths = [
-                os.path.join(self.output_path, 'gt_' + suffix + k)
+                os.path.join(self.output_path, f'gt_{suffix}_samples', k)
                 for i in batch["sample_data"]
                 for j in i
                 for k in j["filename"] if k.endswith(".bin")
@@ -864,6 +825,8 @@ class MaskGITPipeline(torch.nn.Module):
                 for j in i
             ]
             for path, points in zip(paths, gt_points):
+                path = path.replace('samples/LIDAR_TOP/', '') \
+                    .replace('/velodyne_points/data/', '/')
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 points = points.numpy()
                 padded_points = np.concatenate([
@@ -1079,117 +1042,105 @@ class MaskGITPipeline(torch.nn.Module):
 
         task_type = task_type.item()
         task_type = task_type_dict[task_type]
+        if self.inference_config.get("task_type", None) is not None:
+            task_type = self.inference_config.get("task_type")
 
         num_reference_frame = self.common_config.get("max_reference_frame", 3)
         self.bi_directional_Transformer_wrapper.eval()
-        with torch.no_grad():
-            voxels = self.vq_point_cloud.voxelizer(points)
-            voxels = voxels.flatten(0, 1)
-            lidar_feats = self.vq_point_cloud.lidar_encoder(voxels)
-            code, _, code_indices = self.vq_point_cloud.vector_quantizer(lidar_feats, self.vq_point_cloud.code_age,
-                                                                         self.vq_point_cloud.code_usage)
 
-            # NOTE generation
-            choice_temperature = 2.0
+        voxels = self.vq_point_cloud.voxelizer(points)
+        voxels = voxels.flatten(0, 1)
+        lidar_feats = self.vq_point_cloud.lidar_encoder(voxels)
+        code, _, code_indices = self.vq_point_cloud.vector_quantizer(lidar_feats, self.vq_point_cloud.code_age,
+                                                                        self.vq_point_cloud.code_usage)
+        # NOTE generation
+        choice_temperature = 2.0
+        # ===Sample task code
+        x, x_indices, mask, _ = self.mutlitask_mask_code(
+            code, code_indices, infer=True, task_type=task_type, num_reference_frame=num_reference_frame,
+            batch_size=batch_size, num_frames=num_frames)
+        code_idx = x_indices.to(dtype=torch.int64).clone()
+        num_unknown_code = (code_idx == -1).sum(dim=-1)
 
-            # ===Sample task code
-            x, x_indices, mask, _ = self.mutlitask_mask_code(
-                code, code_indices, infer=True, task_type=task_type, num_reference_frame=num_reference_frame,
-                batch_size=batch_size, num_frames=num_frames)
-            if task_type == "generation":
-                code_idx = torch.ones(
-                    (x.shape[0], x.shape[1]), dtype=torch.int64, device=x.device) * -1
-                num_unknown_code = (code_idx == -1).sum(dim=-1)
-            elif task_type == "prediction":
-                code_idx = x_indices.to(dtype=torch.int64)
-                num_unknown_code = (code_idx == -1).sum(dim=-1)
-                frame_mask = torch.ones(
-                    (batch_size, num_frames), device=code.device, dtype=torch.bool)
-                frame_mask[:, :num_reference_frame] = False
-                frame_mask = frame_mask.flatten(0, 1)
-                # change the value of the frames to be generated to -1
-                code_idx[frame_mask] = -1
-            else:
-                raise ValueError(f"Invalid task type: {task_type}")
+        with self.get_autocast_context():
+            maskgit_conditions = MaskGITPipeline.get_maskgit_conditions(
+                self.common_config, batch, self.device,
+                torch.float16 if "autocast" in self.common_config else torch.float32,
+                None, None, do_classifier_free_guidance=do_classifier_free_guidance
+            )
+            for t in range(self.T):
+                if do_classifier_free_guidance:
+                    x = torch.cat([x] * 2)
+                    x_indices = torch.cat([x_indices] * 2)
+                pred = self.bi_directional_Transformer_wrapper(
+                    x, x_indices, context=maskgit_conditions, 
+                    batch_size=batch_size, num_frames=num_frames)
+                # Replace predicted value of the blank code with -10000. Therefore, BLANK_CODE will not be selected during the first t steps.
+                if t < 10 and use_blank_code:  # TODO: variable
+                    pred[..., self.BLANK_CODE] = -10000
+                if do_classifier_free_guidance:
+                    uncond_pred, cond_pred = pred.chunk(2)
+                    pred = uncond_pred + guidance_scale * \
+                        (cond_pred - uncond_pred)
+                sample_ids = torch.distributions.Categorical(
+                    logits=pred).sample()
+                prob = torch.softmax(pred, dim=-1)
+                prob = torch.gather(
+                    prob, -1, sample_ids.unsqueeze(-1)).squeeze(-1)
 
-            with self.get_autocast_context():
-                maskgit_conditions = MaskGITPipeline.get_maskgit_conditions(
-                    self.common_config, batch, self.device,
-                    torch.float16 if "autocast" in self.common_config else torch.float32,
-                    None, None, do_classifier_free_guidance=do_classifier_free_guidance
-                )
-                for t in range(self.T):
-                    if do_classifier_free_guidance:
-                        x = torch.cat([x] * 2)
-                        x_indices = torch.cat([x_indices] * 2)
-                    pred = self.bi_directional_Transformer_wrapper(
-                        x, x_indices, context=maskgit_conditions, 
-                        batch_size=batch_size, num_frames=num_frames)
-                    # Replace predicted value of the blank code with -10000. Therefore, BLANK_CODE will not be selected during the first t steps.
-                    if t < 10 and use_blank_code:  # TODO: variable
-                        pred[..., self.BLANK_CODE] = -10000
-                    if do_classifier_free_guidance:
-                        uncond_pred, cond_pred = pred.chunk(2)
-                        pred = uncond_pred + guidance_scale * \
-                            (cond_pred - uncond_pred)
-                    sample_ids = torch.distributions.Categorical(
-                        logits=pred).sample()
-                    prob = torch.softmax(pred, dim=-1)
-                    prob = torch.gather(
-                        prob, -1, sample_ids.unsqueeze(-1)).squeeze(-1)
+                sample_ids[code_idx != -1] = code_idx[code_idx != -1]
+                prob[code_idx != -1] = 1e10
 
-                    sample_ids[code_idx != -1] = code_idx[code_idx != -1]
-                    prob[code_idx != -1] = 1e10
+                ratio = 1.0 * (t + 1) / self.T
+                mask_ratio = self.gamma(ratio)
 
-                    ratio = 1.0 * (t + 1) / self.T
-                    mask_ratio = self.gamma(ratio)
+                mask_len = num_unknown_code * mask_ratio  # all code len
+                mask_len = torch.minimum(mask_len, num_unknown_code - 1)
+                mask_len = mask_len.clamp(min=1).long()
 
-                    mask_len = num_unknown_code * mask_ratio  # all code len
-                    mask_len = torch.minimum(mask_len, num_unknown_code - 1)
-                    mask_len = mask_len.clamp(min=1).long()
+                if use_maskgit:
+                    confidence = prob.log()
+                else:
+                    temperature = choice_temperature * (1.0 - ratio)
+                    gumbels = torch.zeros_like(prob).uniform_(0, 1)
+                    gumbels = -log(-log(gumbels))
+                    confidence = prob.log() + temperature * gumbels
 
-                    if use_maskgit:
-                        confidence = prob.log()
-                    else:
-                        temperature = choice_temperature * (1.0 - ratio)
-                        gumbels = torch.zeros_like(prob).uniform_(0, 1)
-                        gumbels = -log(-log(gumbels))
-                        confidence = prob.log() + temperature * gumbels
+                cutoff = torch.sort(confidence, dim=-1)[0][
+                    torch.arange(mask_len.shape[0], device=mask_len.device), mask_len
+                ].unsqueeze(1)
+                mask = confidence < cutoff
+                x = self.vq_point_cloud.vector_quantizer.get_codebook_entry(
+                    sample_ids)
+                code_idx = sample_ids.clone()
 
-                    cutoff = torch.sort(confidence, dim=-1)[0][
-                        torch.arange(mask_len.shape[0], device=mask_len.device), mask_len
-                    ].unsqueeze(1)
-                    mask = confidence < cutoff
-                    x = self.vq_point_cloud.vector_quantizer.get_codebook_entry(
-                        sample_ids)
-                    code_idx = sample_ids.clone()
+                if t != self.T - 1:
+                    code_idx[mask] = -1
+                    x[mask] = self.bi_directional_Transformer.mask_token.to(
+                        x.dtype)
+                    x_indices = code_idx.clone()
 
-                    if t != self.T - 1:
-                        code_idx[mask] = -1
-                        x[mask] = self.bi_directional_Transformer.mask_token.to(
-                            x.dtype)
-                        x_indices = code_idx.clone()
+        _, lidar_voxel = self.vq_point_cloud.lidar_decoder(x)
+        _, vq_lidar_voxel = self.vq_point_cloud.lidar_decoder(code)
+        generated_sample_v = gumbel_sigmoid(
+            lidar_voxel, hard=True, generator=self.generator)
+        generated_points_v = voxels2points(self.vq_point_cloud.grid_size,
+                                            generated_sample_v.unflatten(0, (batch_size, -1)))
+        vq_sample_v = gumbel_sigmoid(
+            vq_lidar_voxel, hard=True, generator=self.generator)
+        vq_points_v = voxels2points(self.vq_point_cloud.grid_size,
+                                    vq_sample_v.unflatten(0, (batch_size, -1)))
 
-            _, lidar_voxel = self.vq_point_cloud.lidar_decoder(x)
-            _, vq_lidar_voxel = self.vq_point_cloud.lidar_decoder(code)
-            generated_sample_v = gumbel_sigmoid(
-                lidar_voxel, hard=True, generator=self.generator)
-            generated_points_v = voxels2points(self.vq_point_cloud.grid_size,
-                                               generated_sample_v.unsqueeze(1))
-            vq_sample_v = gumbel_sigmoid(
-                vq_lidar_voxel, hard=True, generator=self.generator)
-            vq_points_v = voxels2points(self.vq_point_cloud.grid_size,
-                                        vq_sample_v.unsqueeze(1))
-
-            if "offsets" in batch:
-                offsets = batch["offsets"]
-                offsets = sum(offsets, [])
-            else:
-                offsets = None
+        if "offsets" in batch:
+            offsets = batch["offsets"]
+            offsets = sum(offsets, [])
+        else:
+            offsets = None
 
         results = {}
         results['raw_points'] = batch["lidar_points"]
-        results['gt_points'] = voxels2points(self.vq_point_cloud.grid_size,voxels.unsqueeze(1))
+        results['gt_points'] = voxels2points(self.vq_point_cloud.grid_size, 
+                                             voxels.unflatten(0, (batch_size, -1)))
         results['gt_voxels'] = voxels
 
         results['pred_points'] = generated_points_v
@@ -1209,7 +1160,7 @@ class MaskGITPipeline(torch.nn.Module):
         validation_datasampler=None,
         log_type="wandb"
     ):
-        for idx, batch in tqdm(enumerate(validation_dataloader)):
+        for batch in tqdm(validation_dataloader):
             torch.cuda.empty_cache()
             batch_size, num_frames = len(
                 batch["lidar_points"]), len(batch["lidar_points"][0])
@@ -1227,7 +1178,7 @@ class MaskGITPipeline(torch.nn.Module):
                 voxels, pred_voxels = voxels.to(int), pred_voxels.to(int)
                 for k in self.metrics:
                     if "chamfer" in k or "mmd" in k or "jsd" in k:
-                        self.metrics[k].update(pred_points, gt_points, self.device)
+                        self.metrics[k].update(gt_points, pred_points, device=self.device)
                     elif "iou" in k:
                         self.metrics[k].update(voxels, pred_voxels)
             if self.config.get("save_results", False):

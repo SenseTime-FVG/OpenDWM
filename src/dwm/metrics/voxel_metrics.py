@@ -11,14 +11,14 @@ class VoxelIoU(torchmetrics.Metric):
         self.iou_list = []
 
     def update(self,
-               pred_voxel: torch.tensor,
-               gt_voxel: torch.tensor):
+               gt_voxel: torch.tensor,
+               pred_voxel: torch.tensor):
         if len(gt_voxel.shape) == 3:
             self.iou_list.append(
                 (pred_voxel & gt_voxel).sum() / (pred_voxel | gt_voxel).sum())
         else:
             for i, j in zip(gt_voxel, pred_voxel):
-                self.iou_list.append((i & j).sum() / (i | j).sum())
+                self.iou_list.append(((i & j).sum() / (i | j).sum()).float())
 
     def compute(self):
         iou_list = torch.stack(self.iou_list, dim=0)
@@ -48,15 +48,14 @@ class VoxelDiff(torchmetrics.Metric):
         self.diff_list = []
 
     def update(self,
-               pred_voxel: torch.tensor,
-               gt_voxel: torch.tensor):
+               gt_voxel: torch.tensor, pred_voxel: torch.tensor):
         if len(gt_voxel.shape) == 3:
             self.diff_list.append(torch.logical_xor(
                 pred_voxel, gt_voxel).sum().to(torch.float32))
         else:
             for i, j in zip(gt_voxel, pred_voxel):
                 self.diff_list.append(torch.logical_xor(
-                    i, j).sum().to(torch.float32))
+                    i, j).sum().float())
 
     def compute(self):
         diff_list = torch.stack(self.diff_list, dim=0)
