@@ -72,7 +72,7 @@ class LidarCodebook():
         for i in range(self.vq_point_cloud.vector_quantizer.n_e):
             self.code_dict[i] = 0
 
-        self.grad_scaler = torch.cuda.amp.GradScaler() \
+        self.grad_scaler = torch.GradScaler() \
             if self.training_config.get("enable_grad_scaler", False) else None
 
         if torch.distributed.is_initialized():

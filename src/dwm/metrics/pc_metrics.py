@@ -30,7 +30,7 @@ class PointCloudChamfer(Metric):
                                     -self.inner_dist, -self.inner_dist, -3, self.inner_dist, self.inner_dist, 5])
                 if not isinstance(cd, torch.Tensor):
                     cd = torch.tensor(cd).to(device)
-                self.chamfer_list.append(cd)
+                self.chamfer_list.append(cd.float())
 
     def compute(self):
         chamfer_list = torch.stack(self.chamfer_list, dim=0)
@@ -72,7 +72,7 @@ class PointCloudMMD(Metric):
         mmd = compute_mmd(pred_hist, gt_hist, kernel=gaussian, is_parallel=True)
         if not isinstance(mmd, torch.Tensor):
             mmd = torch.tensor(mmd).to(device)
-        self.mmd_list.append(mmd)
+        self.mmd_list.append(mmd.float())
 
     def compute(self):
         mmd_list = torch.stack(self.mmd_list, dim=0)
@@ -107,7 +107,7 @@ class PointCloudJSD(Metric):
                 jsd = jsd_2d(p, g)
                 if not isinstance(jsd, torch.Tensor):
                     jsd = torch.tensor(jsd).to(device)
-                self.jsd_list.append(jsd)
+                self.jsd_list.append(jsd.float())
 
     def compute(self):
         jsd_list = torch.stack(self.jsd_list, dim=0)

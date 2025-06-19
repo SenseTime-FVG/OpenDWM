@@ -651,7 +651,8 @@ class UNetCrossviewTemporalConditionModel(
         disable_crossview=None, disable_temporal=None,
         crossview_attention_mask=None, camera_intrinsics=None,
         camera_transforms=None, added_time_ids=None,
-        camera_intrinsics_norm=None, camera2referego= None    # TODO: support view modeling 
+        camera_intrinsics_norm=None, camera2referego= None,
+        return_dict=False  # TODO: support view modeling 
     ):
         """The forward method.
 
@@ -682,6 +683,19 @@ class UNetCrossviewTemporalConditionModel(
         Returns:
             A `tuple` is returned where the first element is the sample tensor.
         """
+        # If the input does not have the required dimensions, add the missing dimensions
+        should_add_dim = len(sample.shape) < 6
+        if should_add_dim:
+            sample = sample.unsqueeze(2)
+            timesteps = timesteps.unsqueeze(2)
+            if condition_image_tensor is not None:
+                condition_image_tensor = condition_image_tensor.unsqueeze(2)
+            if encoder_hidden_states is not None:
+                encoder_hidden_states = encoder_hidden_states.unsqueeze(2)
+            if disable_temporal is not None:
+                disable_temporal = disable_temporal.unsqueeze(2)
+            
+            
 
         batch_size, sequence_length, view_count, _, height, width = \
             sample.shape
@@ -701,6 +715,7 @@ class UNetCrossviewTemporalConditionModel(
             emb += aug_emb.view(batch_size, sequence_length, view_count, -1)
 
         # 2. pre-process
+
         condition_residuals = None if \
             self.condition_image_adapter is None or \
             condition_image_tensor is None else \
@@ -803,11 +818,18 @@ class UNetCrossviewTemporalConditionModel(
         sample = sample.view(
             batch_size, sequence_length, view_count, *sample.shape[1:])
 
+        if should_add_dim:
+            sample = sample.squeeze(2)
         result = (sample,)
+        if return_dict:
+            return {
+                "noise_pred": sample,
+            }
         if depth_features is not None:
             result = result + (depth_features,)
 
         if len(maskgit_input_list_up) > 0 and len(maskgit_input_list_down) > 0:
+            print(maskgit_input_list_up[0].shape)
             return result, maskgit_input_list_up, maskgit_input_list_down
 
         return result

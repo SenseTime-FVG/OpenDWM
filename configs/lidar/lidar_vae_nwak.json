@@ -1,0 +1,486 @@
+{
+    "device": "cuda",
+    "ddp_backend": "nccl",
+    "train_epochs": 500000,
+    "generator_seed": 0,
+    "data_shuffle": true,
+    "optimizer": {
+        "_class_name": "torch.optim.AdamW",
+        "lr": 1e-4,
+        "betas": [
+            0.9,
+            0.95
+        ]
+    },
+    "pipeline": {
+        "_class_name": "dwm.pipelines.lidar_vae.LidarVAE",
+        "common_config": {
+            "ray_cast_center": [
+                1.0,
+                0.0,
+                2.0
+            ]
+        },
+        "training_config": {
+            "use_amp": true,
+            "gradient_accumulation_steps": 1,
+            "loss_coef_dict": {
+                "pred_voxel_loss": 10.0,
+                "depth_loss": 1,
+                "sdf_loss": 0.05,
+                "kl_loss": 1e-9
+            },
+            "ddp_wrapper_setting": {
+                "find_unused_parameters": false
+            }
+        },
+        "inference_config": {
+            "preview_image_size": [
+                448,
+                256
+            ],
+            "preview_lidar_img_size": [
+                640,
+                640
+            ]
+        },
+        "lidar_vae": {
+            "_class_name": "dwm.models.lidar_vae_model.VAEPointCloud",
+            "voxelizer": {
+                "_class_name": "dwm.models.voxelizer.Voxelizer",
+                "x_min": -50.0,
+                "x_max": 50.0,
+                "y_min": -50.0,
+                "y_max": 50.0,
+                "z_min": -3.0,
+                "z_max": 5.0,
+                "step": 0.15625,
+                "z_step": 0.125
+            },
+            "variational_model": {
+                "_class_name": "dwm.models.lidar_vae_model.VariationalModel",
+                "model_type": "vae",
+                "variational_model_config": {
+                    "encoder_out_channels": 512,
+                    "decoder_in_channels": 32
+                }
+            },
+            "lidar_encoder": {
+                "_class_name": "dwm.models.lidar_vae_model.PointCloudEncoder",
+                "img_size": [
+                    640,
+                    640
+                ],
+                "depths": [4, 8],
+                "num_heads": [16, 16],
+                "embed_dim": 256,
+                "patch_size": 4,
+                "window_size": 8,
+                "use_checkpoint": true
+            },
+            "lidar_decoder": {
+                "_class_name": "dwm.models.lidar_vae_model.PointCloudDecoder",
+                "upcast": true,
+                "lidar_size": [
+                    640, 
+                    640
+                ],
+                "patch_size": 4,
+                "feature_depth": 32,
+                "voxel_depth": 64,
+                "embed_dim": 512,
+                "num_heads": 8,
+                "in_channels": 32,
+                "bias_init": -6.9,
+                "use_gt_voxel": false,
+                "visual_grid_feat_dim": 64,
+                "depth": [8, 4],
+                "use_render_decoder": true,
+                "grid_size_offset": [
+                    [0,0,0],
+                    [0,0,3]
+                ],
+                "render_config": {
+                    "near": 0,
+                    "far": 1e9,
+                    "stepsize": 0.15
+                },
+                "downsample_voxel": [4, 4, 4],
+                "upsample_style":  "pixel_shuffle",
+                "use_checkpoint": true
+            }
+        },
+        "metrics": {
+            "voxel_iou": {
+                "_class_name": "dwm.metrics.voxel_metrics.VoxelIoU"
+            }
+        }
+    },
+    "training_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "torch.utils.data.ConcatDataset",
+            "datasets": [
+                {
+                    "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                            "fs": {
+                                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                            }
+                        },
+                        "paths": [
+                            "data/nuscenes/v1.0-trainval_meta.zip",
+                            "data/nuscenes/v1.0-trainval01_blobs.zip",
+                            "data/nuscenes/v1.0-trainval02_blobs.zip",
+                            "data/nuscenes/v1.0-trainval03_blobs.zip",
+                            "data/nuscenes/v1.0-trainval04_blobs.zip",
+                            "data/nuscenes/v1.0-trainval05_blobs.zip",
+                            "data/nuscenes/v1.0-trainval06_blobs.zip",
+                            "data/nuscenes/v1.0-trainval07_blobs.zip",
+                            "data/nuscenes/v1.0-trainval08_blobs.zip",
+                            "data/nuscenes/v1.0-trainval09_blobs.zip",
+                            "data/nuscenes/v1.0-trainval10_blobs.zip"
+                        ]
+                    },
+                    "dataset_name": "v1.0-trainval",
+                    "split": "train",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "LIDAR_TOP"
+                    ],
+                    "keyframe_only": true,
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                },
+                {
+                    "_class_name": "dwm.datasets.waymo.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/training"
+                    },
+                    "info_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/training.info.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "LIDAR_TOP"
+                    ],
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                },
+                {
+                    "_class_name": "dwm.datasets.argoverse.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.ctar.CombinedTarFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan"
+                        },
+                        "paths": [
+                            "data/argoverse/av2/tars/sensor/train-000.tar",
+                            "data/argoverse/av2/tars/sensor/train-001.tar",
+                            "data/argoverse/av2/tars/sensor/train-002.tar",
+                            "data/argoverse/av2/tars/sensor/train-003.tar",
+                            "data/argoverse/av2/tars/sensor/train-004.tar",
+                            "data/argoverse/av2/tars/sensor/train-005.tar",
+                            "data/argoverse/av2/tars/sensor/train-006.tar",
+                            "data/argoverse/av2/tars/sensor/train-007.tar",
+                            "data/argoverse/av2/tars/sensor/train-008.tar",
+                            "data/argoverse/av2/tars/sensor/train-009.tar",
+                            "data/argoverse/av2/tars/sensor/train-010.tar",
+                            "data/argoverse/av2/tars/sensor/train-011.tar",
+                            "data/argoverse/av2/tars/sensor/train-012.tar",
+                            "data/argoverse/av2/tars/sensor/train-013.tar"
+                        ],
+                        "enable_cached_info": true
+                    },
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "lidar"
+                    ],
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                },
+                {
+                    "_class_name": "dwm.datasets.kitti360.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/mnt/storage/user/liuyichen"
+                        },
+                        "paths": [
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0000_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0002_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0003_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0004_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0005_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0006_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0007_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0009_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0010_sync_velodyne.zip",
+                            "data/kitti360/data_3d_bboxes.zip",
+                            "data/kitti360/data_poses.zip"
+                        ],
+                        "enable_cached_info": false
+                    },
+                    "dataset_name": "kitti360",
+                    "split": "train",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "lidar"
+                    ],
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                }
+            ]
+        },
+        "transform_list": [
+            {
+                "old_key": "lidar_points",
+                "new_key": "lidar_points",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms":[
+                        {
+                            "_class_name": "dwm.datasets.common.FilterPoints",
+                            "min_distance": 2.4,
+                            "max_distance": 72.0
+                        },
+                        {
+                            "_class_name": "dwm.datasets.common.TakePoints",
+                            "max_count": 24000
+                        }
+                    ]
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": [
+        ]
+    },
+    "validation_dataset": {
+        "_class_name": "dwm.datasets.common.DatasetAdapter",
+        "base_dataset": {
+            "_class_name": "torch.utils.data.ConcatDataset",
+            "datasets": [
+                {
+                    "_class_name": "dwm.datasets.nuscenes.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan",
+                            "fs": {
+                                "_class_name": "fsspec.implementations.local.LocalFileSystem"
+                            }
+                        },
+                        "paths": [
+                            "data/nuscenes/v1.0-trainval_meta.zip",
+                            "data/nuscenes/v1.0-trainval01_blobs.zip",
+                            "data/nuscenes/v1.0-trainval02_blobs.zip",
+                            "data/nuscenes/v1.0-trainval03_blobs.zip",
+                            "data/nuscenes/v1.0-trainval04_blobs.zip",
+                            "data/nuscenes/v1.0-trainval05_blobs.zip",
+                            "data/nuscenes/v1.0-trainval06_blobs.zip",
+                            "data/nuscenes/v1.0-trainval07_blobs.zip",
+                            "data/nuscenes/v1.0-trainval08_blobs.zip",
+                            "data/nuscenes/v1.0-trainval09_blobs.zip",
+                            "data/nuscenes/v1.0-trainval10_blobs.zip"
+                        ],
+                        "enable_cached_info": true
+                    },
+                    "dataset_name": "v1.0-trainval",
+                    "split": "val",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            10
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "LIDAR_TOP"
+                    ],
+                    "keyframe_only": true,
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                },
+                {
+                    "_class_name": "dwm.datasets.waymo.MotionDataset",
+                   "fs": {
+                        "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                        "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/validation"
+                    },
+                    "info_dict_path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan/data/waymo/waymo_open_dataset_v_1_4_3/validation.info.json",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            60
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "LIDAR_TOP"
+                    ],
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                },
+                {
+                    "_class_name": "dwm.datasets.argoverse.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.ctar.CombinedTarFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/cache/aoss-v2.st-sh-01.sensecoreapi-oss.cn/users/wuzehuan"
+                        },
+                        "paths": [
+                            "data/argoverse/av2/tars/sensor/val-000.tar",
+                            "data/argoverse/av2/tars/sensor/val-001.tar",
+                            "data/argoverse/av2/tars/sensor/val-002.tar"
+                        ],
+                        "enable_cached_info": true
+                    },
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            40
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "lidar"
+                    ],
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                },
+                {
+                    "_class_name": "dwm.datasets.kitti360.MotionDataset",
+                    "fs": {
+                        "_class_name": "dwm.fs.czip.CombinedZipFileSystem",
+                        "fs": {
+                            "_class_name": "dwm.fs.dirfs.DirFileSystem",
+                            "path": "/mnt/storage/user/liuyichen"
+                        },
+                        "paths": [
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0000_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0002_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0003_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0004_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0005_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0006_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0007_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0009_sync_velodyne.zip",
+                            "data/kitti360/download_3d_velodyne/KITTI-360/2013_05_28_drive_0010_sync_velodyne.zip",
+                            "data/kitti360/data_3d_bboxes.zip",
+                            "data/kitti360/data_poses.zip"
+                        ],
+                        "enable_cached_info": false
+                    },
+                    "dataset_name": "kitti360",
+                    "split": "val",
+                    "sequence_length": 1,
+                    "fps_stride_tuples": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "sensor_channels": [
+                        "lidar"
+                    ],
+                    "enable_camera_transforms": true,
+                    "enable_ego_transforms": true
+                }
+            ]
+        },
+        "transform_list": [
+            {
+                "old_key": "lidar_points",
+                "new_key": "lidar_points",
+                "transform": {
+                    "_class_name": "torchvision.transforms.Compose",
+                    "transforms": [
+                        {
+                            "_class_name": "dwm.datasets.common.FilterPoints",
+                            "min_distance": 2.4,
+                            "max_distance": 72.0
+                        },
+                        {
+                            "_class_name": "dwm.datasets.common.TakePoints",
+                            "max_count": 32768
+                        }
+                    ]
+                },
+                "stack": false
+            }
+        ],
+        "pop_list": []
+    },
+    "training_dataloader": {
+        "batch_size": 2,
+        "num_workers": 5,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "lidar_points"
+            ]
+        }
+    },
+    "validation_dataloader": {
+        "batch_size": 2,
+        "num_workers": 2,
+        "prefetch_factor": 3,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "lidar_points"
+            ]
+        }
+    },
+    "preview_dataloader": {
+        "batch_size": 2,
+        "num_workers": 1,
+        "shuffle": true,
+        "drop_last": true,
+        "collate_fn": {
+            "_class_name": "dwm.datasets.common.CollateFnIgnoring",
+            "keys": [
+                "lidar_points"
+            ]
+        }
+    },
+    "informations": {
+        "fid": -1,
+        "rmse": -1,
+        "mean_ap": -1,
+        "total_batch_sizes": 64,
+        "steps": 27000
+    }
+}

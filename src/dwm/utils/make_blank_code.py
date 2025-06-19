@@ -63,7 +63,7 @@ if __name__ == "__main__":
     vq_point_cloud.eval()
     for batch in dataloader:
         with torch.no_grad():
-            points = dwm.pipelines.lidar_codebook.LidarCodebook.get_points(
+            points = dwm.pipelines.lidar_vqvae.LidarCodebook.get_points(
                 batch, config["pipeline"]["common_config"], device)
 
             voxels = vq_point_cloud.voxelizer(points)

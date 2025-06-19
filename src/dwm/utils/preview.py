@@ -97,3 +97,40 @@ def save_tensor_to_video(
 
         for p in stream.encode():
             container.mux(p)
+
+
+def gray_to_colormap(img, cmap='rainbow', max_val=None):
+    """
+    Transfer gray map to matplotlib colormap
+    """
+    assert img.ndim == 2
+    import matplotlib
+    import matplotlib.cm
+
+    img[img<0] = 0
+    mask_invalid = img < 1e-10
+    if max_val is None:
+        img = img / (img.max() + 1e-8)
+    else:
+        img = img / (max_val + 1e-8)
+    norm = matplotlib.colors.Normalize(vmin=0, vmax=1.1)
+    cmap_m = matplotlib.cm.get_cmap(cmap)
+    map = matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap_m)
+    colormap = map.to_rgba(img)[:, :, :3]
+    colormap[mask_invalid] = 0
+    return colormap
+
+def depths_to_colors(depths, concat="width", colormap="rainbow", max_val=None):
+    colors = []
+    if isinstance(depths, list) or len(depths.shape) == 4:
+        for depth in depths:
+            color = gray_to_colormap(depth.detach().cpu().numpy(), cmap=colormap, max_val=max_val)
+            colors.append(color.permute(2, 0, 1))
+        if concat == "width":
+            colors = torch.cat(colors, dim=2)
+        else:
+            colors = torch.stack(colors)
+    else:
+        colors = gray_to_colormap(depths.detach().cpu().numpy(), cmap=colormap, max_val=max_val)
+        colors = torch.from_numpy(colors).permute(2, 0, 1)
+    return colors

@@ -89,10 +89,13 @@ You can download our pre-trained tokenzier and generation model in the following
 | :-: | :-: | :-: | :-: |
 | VQVAE | nuscene, waymo, argoverse | [Config](configs/lidar/lidar_vqvae_nwa.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwa_60k.pth?download=true), [blank code](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwa_60k_blank_code.pkl?download=true) |
 | | nuscene, waymo, argoverse, kitti360 | [Config](configs/lidar/lidar_vqvae_nwak.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwak_80k.pth?download=true), [blank code](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vqvae_nwak_80k_blank_code.pkl?download=true) |
+| VAE | nuscene, waymo, argoverse, kitti360 | [Config](configs/lidar/lidar_vae_nwak.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_vae_nwak_45k.pth?download=true) |
 | MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_layout_ns.json) | [ckpt_with_vqvae_nwa](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_nusc_150k.pth?download=true) <br> [ckpt_with_vqvae_nwak](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_vq80k_layout_ns_120k.pth?download=true) |
 | | kitti360 | [Config](configs/lidar/lidar_maskgit_vq80k_layout_kt.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_vq80k_layout_kt_120k.pth?download=true)|
 | Temporal MaskGIT | nuscene | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_ns.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_temporal_vq80k_layout_kt_150k.pth?download=true) |
 | | kitti360 | [Config](configs/lidar/lidar_maskgit_temporal_vq80k_layout_kt.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_maskgit_temporal_vq80k_layout_ns_150k.pth?download=true)|
+| Temporal DiT | nuscene | [Config](configs/lidar/lidar_diffusion_dit_temporal_ns.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_dit_temporal_layout_ns_150k.pth?download=true) |
+| | kitti360 | [Config](configs/lidar/lidar_diffusion_dit_temporal_kt.json) | [checkpoint](https://huggingface.co/wzhgba/opendwm-models/resolve/main/lidar_dit_temporal_layout_kt_150k.pth?download=true)|
 ## Examples
 
 ### T2I, T2V generation with CTSD pipeline
@@ -130,6 +133,16 @@ PYTHONPATH=src python src/dwm/preview.py -c examples/lidar_maskgit_preview.json 
 PYTHONPATH=src python3 -m torch.distributed.run --nnodes 1 --nproc-per-node 2 --node-rank 0 --master-addr 127.0.0.1 --master-port 29000 src/dwm/preview.py -c examples/lidar_maskgit_temporal_preview.json -o output/temporal_maskgit
 ```
 
+### Layout conditioned LiDAR generation with Diffusion pipeline
+
+1. Download LiDAR VAE and LiDAR Diffusion generation model checkpoint.
+2. Prepare the dataset ( [nuscenes_scene-0627_lidar_package.zip](https://huggingface.co/datasets/wzhgba/opendwm-data/resolve/main/nuscenes_scene-0627_lidar_package.zip?download=true) ).
+3. Modify the values of `json_file`, `autoencoder_ckpt_path`, and `diffusion_model_ckpt_path` to the paths of your dataset and checkpoints in the json file `examples/lidar_diffusion_temporal_preview.json`.
+4. Run the following command to generate LiDAR data according to the reference frame autoregressively.
+
+```bash
+PYTHONPATH=src python3 -m torch.distributed.run --nnodes 1 --nproc-per-node 2 --node-rank 0 --master-addr 127.0.0.1 --master-port 29000 src/dwm/preview.py -c examples/lidar_diffusion_temporal_preview.json -o output/temporal_diffusion
+```
 
 ## Train
 
